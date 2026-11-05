@@ -4,7 +4,7 @@ Single source of truth for the formal 5-tuple (Q, Sigma, delta, q0, F),
 used by the DFA engine, derivation documents, diagram generator, and frontend API.
 """
 
-from typing import Any, Dict, List, Set, Tuple
+from typing import Any
 
 # ==============================================================================
 # ALPHABET AND CHARACTER CLASSES
@@ -16,7 +16,7 @@ from typing import Any, Dict, List, Set, Tuple
 # 4. 'OTHER_LETTER': [A-Za-z] \ { 'i','I','n','N','g','G' }
 # 5. 'NON_LETTER'  : Any character outside [A-Za-z]
 
-ALPHABET_CLASSES: Dict[str, str] = {
+ALPHABET_CLASSES: dict[str, str] = {
     "I": "Letter 'i' or 'I'",
     "N": "Letter 'n' or 'N'",
     "G": "Letter 'g' or 'G'",
@@ -29,7 +29,7 @@ ALPHABET_CLASSES: Dict[str, str] = {
 # ==============================================================================
 # Minimal 5 states + 1 explicit dead/trap state
 
-STATES: Dict[str, Dict[str, Any]] = {
+STATES: dict[str, dict[str, Any]] = {
     "q0": {
         "id": "q0",
         "label": "q0: Start",
@@ -75,14 +75,14 @@ STATES: Dict[str, Dict[str, Any]] = {
 }
 
 START_STATE: str = "q0"
-ACCEPTING_STATES: Set[str] = {"q4"}
+ACCEPTING_STATES: set[str] = {"q4"}
 
 # ==============================================================================
 # STATE TRANSITION FUNCTION delta: Q x Sigma -> Q
 # ==============================================================================
 # delta[state][char_class] -> next_state
 
-DELTA: Dict[str, Dict[str, str]] = {
+DELTA: dict[str, dict[str, str]] = {
     "q0": {
         "I": "q1",
         "N": "q1",
@@ -172,7 +172,7 @@ def is_alphanumeric_or_underscore(ch: str) -> bool:
     )
 
 
-def get_dfa_definition() -> Dict[str, Any]:
+def get_dfa_definition() -> dict[str, Any]:
     """Return complete serializable DFA definition for API and frontend."""
     # Build transition table rows for markdown and UI
     class_order = ["I", "N", "G", "OTHER_LETTER", "NON_LETTER"]

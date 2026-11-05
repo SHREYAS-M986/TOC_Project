@@ -12,23 +12,17 @@ Verifies:
    - GET /api/testcases
 """
 
-from pathlib import Path
-import pytest
 import sys
+from pathlib import Path
+
+import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from api.index import app
-from core.dfa_definition import (
-    ACCEPTING_STATES,
-    DELTA,
-    START_STATE,
-    classify_char,
-    get_dfa_definition,
-)
-from core.dfa_engine import extract as dfa_extract, scan_text, trace
-from core.re_engine import extract as re_extract, extract_single_pattern
+from core.dfa_engine import scan_text, trace
+from core.re_engine import extract_single_pattern
 
 HAND_WRITTEN_TEST_WORDS = [
     # (word, expected_accepted, description)

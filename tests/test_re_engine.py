@@ -4,21 +4,20 @@ Verifies pattern matching for all 7 regexes, offset calculation,
 RE engine extraction, and Flask REST API endpoints including SSRF protection.
 """
 
-from pathlib import Path
-import re
 import sys
+from pathlib import Path
+
 import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from api.index import app
-from core.patterns import PATTERNS, get_all_patterns, get_compiled_pattern, get_pattern
-from core.re_engine import extract, extract_single_pattern
+from core.patterns import get_compiled_pattern
+from core.re_engine import extract
 from core.scraper import ScraperSecurityError, validate_url_security
 from core.utils import build_line_starts, offset_to_line_col
 from tests.test_data import TEST_CASES
-
 
 # ==============================================================================
 # 1. PARAMETRIZED REGEX TESTS (Positives & Negatives for all 7 patterns)

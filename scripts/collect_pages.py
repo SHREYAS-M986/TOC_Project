@@ -10,10 +10,10 @@ while preserving line breaks, and writes snapshots to data/pages/page[1-3].txt
 and metadata to data/pages/sources.json.
 """
 
-from datetime import datetime, timezone
 import json
-from pathlib import Path
 import sys
+from datetime import UTC, datetime
+from pathlib import Path
 
 # Ensure project root is in sys.path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -83,7 +83,7 @@ def collect() -> None:
                 "title": title,
                 "url": url,
                 "category": category,
-                "fetched_on": datetime.now(timezone.utc).isoformat(),
+                "fetched_on": datetime.now(UTC).isoformat(),
                 "char_count": page_data["char_count"],
                 "line_count": page_data["line_count"],
                 "pattern_counts": pattern_counts,

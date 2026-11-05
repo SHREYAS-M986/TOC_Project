@@ -5,11 +5,10 @@ runs extraction, cross-page analysis, DFA interactive simulation, and
 RE vs DFA benchmarking. Captures screenshots into docs/screenshots/.
 """
 
-import os
-from pathlib import Path
 import subprocess
 import sys
 import time
+from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
@@ -44,6 +43,22 @@ def capture_cli_outputs():
 
 def run_browser_verification():
     """Launch headless browser, exercise all UI tabs, and capture screenshots."""
+    # Ensure Flask server is running
+    server_proc = None
+    try:
+        import urllib.request
+        urllib.request.urlopen("http://127.0.0.1:5000/api/health", timeout=1)
+        print("Existing Flask server detected on port 5000.")
+    except Exception:
+        print("Starting background Flask server on port 5000...")
+        server_proc = subprocess.Popen(
+            [sys.executable, "api/index.py"],
+            cwd=str(PROJECT_ROOT),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+        time.sleep(2)
+
     print(f"Launching browser from: {EDGE_PATH}")
 
     with sync_playwright() as p:
@@ -77,9 +92,17 @@ def run_browser_verification():
         page.click('.snapshot-card-item[data-page-id="page2"]')
         page.click("#btn-run-analysis")
         time.sleep(1)
+        shot1b = SCREENSHOTS_DIR / "01b_analyzer_page2.png"
+        page.screenshot(path=str(shot1b), full_page=False)
+        print(f"  -> Captured: {shot1b.name}")
+
         page.click('.snapshot-card-item[data-page-id="page3"]')
         page.click("#btn-run-analysis")
         time.sleep(1)
+        shot1c = SCREENSHOTS_DIR / "01c_analyzer_page3.png"
+        page.screenshot(path=str(shot1c), full_page=False)
+        print(f"  -> Captured: {shot1c.name}")
+
         page.click('.snapshot-card-item[data-page-id="page1"]')
         page.click("#btn-run-analysis")
         time.sleep(1)
@@ -143,6 +166,22 @@ def run_browser_verification():
         page.click("#tab-btn-about")
         page.wait_for_selector("#testcases-table-body tr", state="visible", timeout=10000)
         time.sleep(1)
+        shot6 = SCREENSHOTS_DIR / "06_testcases.png"
+        page.screenshot(path=str(shot6), full_page=False)
+        print(f"  -> Captured: {shot6.name}")
+
+        # ------------------------------------------------------------------
+        # 6. MOBILE RESPONSIVE TEST (375px viewport)
+        # ------------------------------------------------------------------
+        print("6. Capturing Mobile Responsive (375px)...")
+        mobile_page = context.new_page()
+        mobile_page.set_viewport_size({"width": 375, "height": 667})
+        mobile_page.goto("http://127.0.0.1:5000/", wait_until="networkidle")
+        time.sleep(1)
+        shot7 = SCREENSHOTS_DIR / "07_mobile_analyzer_375px.png"
+        mobile_page.screenshot(path=str(shot7), full_page=False)
+        print(f"  -> Captured: {shot7.name}")
+        mobile_page.close()
 
         # Check console errors
         if console_errors:
@@ -152,6 +191,9 @@ def run_browser_verification():
 
         browser.close()
         print("Browser verification and screenshot capture completed successfully.")
+
+    if server_proc:
+        server_proc.terminate()
 
 
 def main():

@@ -6,7 +6,7 @@ and '-ing' words.
 """
 
 import re
-from typing import Any, Dict
+from typing import Any
 
 # ==============================================================================
 # PATTERN SPECIFICATIONS AND REGULAR EXPRESSIONS
@@ -97,7 +97,7 @@ ING_WORD_REGEX = r"\b[A-Za-z]+ing\b"
 # PATTERN REGISTRY DICTIONARY
 # ==============================================================================
 
-PATTERNS: Dict[str, Dict[str, Any]] = {
+PATTERNS: dict[str, dict[str, Any]] = {
     "email": {
         "key": "email",
         "label": "Email Address",
@@ -157,14 +157,14 @@ PATTERNS: Dict[str, Dict[str, Any]] = {
 }
 
 
-def get_pattern(key: str) -> Dict[str, Any]:
+def get_pattern(key: str) -> dict[str, Any]:
     """Retrieve pattern metadata by key."""
     if key not in PATTERNS:
         raise KeyError(f"Pattern '{key}' not found in registry.")
     return PATTERNS[key]
 
 
-def get_all_patterns() -> Dict[str, Dict[str, Any]]:
+def get_all_patterns() -> dict[str, dict[str, Any]]:
     """Return dictionary of all registered patterns suitable for JSON API response."""
     result = {}
     for key, p in PATTERNS.items():

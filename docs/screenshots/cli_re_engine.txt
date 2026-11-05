@@ -36,4 +36,4 @@
 |                          |         | Monitoring                           | 241:21                     |
 |                          |         | (+87 more items)                     | ...                        |
 +--------------------------+---------+--------------------------------------+----------------------------+
-Total Matches: 238 | Extraction Time: 9.768 ms
+Total Matches: 238 | Extraction Time: 5.503 ms

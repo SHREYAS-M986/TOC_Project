@@ -3,7 +3,7 @@
 import ipaddress
 import re
 import socket
-from typing import Any, Dict, Optional, Tuple
+from typing import Any
 from urllib.parse import urlparse
 
 import requests
@@ -21,12 +21,10 @@ MAX_RETURN_CHARS = 100_000         # 100k char limit for text extraction
 
 class ScraperSecurityError(Exception):
     """Raised when URL fails SSRF or protocol security checks."""
-    pass
 
 
 class ScraperFetchError(Exception):
     """Raised when HTTP request fails, times out, or exceeds size."""
-    pass
 
 
 def is_ip_allowed(ip_str: str) -> bool:
@@ -77,7 +75,7 @@ def validate_url_security(url: str) -> str:
     return url
 
 
-def clean_html(html_content: str) -> Tuple[str, str]:
+def clean_html(html_content: str) -> tuple[str, str]:
     """Clean HTML content, preserving links, mailto targets, and structural line breaks.
 
     Returns:
@@ -137,7 +135,7 @@ def fetch_and_clean_page(
     timeout: int = 15,
     max_bytes: int = MAX_FETCH_BYTES,
     max_return_chars: int = MAX_RETURN_CHARS
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Securely fetch a web page and clean its text.
 
     Args:

@@ -8,11 +8,10 @@ Extracts English words ending in 'ing' with at least 1 prefix letter (length >= 
 """
 
 import argparse
-import json
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 from core.dfa_definition import (
     ACCEPTING_STATES,
@@ -23,7 +22,7 @@ from core.dfa_definition import (
 )
 
 
-def trace(word: str) -> Dict[str, Any]:
+def trace(word: str) -> dict[str, Any]:
     """Execute DFA state transitions step-by-step on a single word token.
 
     Args:
@@ -60,7 +59,7 @@ def trace(word: str) -> Dict[str, Any]:
     }
 
 
-def scan_text(text: str) -> List[Dict[str, Any]]:
+def scan_text(text: str) -> list[dict[str, Any]]:
     """Scan full text in a single pass, computing line/column incrementally.
 
     Recognizes words ending in 'ing' (case-insensitive) strictly via DFA.
@@ -72,7 +71,7 @@ def scan_text(text: str) -> List[Dict[str, Any]]:
     matches = []
     line = 1
     col = 1
-    word_start: Optional[int] = None
+    word_start: int | None = None
     word_line = 1
     word_col = 1
     state = START_STATE
@@ -136,7 +135,7 @@ def scan_text(text: str) -> List[Dict[str, Any]]:
     return matches
 
 
-def extract(text: str, pattern_keys: Optional[List[str]] = None) -> Dict[str, Any]:
+def extract(text: str, pattern_keys: list[str] | None = None) -> dict[str, Any]:
     """Execute DFA pattern matching, formatted in the same shape as RE engine.
 
     Args:
@@ -175,8 +174,7 @@ def extract(text: str, pattern_keys: Optional[List[str]] = None) -> Dict[str, An
 
 def benchmark_dfa(text: str, runs: int = 200) -> float:
     """Benchmark DFA extraction average execution time in seconds over multiple runs."""
-    if runs < 1:
-        runs = 1
+    runs = max(runs, 1)
 
     # Warm-up
     scan_text(text)
@@ -193,7 +191,7 @@ def benchmark_dfa(text: str, runs: int = 200) -> float:
 # CLI INTERFACE: python -m core.dfa_engine --page 1
 # ==============================================================================
 
-def format_cli_table(results: Dict[str, Any]) -> str:
+def format_cli_table(results: dict[str, Any]) -> str:
     """Format ASCII table of DFA extraction matches."""
     headers = ["Pattern", "Count", "Extracted items", "Positions (L:C)"]
     col_widths = [26, 7, 36, 26]
@@ -272,7 +270,7 @@ def main() -> None:
         print("-" * 55)
         for s in tr["steps"]:
             trans = f"{s['from_state']} -> {s['to_state']}"
-            print(f"{s['step']:<6} | {repr(s['char']):<6} | {s['class']:<14} | {trans:<16}")
+            print(f"{s['step']:<6} | {s['char']!r:<6} | {s['class']:<14} | {trans:<16}")
         print("-" * 55)
         return
 

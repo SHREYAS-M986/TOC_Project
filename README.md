@@ -1,17 +1,30 @@
 # Web Content Analyzer: RE vs DFA
+## Theory of Computation (TOC) Case Study & Production Prototype
+
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tests: 134 Passed](https://img.shields.io/badge/tests-134%20passed-brightgreen.svg)](tests/)
+[![Vercel Deployment](https://img.shields.io/badge/deployment-vercel-black.svg)](https://vercel.com)
 
 A full-stack Theory of Computation (TOC) case study application comparing **Python Regular Expressions (RE)** against a **Hand-Built Deterministic Finite Automaton (DFA)** for tokenizing and extracting structured patterns from real-world web pages.
 
-Built in 3 development stages:
-- **Stage 1 (Completed):** Project skeleton, data snapshots, formal RE pattern registry & engine, secure REST API, test suite, and CI verification.
-- **Stage 2 (Completed):** Hand-built DFA engine without regex libraries, formal TOC derivation (Thompson's NFA, subset construction, Hopcroft minimization), state diagrams (SVG/PNG), REST API extensions, 100% RE vs DFA equivalence verification across all 3 pages, and modern 5-tab responsive UI with step-by-step simulator.
-- **Stage 3 (Next):** Comprehensive TOC analytical report, empirical benchmarks, and cloud deployment on Vercel.
+- **GitHub Repository:** [https://github.com/SHREYAS-M986/TOC_Project](https://github.com/SHREYAS-M986/TOC_Project)
+- **Comprehensive Academic Report:** [docs/REPORT.md](docs/REPORT.md) | [docs/REPORT.pdf](docs/REPORT.pdf) | [docs/REPORT.docx](docs/REPORT.docx)
+- **Live Deployment (Vercel):** *Pending deployment verification*
 
 ---
 
-## 1. Project Overview & Target Patterns
+## 1. Project Stages & Status
 
-The application scans web page content to recognize seven formal token languages:
+- [x] **Stage 1 (Completed):** Project skeleton, public data snapshots, formal RE pattern registry & engine, secure REST API with SSRF protection, automated Pytest suite, and initial Git push.
+- [x] **Stage 2 (Completed):** Pure table-driven DFA engine without regex libraries, formal TOC derivation (Thompson's NFA, subset construction, Hopcroft minimization), SVG/PNG state diagrams, REST endpoints, 100% bit-for-bit equivalence verification across all 3 pages, and modern 5-tab responsive UI with step-by-step simulator.
+- [x] **Stage 3 (Completed):** Comprehensive 500-iteration benchmarks across pages and a 1 MB corpus, LOC metrics, ground-truth accuracy evaluation (100% precision/recall/F1), cross-page frequency analysis, 15-section academic report (MD/PDF/DOCX), code hardening, and Vercel serverless configuration.
+
+---
+
+## 2. Target Patterns & Regular Expressions
+
+The application scans text to recognize seven formal regular languages:
 
 | Key | Formal Token Language | Regular Expression Specification | Flags |
 |---|---|---|---|
@@ -25,7 +38,65 @@ The application scans web page content to recognize seven formal token languages
 
 ---
 
-## 2. Directory Structure
+## 3. Hand-Built DFA Specification (Words ending in '-ing')
+
+The hand-built DFA ($M = (Q, \Sigma, \delta, q_0, F)$) operates strictly via a 2D transition matrix and character classification loop with **zero regex library dependencies**:
+
+- **Alphabet Classes $\Sigma$:** $I = \{i, I\}$, $N = \{n, N\}$, $G = \{g, G\}$, $\text{OTHER\_LETTER} = [A-Za-z] \setminus \{i, n, g\}$, $\text{NON\_LETTER} = \text{complement}$.
+- **States $Q$:** $\{q_0, q_1, q_2, q_3, q_4, q_{\text{trap}}\}$
+- **Accepting State $F$:** $\{q_4\}$ (Double circle, word length $\ge 4$).
+
+### State Transition Table ($\delta$):
+| State | Input $I$ (`i`, `I`) | Input $N$ (`n`, `N`) | Input $G$ (`g`, `G`) | $\text{OTHER\_LETTER}$ | $\text{NON\_LETTER}$ | Meaning |
+|:---:|:---:|:---:|:---:|:---:|:---:|---|
+| $\rightarrow q_0$ | $q_2$ | $q_1$ | $q_1$ | $q_1$ | $q_{\text{trap}}$ | Initial state (0 letters) |
+| $q_1$ | $q_2$ | $q_1$ | $q_1$ | $q_1$ | $q_{\text{trap}}$ | $\ge 1$ letters, no suffix progress |
+| $q_2$ | $q_2$ | $q_3$ | $q_1$ | $q_1$ | $q_{\text{trap}}$ | Suffix is `'i'` |
+| $q_3$ | $q_2$ | $q_1$ | $q_4$ | $q_1$ | $q_{\text{trap}}$ | Suffix is `'in'` |
+| $*q_4$ | $q_2$ | $q_1$ | $q_1$ | $q_1$ | $q_{\text{trap}}$ | **Accepting** (suffix `'ing'`, length $\ge 4$) |
+| $q_{\text{trap}}$ | $q_{\text{trap}}$ | $q_{\text{trap}}$ | $q_{\text{trap}}$ | $q_{\text{trap}}$ | $q_{\text{trap}}$ | Dead / trap state |
+
+![DFA Transition Diagram](docs/dfa_diagram.png)
+
+---
+
+## 4. Key Experimental Benchmark Results
+
+Across 500 benchmark iterations per target:
+
+| Target Corpus | Corpus Size | RE Count | DFA Count | Match Sets Identical | RE Mean (μs) | DFA Mean (μs) | Speedup Ratio (DFA / RE) |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Page 1 (UGC Educational)** | 27,264 chars | 92 | 92 | ✅ **100% Identical** | 1,747.8 μs | 10,433.5 μs | 5.97x |
+| **Page 2 (The Indian Express)** | 31,938 chars | 97 | 97 | ✅ **100% Identical** | 5,103.2 μs | 17,925.1 μs | 3.51x |
+| **Page 3 (DEV Community)** | 18,835 chars | 92 | 92 | ✅ **100% Identical** | 2,955.8 μs | 10,610.8 μs | 3.59x |
+| **Synthetic 1 MB Corpus** | 1,014,507 chars | 3,653 | 3,653 | ✅ **100% Identical** | 166,324.6 μs | 337,513.5 μs | **2.03x** |
+
+### Implementation Complexity & Accuracy:
+- **Lines of Code (LOC):** RE Core logic = **28 LOC** vs DFA Engine + Definition = **400 LOC** (14.3x more concise).
+- **Ground-Truth Accuracy (48 test cases):** RE = **100% Precision, 100% Recall, F1 = 1.0000** | DFA = **100% Precision, 100% Recall, F1 = 1.0000**.
+- **Theoretical Scaling:** Both algorithms demonstrate strictly linear $O(N)$ execution time. RE is faster due to Python's C-compiled `_sre` engine, while the DFA guarantees constant $O(1)$ memory with zero vulnerability to catastrophic backtracking (ReDoS).
+
+![Cross-Page Frequency Chart](docs/cross_page_frequency.png)
+
+---
+
+## 5. User Interface Gallery
+
+| Tab 1: Pattern Analyzer (Educational UGC) | Tab 2: Cross-Page Pattern Comparison |
+|:---:|:---:|
+| ![Analyzer View](docs/screenshots/01_analyzer_page1.png) | ![Cross-Page View](docs/screenshots/02_cross_page.png) |
+
+| Tab 3: Interactive DFA State Machine | Tab 3: Step-by-Step DFA Simulator |
+|:---:|:---:|
+| ![DFA Diagram](docs/screenshots/03_dfa_diagram.png) | ![Simulator View](docs/screenshots/04_dfa_simulator.png) |
+
+| Tab 4: Side-by-Side RE vs DFA Comparison | Tab 5: Test Cases & Ground Truth Matrix |
+|:---:|:---:|
+| ![Comparison View](docs/screenshots/05_compare.png) | ![Test Cases View](docs/screenshots/06_testcases.png) |
+
+---
+
+## 6. Directory Structure
 
 ```text
 TOC_Project/
@@ -45,17 +116,26 @@ TOC_Project/
 │       ├── page2.txt       # Cleaned text snapshot: The Indian Express (News)
 │       ├── page3.txt       # Cleaned text snapshot: DEV Community (Tech Blog)
 │       └── sources.json    # Metadata, category, and stats for snapshots
-├── docs/                   # Formal TOC derivation, state diagrams, tables, and screenshots
-│   ├── dfa_derivation.md   # Complete TOC mathematical derivation & proofs
+├── docs/                   # Formal TOC report, diagrams, benchmarks, and screenshots
+│   ├── REPORT.md           # Comprehensive 15-section academic report
+│   ├── REPORT.pdf          # Formatted PDF report with embedded figures
+│   ├── REPORT.docx         # Microsoft Word version of report
+│   ├── results.json        # Structured 500-run benchmark and timing measurements
+│   ├── results.md          # Markdown benchmark tables and LOC breakdown
+│   ├── frequency.json      # Cross-page pattern frequency and density metrics
+│   ├── cross_page_frequency.png # High-resolution distribution bar chart
+│   ├── dfa_derivation.md   # Mathematical derivation (NFA, subset, minimization)
 │   ├── dfa_diagram.svg     # Scalable vector graphics transition diagram
 │   ├── dfa_diagram.png     # Rendered raster transition diagram
 │   ├── dfa_table.md        # State transition markdown table
-│   └── screenshots/        # UI screenshots and CLI capture outputs
+│   └── screenshots/        # Application screenshots and CLI captures
 ├── public/                 # Static responsive frontend (HTML5/CSS3/Vanilla JS + Chart.js)
 │   ├── index.html          # Modern 5-tab application interface
 │   ├── styles.css          # Theme system with dark/light mode toggle
 │   └── app.js              # Client controller, API client, and DFA visualizer
 ├── scripts/
+│   ├── benchmark.py        # 500-run timing, LOC, accuracy, and frequency benchmark
+│   ├── generate_report.py  # Automated report generator (Markdown, PDF, DOCX)
 │   ├── collect_pages.py    # Fetches snapshots from public sources and saves metadata
 │   ├── generate_dfa_diagram.py   # Generates SVG and PNG state diagrams
 │   ├── generate_dfa_table.py     # Generates Markdown state transition matrix
@@ -65,96 +145,88 @@ TOC_Project/
 │   ├── test_data.py        # Positives and negatives test dataset (70 cases)
 │   ├── test_re_engine.py   # Comprehensive Pytest suite for RE engine (84 tests)
 │   ├── test_dfa_engine.py  # Equivalence & unit tests for DFA engine (50 tests)
+│   ├── ground_truth.json   # 48 hand-labelled test cases for accuracy evaluation
 │   └── test_cases.md       # Auto-generated verification matrix
 ├── .gitignore              # Git ignore rules
 ├── README.md               # Project documentation
-├── requirements.txt        # Pinned Python package dependencies
-└── vercel.json             # Vercel serverless functions configuration
+├── requirements.txt        # Production dependencies (Flask, requests, bs4)
+├── requirements-dev.txt    # Development & benchmarking dependencies
+└── vercel.json             # Vercel serverless function configuration
 ```
 
 ---
 
-## 3. Data Collection Snapshots
-
-Three publicly accessible web pages representing distinct domains were collected and cleaned:
-
-| Snapshot ID | Category | Source Title | Characters | Lines | Key Patterns Detected |
-|---|---|---|---|---|---|
-| `page1` | Educational | University Grants Commission (UGC) | 27,264 | 968 | Email (5), Date (8), URL (133), -ing (92) |
-| `page2` | News Portal | The Indian Express (Helpline Report) | 31,938 | 783 | Mobile (5), Email (4), URL (280), Time (2), -ing (97) |
-| `page3` | Tech Blog | DEV Community (Python Tag) | 18,835 | 648 | Hashtag (63), URL (86), -ing (92) |
-
----
-
-## 4. Local Installation & Setup
+## 7. Local Installation & Setup
 
 ### Prerequisites
 - Python 3.10+ (tested on Python 3.12)
 - Git
 
-### Steps
-1. Clone the repository and enter the directory:
-   ```bash
-   git clone https://github.com/SHREYAS-M986/TOC_Project.git
-   cd TOC_Project
-   ```
+### Installation Steps
+```bash
+git clone https://github.com/SHREYAS-M986/TOC_Project.git
+cd TOC_Project
 
-2. Create and activate a virtual environment:
-   ```bash
-   # Windows (PowerShell)
-   python -m venv .venv
-   .\.venv\Scripts\Activate.ps1
+# Create and activate virtual environment
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1   # Windows PowerShell
+# source .venv/bin/activate    # Linux / macOS
 
-   # Linux / macOS
-   python3 -m venv .venv
-   source .venv/bin/activate
-   ```
+# Install production dependencies
+pip install -r requirements.txt
 
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+# Or install development dependencies (includes testing, matplotlib, ruff)
+pip install -r requirements-dev.txt
+```
 
 ---
 
-## 5. Running the Application
+## 8. How to Run the System
 
-### Running the CLI Analyzers
-**RE Engine CLI:**
+### 1. Starting the Web Application
 ```bash
-python -m core.re_engine --page 1
-python -m core.re_engine --page 2
-python -m core.re_engine --page 3
+python api/index.py
 ```
-Add `--benchmark` to run a 200-iteration performance benchmark per pattern.
+Open `http://127.0.0.1:5000` in any modern web browser to access:
+- **Tab 1 (Analyzer):** Filter and highlight any of the 7 patterns across pages or live URLs.
+- **Tab 2 (Cross-Page Comparison):** Comparative counts, densities, and dynamic Chart.js charts.
+- **Tab 3 (DFA Machine & Simulator):** Interactive SVG state diagram and step-by-step word tracer.
+- **Tab 4 (RE vs DFA Comparison):** Side-by-side equivalence diff, LOC counters, and 200-run microsecond benchmarks.
+- **Tab 5 (About & Test Cases):** Complete test case matrix with real-time pass/fail evaluation.
 
-**DFA Engine CLI:**
+### 2. Running the CLI Analyzers
 ```bash
-# Scan a page snapshot with the pure DFA engine
-python -m core.dfa_engine --page 1
-python -m core.dfa_engine --page 2
-python -m core.dfa_engine --page 3
+# RE Engine CLI
+python -m core.re_engine --page 1
+python -m core.re_engine --page 2 --benchmark
 
-# Trace an individual word step-by-step
+# DFA Engine CLI
+python -m core.dfa_engine --page 1
 python -m core.dfa_engine --word learning
 python -m core.dfa_engine --word singing
 python -m core.dfa_engine --word ing
 ```
-Add `--benchmark` to run a 200-iteration DFA benchmark.
 
-### Starting the Flask Backend Server & Web UI
+### 3. Running Automated Benchmarks & Generating Reports
 ```bash
-python api/index.py
+# Run 500-iteration benchmarks and compute LOC, accuracy, and frequencies:
+python scripts/benchmark.py
+
+# Re-generate the full 15-section report (REPORT.md, REPORT.pdf, REPORT.docx):
+python scripts/generate_report.py
+
+# Re-fetch page snapshots from live public sources:
+python scripts/collect_pages.py
 ```
-Or with Flask CLI:
+
+### 4. Running the Pytest Test Suite
 ```bash
-flask --app api/index.py run --port 5000
+pytest -v
 ```
-Open `http://127.0.0.1:5000` in any web browser to use the full interactive application (Analyzer, Cross-Page Summary, DFA Machine & Step-by-Step Simulator, Side-by-Side Comparison, and Test Cases).
 
 ---
 
-## 6. REST API Reference
+## 9. REST API Reference
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -173,28 +245,17 @@ Open `http://127.0.0.1:5000` in any web browser to use the full interactive appl
 
 ---
 
-## 7. Running Tests & Verifying Test Cases
+## 10. Security & Hardening Features
 
-Run the test suite with `pytest` (134 unit & integration tests covering both engines):
-```bash
-pytest -v
-```
-
-Regenerate the automated verification table `tests/test_cases.md`:
-```bash
-python scripts/generate_test_cases_md.py
-```
-
-Regenerate DFA state diagrams and transition tables:
-```bash
-python scripts/generate_dfa_diagram.py
-python scripts/generate_dfa_table.py
-```
+- **SSRF Protection:** The `/api/fetch` endpoint strictly resolves DNS hostnames and blocks loopback (`127.0.0.1`, `::1`), private ranges (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`), link-local, multicast, and non-HTTP protocols.
+- **Resource Constraints:** Web scraping enforces a 10-second timeout, 2 MB payload cap, and a 100,000-character text return threshold.
+- **Dependency Isolation:** Production dependencies (`requirements.txt`) are strictly decoupled from dev/test tooling (`requirements-dev.txt`) for minimal serverless footprint.
+- **Zero Secrets:** No credentials, API tokens, or private secrets exist within the repository.
 
 ---
 
-## 8. Roadmap & Later Stages
+## 11. Credits & License
 
-- [x] **Stage 1:** Project skeleton, data snapshots, RE engine, Flask API, SSRF protection, pytest suite, Git push.
-- [x] **Stage 2:** Hand-built DFA engine (`core/dfa_engine.py`), formal derivation (`docs/dfa_derivation.md`), state transition matrices & diagrams (`docs/dfa_diagram.svg`), bit-for-bit equivalence testing, execution benchmark comparison, and interactive 5-tab web UI (`public/`).
-- [ ] **Stage 3:** Vercel deployment, empirical time complexity analysis report, LOC metrics, and TOC theoretical study comparison.
+- **Course:** CS301 / Theory of Computation
+- **Developer:** Shreyas M ([@SHREYAS-M986](https://github.com/SHREYAS-M986))
+- **License:** Open-source under the [MIT License](LICENSE).

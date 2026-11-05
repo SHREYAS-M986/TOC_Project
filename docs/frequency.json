@@ -1,0 +1,356 @@
+{
+  "pages": {
+    "page1": {
+      "id": "page1",
+      "title": "Welcome to UGC, New Delhi, India",
+      "category": "Educational",
+      "url": "https://www.ugc.gov.in/",
+      "char_count": 27264,
+      "line_count": 968,
+      "patterns": {
+        "email": {
+          "label": "Email Address",
+          "count": 5,
+          "unique_count": 5,
+          "density_per_1k": 0.183
+        },
+        "mobile": {
+          "label": "Indian Mobile Number",
+          "count": 0,
+          "unique_count": 0,
+          "density_per_1k": 0.0
+        },
+        "date": {
+          "label": "Date (DD-MM-YYYY)",
+          "count": 8,
+          "unique_count": 7,
+          "density_per_1k": 0.293
+        },
+        "url": {
+          "label": "Web URL",
+          "count": 133,
+          "unique_count": 127,
+          "density_per_1k": 4.878
+        },
+        "hashtag": {
+          "label": "Hashtag",
+          "count": 0,
+          "unique_count": 0,
+          "density_per_1k": 0.0
+        },
+        "time": {
+          "label": "24-Hour Time (HH:MM)",
+          "count": 0,
+          "unique_count": 0,
+          "density_per_1k": 0.0
+        },
+        "ing_word": {
+          "label": "Words ending in 'ing'",
+          "count": 92,
+          "unique_count": 31,
+          "density_per_1k": 3.374
+        }
+      }
+    },
+    "page2": {
+      "id": "page2",
+      "title": "Mumbai engineering student suicide: How to help a young person during an emotional crisis | Health and Wellness News - The Indian Express",
+      "category": "News Portal",
+      "url": "https://indianexpress.com/article/health-wellness/mumbai-ict-student-death-mental-health-warning-signs-depression-help-10938783/",
+      "char_count": 31938,
+      "line_count": 783,
+      "patterns": {
+        "email": {
+          "label": "Email Address",
+          "count": 4,
+          "unique_count": 4,
+          "density_per_1k": 0.125
+        },
+        "mobile": {
+          "label": "Indian Mobile Number",
+          "count": 5,
+          "unique_count": 5,
+          "density_per_1k": 0.157
+        },
+        "date": {
+          "label": "Date (DD-MM-YYYY)",
+          "count": 0,
+          "unique_count": 0,
+          "density_per_1k": 0.0
+        },
+        "url": {
+          "label": "Web URL",
+          "count": 280,
+          "unique_count": 190,
+          "density_per_1k": 8.767
+        },
+        "hashtag": {
+          "label": "Hashtag",
+          "count": 0,
+          "unique_count": 0,
+          "density_per_1k": 0.0
+        },
+        "time": {
+          "label": "24-Hour Time (HH:MM)",
+          "count": 2,
+          "unique_count": 2,
+          "density_per_1k": 0.063
+        },
+        "ing_word": {
+          "label": "Words ending in 'ing'",
+          "count": 97,
+          "unique_count": 65,
+          "density_per_1k": 3.037
+        }
+      }
+    },
+    "page3": {
+      "id": "page3",
+      "title": "Python - DEV Community",
+      "category": "Tech Blog / Community",
+      "url": "https://dev.to/t/python",
+      "char_count": 18835,
+      "line_count": 648,
+      "patterns": {
+        "email": {
+          "label": "Email Address",
+          "count": 0,
+          "unique_count": 0,
+          "density_per_1k": 0.0
+        },
+        "mobile": {
+          "label": "Indian Mobile Number",
+          "count": 0,
+          "unique_count": 0,
+          "density_per_1k": 0.0
+        },
+        "date": {
+          "label": "Date (DD-MM-YYYY)",
+          "count": 0,
+          "unique_count": 0,
+          "density_per_1k": 0.0
+        },
+        "url": {
+          "label": "Web URL",
+          "count": 86,
+          "unique_count": 50,
+          "density_per_1k": 4.566
+        },
+        "hashtag": {
+          "label": "Hashtag",
+          "count": 63,
+          "unique_count": 19,
+          "density_per_1k": 3.345
+        },
+        "time": {
+          "label": "24-Hour Time (HH:MM)",
+          "count": 0,
+          "unique_count": 0,
+          "density_per_1k": 0.0
+        },
+        "ing_word": {
+          "label": "Words ending in 'ing'",
+          "count": 92,
+          "unique_count": 38,
+          "density_per_1k": 4.885
+        }
+      }
+    }
+  },
+  "summary_table": [
+    {
+      "page_id": "page1",
+      "category": "Educational",
+      "pattern_key": "email",
+      "label": "Email Address",
+      "count": 5,
+      "unique_count": 5,
+      "density_per_1k": 0.183
+    },
+    {
+      "page_id": "page1",
+      "category": "Educational",
+      "pattern_key": "mobile",
+      "label": "Indian Mobile Number",
+      "count": 0,
+      "unique_count": 0,
+      "density_per_1k": 0.0
+    },
+    {
+      "page_id": "page1",
+      "category": "Educational",
+      "pattern_key": "date",
+      "label": "Date (DD-MM-YYYY)",
+      "count": 8,
+      "unique_count": 7,
+      "density_per_1k": 0.293
+    },
+    {
+      "page_id": "page1",
+      "category": "Educational",
+      "pattern_key": "url",
+      "label": "Web URL",
+      "count": 133,
+      "unique_count": 127,
+      "density_per_1k": 4.878
+    },
+    {
+      "page_id": "page1",
+      "category": "Educational",
+      "pattern_key": "hashtag",
+      "label": "Hashtag",
+      "count": 0,
+      "unique_count": 0,
+      "density_per_1k": 0.0
+    },
+    {
+      "page_id": "page1",
+      "category": "Educational",
+      "pattern_key": "time",
+      "label": "24-Hour Time (HH:MM)",
+      "count": 0,
+      "unique_count": 0,
+      "density_per_1k": 0.0
+    },
+    {
+      "page_id": "page1",
+      "category": "Educational",
+      "pattern_key": "ing_word",
+      "label": "Words ending in 'ing'",
+      "count": 92,
+      "unique_count": 31,
+      "density_per_1k": 3.374
+    },
+    {
+      "page_id": "page2",
+      "category": "News Portal",
+      "pattern_key": "email",
+      "label": "Email Address",
+      "count": 4,
+      "unique_count": 4,
+      "density_per_1k": 0.125
+    },
+    {
+      "page_id": "page2",
+      "category": "News Portal",
+      "pattern_key": "mobile",
+      "label": "Indian Mobile Number",
+      "count": 5,
+      "unique_count": 5,
+      "density_per_1k": 0.157
+    },
+    {
+      "page_id": "page2",
+      "category": "News Portal",
+      "pattern_key": "date",
+      "label": "Date (DD-MM-YYYY)",
+      "count": 0,
+      "unique_count": 0,
+      "density_per_1k": 0.0
+    },
+    {
+      "page_id": "page2",
+      "category": "News Portal",
+      "pattern_key": "url",
+      "label": "Web URL",
+      "count": 280,
+      "unique_count": 190,
+      "density_per_1k": 8.767
+    },
+    {
+      "page_id": "page2",
+      "category": "News Portal",
+      "pattern_key": "hashtag",
+      "label": "Hashtag",
+      "count": 0,
+      "unique_count": 0,
+      "density_per_1k": 0.0
+    },
+    {
+      "page_id": "page2",
+      "category": "News Portal",
+      "pattern_key": "time",
+      "label": "24-Hour Time (HH:MM)",
+      "count": 2,
+      "unique_count": 2,
+      "density_per_1k": 0.063
+    },
+    {
+      "page_id": "page2",
+      "category": "News Portal",
+      "pattern_key": "ing_word",
+      "label": "Words ending in 'ing'",
+      "count": 97,
+      "unique_count": 65,
+      "density_per_1k": 3.037
+    },
+    {
+      "page_id": "page3",
+      "category": "Tech Blog / Community",
+      "pattern_key": "email",
+      "label": "Email Address",
+      "count": 0,
+      "unique_count": 0,
+      "density_per_1k": 0.0
+    },
+    {
+      "page_id": "page3",
+      "category": "Tech Blog / Community",
+      "pattern_key": "mobile",
+      "label": "Indian Mobile Number",
+      "count": 0,
+      "unique_count": 0,
+      "density_per_1k": 0.0
+    },
+    {
+      "page_id": "page3",
+      "category": "Tech Blog / Community",
+      "pattern_key": "date",
+      "label": "Date (DD-MM-YYYY)",
+      "count": 0,
+      "unique_count": 0,
+      "density_per_1k": 0.0
+    },
+    {
+      "page_id": "page3",
+      "category": "Tech Blog / Community",
+      "pattern_key": "url",
+      "label": "Web URL",
+      "count": 86,
+      "unique_count": 50,
+      "density_per_1k": 4.566
+    },
+    {
+      "page_id": "page3",
+      "category": "Tech Blog / Community",
+      "pattern_key": "hashtag",
+      "label": "Hashtag",
+      "count": 63,
+      "unique_count": 19,
+      "density_per_1k": 3.345
+    },
+    {
+      "page_id": "page3",
+      "category": "Tech Blog / Community",
+      "pattern_key": "time",
+      "label": "24-Hour Time (HH:MM)",
+      "count": 0,
+      "unique_count": 0,
+      "density_per_1k": 0.0
+    },
+    {
+      "page_id": "page3",
+      "category": "Tech Blog / Community",
+      "pattern_key": "ing_word",
+      "label": "Words ending in 'ing'",
+      "count": 92,
+      "unique_count": 38,
+      "density_per_1k": 4.885
+    }
+  ],
+  "category_explanations": {
+    "Educational (page1)": "Characterized by high URL density (4.88 per 1k) and formal communication notices (Email: 5). Dates (8) reflect administrative notifications and circular issuance schedules. Has zero mobile numbers and zero hashtags due to institutional publication guidelines.",
+    "News Portal (page2)": "Dominated by contact directory details (Mobile: 5, Email: 4) and navigation links (URLs: 280, density 8.77 per 1k). Contains timestamped publishing records (Time: 2) capturing editorial timestamps. High frequency of '-ing' words (97) due to narrative journalistic reporting of ongoing events.",
+    "Tech Blog (page3)": "Exhibits overwhelming hashtag density (63 tags, 3.34 per 1k) representing folksonomy tagging systems (#python, #webdev, #ai). Features low date/time counts, with high URL references (86) to open-source GitHub repositories and technical documentation."
+  }
+}

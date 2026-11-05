@@ -9,11 +9,12 @@ Provides:
 import bisect
 import os
 import time
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any
 
 
-def build_line_starts(text: str) -> List[int]:
+def build_line_starts(text: str) -> list[int]:
     """Precompute 0-based character offsets where each line begins.
     
     Line 1 always begins at offset 0. Subsequent lines begin immediately
@@ -28,9 +29,9 @@ def build_line_starts(text: str) -> List[int]:
 
 def offset_to_line_col(
     offset: int,
-    text: Optional[str] = None,
-    line_starts: Optional[List[int]] = None
-) -> Tuple[int, int]:
+    text: str | None = None,
+    line_starts: list[int] | None = None
+) -> tuple[int, int]:
     """Convert a 0-based character offset into 1-based (line, column) numbers.
 
     Args:
@@ -46,8 +47,7 @@ def offset_to_line_col(
             raise ValueError("Either 'text' or 'line_starts' must be provided.")
         line_starts = build_line_starts(text)
 
-    if offset < 0:
-        offset = 0
+    offset = max(offset, 0)
 
     # bisect_right returns index into line_starts where offset < line_starts[idx]
     # The line number (1-based) is simply that index.
@@ -57,7 +57,7 @@ def offset_to_line_col(
     return line_number, col_number
 
 
-def time_execution(func: Callable, *args: Any, **kwargs: Any) -> Tuple[Any, float]:
+def time_execution(func: Callable, *args: Any, **kwargs: Any) -> tuple[Any, float]:
     """Execute a function once and return (result, elapsed_seconds)."""
     start_time = time.perf_counter()
     result = func(*args, **kwargs)
@@ -77,8 +77,7 @@ def benchmark(func: Callable, *args: Any, runs: int = 200, **kwargs: Any) -> flo
     Returns:
         Average execution time in seconds.
     """
-    if runs < 1:
-        runs = 1
+    runs = max(runs, 1)
 
     # Warm-up run
     func(*args, **kwargs)
@@ -91,7 +90,7 @@ def benchmark(func: Callable, *args: Any, runs: int = 200, **kwargs: Any) -> flo
     return total_time / runs
 
 
-def count_loc(root_dir: str | Path, extensions: Optional[List[str]] = None) -> Dict[str, Any]:
+def count_loc(root_dir: str | Path, extensions: list[str] | None = None) -> dict[str, Any]:
     """Count lines of code (total, code, comments, blank) for files in root_dir.
 
     Args:
@@ -156,7 +155,7 @@ def count_loc(root_dir: str | Path, extensions: Optional[List[str]] = None) -> D
     return {"summary": totals, "files": files_stats}
 
 
-def count_single_file_loc(file_path: str | Path) -> Dict[str, int]:
+def count_single_file_loc(file_path: str | Path) -> dict[str, int]:
     """Count non-blank, non-comment lines of code for a single file.
 
     Returns:

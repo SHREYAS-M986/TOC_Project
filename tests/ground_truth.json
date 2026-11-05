@@ -1,0 +1,339 @@
+[
+  {
+    "id": 1,
+    "input": "learning",
+    "expected": ["learning"],
+    "category": "standard_word",
+    "description": "Standard 8-letter participle"
+  },
+  {
+    "id": 2,
+    "input": "ring",
+    "expected": ["ring"],
+    "category": "standard_word",
+    "description": "Minimal 4-letter word starting with r"
+  },
+  {
+    "id": 3,
+    "input": "sing",
+    "expected": ["sing"],
+    "category": "standard_word",
+    "description": "Minimal 4-letter word starting with s"
+  },
+  {
+    "id": 4,
+    "input": "bring",
+    "expected": ["bring"],
+    "category": "standard_word",
+    "description": "Standard 5-letter word"
+  },
+  {
+    "id": 5,
+    "input": "king",
+    "expected": ["king"],
+    "category": "standard_word",
+    "description": "Standard 4-letter noun"
+  },
+  {
+    "id": 6,
+    "input": "singing",
+    "expected": ["singing"],
+    "category": "compound_syllable",
+    "description": "Repeated 'ing' substring in stem and suffix"
+  },
+  {
+    "id": 7,
+    "input": "thing",
+    "expected": ["thing"],
+    "category": "standard_word",
+    "description": "Standard 5-letter noun"
+  },
+  {
+    "id": 8,
+    "input": "inging",
+    "expected": ["inging"],
+    "category": "compound_syllable",
+    "description": "Stem 'ing' plus suffix 'ing', length 6"
+  },
+  {
+    "id": 9,
+    "input": "string",
+    "expected": ["string"],
+    "category": "standard_word",
+    "description": "6-letter programming noun"
+  },
+  {
+    "id": 10,
+    "input": "spring",
+    "expected": ["spring"],
+    "category": "standard_word",
+    "description": "6-letter word"
+  },
+  {
+    "id": 11,
+    "input": "wing",
+    "expected": ["wing"],
+    "category": "standard_word",
+    "description": "4-letter noun"
+  },
+  {
+    "id": 12,
+    "input": "running",
+    "expected": ["running"],
+    "category": "doubled_consonant",
+    "description": "Doubled 'n' consonant before -ing"
+  },
+  {
+    "id": 13,
+    "input": "testing",
+    "expected": ["testing"],
+    "category": "standard_word",
+    "description": "Standard software testing gerund"
+  },
+  {
+    "id": 14,
+    "input": "programming",
+    "expected": ["programming"],
+    "category": "long_word",
+    "description": "11-letter computing domain word"
+  },
+  {
+    "id": 15,
+    "input": "debugging",
+    "expected": ["debugging"],
+    "category": "long_word",
+    "description": "9-letter software engineering term"
+  },
+  {
+    "id": 16,
+    "input": "PARSING",
+    "expected": ["PARSING"],
+    "category": "case_variation",
+    "description": "All-uppercase valid participle"
+  },
+  {
+    "id": 17,
+    "input": "Writing",
+    "expected": ["Writing"],
+    "category": "case_variation",
+    "description": "Title-case valid participle"
+  },
+  {
+    "id": 18,
+    "input": "skiing",
+    "expected": ["skiing"],
+    "category": "vowel_run",
+    "description": "Consecutive 'i' characters (ski + ing)"
+  },
+  {
+    "id": 19,
+    "input": "iing",
+    "expected": ["iing"],
+    "category": "minimal_edge",
+    "description": "Minimal 4-letter word with 'i' prefix"
+  },
+  {
+    "id": 20,
+    "input": "winning",
+    "expected": ["winning"],
+    "category": "doubled_consonant",
+    "description": "Doubled consonant word"
+  },
+  {
+    "id": 21,
+    "input": "beginning",
+    "expected": ["beginning"],
+    "category": "long_word",
+    "description": "9-letter word ending in -ing"
+  },
+  {
+    "id": 22,
+    "input": "dinging",
+    "expected": ["dinging"],
+    "category": "compound_syllable",
+    "description": "Repeated ing pattern"
+  },
+  {
+    "id": 23,
+    "input": "ing",
+    "expected": [],
+    "category": "sub_length_negative",
+    "description": "Length 3 suffix alone without prefix letter"
+  },
+  {
+    "id": 24,
+    "input": "Ing",
+    "expected": [],
+    "category": "sub_length_negative",
+    "description": "Capitalized 3-letter suffix alone"
+  },
+  {
+    "id": 25,
+    "input": "ING",
+    "expected": [],
+    "category": "sub_length_negative",
+    "description": "Uppercase 3-letter suffix alone"
+  },
+  {
+    "id": 26,
+    "input": "in",
+    "expected": [],
+    "category": "sub_length_negative",
+    "description": "2-letter preposition missing 'g'"
+  },
+  {
+    "id": 27,
+    "input": "INGest",
+    "expected": [],
+    "category": "internal_substring_negative",
+    "description": "Starts with 'ing' but ends in 'est'"
+  },
+  {
+    "id": 28,
+    "input": "finger",
+    "expected": [],
+    "category": "internal_substring_negative",
+    "description": "Contains 'ing' internally but ends in 'er'"
+  },
+  {
+    "id": 29,
+    "input": "singer",
+    "expected": [],
+    "category": "internal_substring_negative",
+    "description": "Contains 'sing' internally but ends in 'er'"
+  },
+  {
+    "id": 30,
+    "input": "ring123",
+    "expected": [],
+    "category": "boundary_negative",
+    "description": "Adjacent trailing digits prevent word boundary"
+  },
+  {
+    "id": 31,
+    "input": "123sing",
+    "expected": [],
+    "category": "boundary_negative",
+    "description": "Adjacent leading digits prevent word boundary"
+  },
+  {
+    "id": 32,
+    "input": "ding_dong",
+    "expected": [],
+    "category": "boundary_negative",
+    "description": "Underscore is word character, neither token is valid"
+  },
+  {
+    "id": 33,
+    "input": "HEIs_Violating_Regulations",
+    "expected": [],
+    "category": "boundary_negative",
+    "description": "Embedded in snake_case identifier with underscores"
+  },
+  {
+    "id": 34,
+    "input": "",
+    "expected": [],
+    "category": "empty_negative",
+    "description": "Empty string input"
+  },
+  {
+    "id": 35,
+    "input": "a",
+    "expected": [],
+    "category": "sub_length_negative",
+    "description": "Single letter word"
+  },
+  {
+    "id": 36,
+    "input": "inn",
+    "expected": [],
+    "category": "suffix_negative",
+    "description": "3-letter word ending in 'nn'"
+  },
+  {
+    "id": 37,
+    "input": "signing1",
+    "expected": [],
+    "category": "boundary_negative",
+    "description": "Valid participle followed directly by digit 1"
+  },
+  {
+    "id": 38,
+    "input": "hello",
+    "expected": [],
+    "category": "suffix_negative",
+    "description": "Standard word with completely different ending"
+  },
+  {
+    "id": 39,
+    "input": "stringy",
+    "expected": [],
+    "category": "suffix_negative",
+    "description": "Ends with 'y' rather than 'g'"
+  },
+  {
+    "id": 40,
+    "input": "thing.",
+    "expected": ["thing"],
+    "category": "punctuation_delimiter",
+    "description": "Valid word followed by period delimiter"
+  },
+  {
+    "id": 41,
+    "input": "sing,",
+    "expected": ["sing"],
+    "category": "punctuation_delimiter",
+    "description": "Valid word followed by comma delimiter"
+  },
+  {
+    "id": 42,
+    "input": "sing-song",
+    "expected": ["sing"],
+    "category": "hyphenated_delimiter",
+    "description": "Hyphen acts as delimiter: 'sing' matches, 'song' does not"
+  },
+  {
+    "id": 43,
+    "input": "re-sing",
+    "expected": ["sing"],
+    "category": "hyphenated_delimiter",
+    "description": "Hyphenated prefix 're-' with 'sing' matching"
+  },
+  {
+    "id": 44,
+    "input": "king's",
+    "expected": ["king"],
+    "category": "apostrophe_delimiter",
+    "description": "Possessive apostrophe delimiter before 's'"
+  },
+  {
+    "id": 45,
+    "input": "The king was singing while stringing the golden bow.",
+    "expected": ["king", "singing", "stringing"],
+    "category": "sentence_prose",
+    "description": "Natural sentence containing 3 valid tokens"
+  },
+  {
+    "id": 46,
+    "input": "Is ing alone valid or is jumping and dancing preferred?",
+    "expected": ["jumping", "dancing"],
+    "category": "sentence_prose",
+    "description": "Sentence rejecting isolated 'ing' and accepting 'jumping', 'dancing'"
+  },
+  {
+    "id": 47,
+    "input": "He was INGESTing food rapidly before running.",
+    "expected": ["INGESTing", "running"],
+    "category": "mixed_case_sentence",
+    "description": "Mixed uppercase stem 'INGEST' + 'ing' and lowercase 'running'"
+  },
+  {
+    "id": 48,
+    "input": "Engineering students are studying compiler design and building DFAs.",
+    "expected": ["Engineering", "studying", "building"],
+    "category": "sentence_prose",
+    "description": "Academic prose with 3 gerunds"
+  }
+]
+

@@ -7,18 +7,14 @@ Draws a clean, formal state transition diagram:
 - Generates both standalone vector SVG and raster PNG without external binary dependencies.
 """
 
-from pathlib import Path
 import sys
+from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from core.dfa_definition import (
-    ACCEPTING_STATES,
-    DELTA,
-    START_STATE,
     STATES,
-    get_dfa_definition,
 )
 
 try:

@@ -7,21 +7,20 @@ metrics (count, unique_count, execution time).
 
 import argparse
 import json
-import re
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
-from core.patterns import PATTERNS, get_all_patterns, get_compiled_pattern, get_pattern
+from core.patterns import PATTERNS, get_compiled_pattern, get_pattern
 from core.utils import build_line_starts, offset_to_line_col
 
 
 def extract_single_pattern(
     text: str,
     pattern_key: str,
-    line_starts: Optional[List[int]] = None
-) -> Dict[str, Any]:
+    line_starts: list[int] | None = None
+) -> dict[str, Any]:
     """Extract matches for a single pattern key from text.
 
     Args:
@@ -66,8 +65,8 @@ def extract_single_pattern(
 
 def extract(
     text: str,
-    pattern_keys: Optional[List[str]] = None
-) -> Dict[str, Any]:
+    pattern_keys: list[str] | None = None
+) -> dict[str, Any]:
     """Extract all or selected patterns from text using Python regular expressions.
 
     Args:
@@ -86,7 +85,7 @@ def extract(
     start_time = time.perf_counter()
     line_starts = build_line_starts(text)
 
-    results: Dict[str, Dict[str, Any]] = {}
+    results: dict[str, dict[str, Any]] = {}
     total_matches = 0
 
     for key in keys_to_run:
@@ -117,8 +116,7 @@ def benchmark(text: str, pattern_key: str, runs: int = 200) -> float:
     Returns:
         Average execution time per run in seconds.
     """
-    if runs < 1:
-        runs = 1
+    runs = max(runs, 1)
 
     compiled_re = get_compiled_pattern(pattern_key)
 
@@ -133,7 +131,7 @@ def benchmark(text: str, pattern_key: str, runs: int = 200) -> float:
     return total_duration / runs
 
 
-def benchmark_all(text: str, runs: int = 200) -> Dict[str, float]:
+def benchmark_all(text: str, runs: int = 200) -> dict[str, float]:
     """Benchmark all registered patterns and return average seconds per run."""
     timings = {}
     for key in PATTERNS.keys():
@@ -145,7 +143,7 @@ def benchmark_all(text: str, runs: int = 200) -> Dict[str, float]:
 # CLI INTERFACE: python -m core.re_engine --page 1
 # ==============================================================================
 
-def format_cli_table(results: Dict[str, Any]) -> str:
+def format_cli_table(results: dict[str, Any]) -> str:
     """Render a clean ASCII table of extraction results for terminal/screenshots."""
     headers = ["Pattern", "Count", "Extracted items", "Positions (L:C)"]
     col_widths = [24, 7, 36, 26]

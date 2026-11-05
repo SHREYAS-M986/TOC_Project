@@ -5,11 +5,10 @@ protection, snapshot access, and pattern summary comparison.
 Designed to run locally or as a Vercel Serverless Function.
 """
 
-from datetime import datetime, timezone
 import json
-from pathlib import Path
 import sys
-from typing import Any, Dict
+from datetime import UTC, datetime
+from pathlib import Path
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -22,12 +21,15 @@ if str(PROJECT_ROOT) not in sys.path:
 from core.dfa_definition import get_dfa_definition
 from core.dfa_engine import (
     benchmark_dfa,
-    extract as dfa_extract,
     scan_text,
     trace,
 )
+from core.dfa_engine import (
+    extract as dfa_extract,
+)
 from core.patterns import PATTERNS, get_all_patterns
-from core.re_engine import benchmark as re_benchmark, extract, extract_single_pattern
+from core.re_engine import benchmark as re_benchmark
+from core.re_engine import extract, extract_single_pattern
 from core.scraper import (
     MAX_FETCH_BYTES,
     MAX_RETURN_CHARS,
@@ -109,7 +111,7 @@ def health():
     """GET /api/health -> Service health status."""
     return jsonify({
         "status": "healthy",
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
         "version": "1.0.0",
         "service": "Web Content Analyzer Backend"
     }), 200

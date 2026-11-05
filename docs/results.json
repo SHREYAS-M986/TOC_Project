@@ -1,0 +1,1132 @@
+{
+  "timestamp": "2026-11-05 22:34:02",
+  "benchmarks": [
+    {
+      "target_id": "page1",
+      "title": "Welcome to UGC, New Delhi, India",
+      "char_count": 27264,
+      "re_count": 92,
+      "dfa_count": 92,
+      "identical_match_sets": true,
+      "re_timing_us": {
+        "runs": 500,
+        "mean_us": 1747.83,
+        "median_us": 1685.55,
+        "min_us": 1594.0,
+        "max_us": 3281.8,
+        "stdev_us": 201.87
+      },
+      "dfa_timing_us": {
+        "runs": 500,
+        "mean_us": 10433.53,
+        "median_us": 7323.4,
+        "min_us": 6276.5,
+        "max_us": 27285.7,
+        "stdev_us": 4250.15
+      },
+      "speedup_ratio_dfa_vs_re": 5.97
+    },
+    {
+      "target_id": "page2",
+      "title": "Mumbai engineering student suicide: How to help a young person during an emotional crisis | Health and Wellness News - The Indian Express",
+      "char_count": 31938,
+      "re_count": 97,
+      "dfa_count": 97,
+      "identical_match_sets": true,
+      "re_timing_us": {
+        "runs": 500,
+        "mean_us": 5103.18,
+        "median_us": 5067.65,
+        "min_us": 3215.6,
+        "max_us": 7424.6,
+        "stdev_us": 752.83
+      },
+      "dfa_timing_us": {
+        "runs": 500,
+        "mean_us": 17925.13,
+        "median_us": 17661.15,
+        "min_us": 13744.1,
+        "max_us": 23590.8,
+        "stdev_us": 1593.16
+      },
+      "speedup_ratio_dfa_vs_re": 3.51
+    },
+    {
+      "target_id": "page3",
+      "title": "Python - DEV Community",
+      "char_count": 18835,
+      "re_count": 92,
+      "dfa_count": 92,
+      "identical_match_sets": true,
+      "re_timing_us": {
+        "runs": 500,
+        "mean_us": 2955.75,
+        "median_us": 2696.35,
+        "min_us": 1796.8,
+        "max_us": 5589.4,
+        "stdev_us": 610.52
+      },
+      "dfa_timing_us": {
+        "runs": 500,
+        "mean_us": 10610.79,
+        "median_us": 10512.45,
+        "min_us": 7628.6,
+        "max_us": 18392.7,
+        "stdev_us": 1060.48
+      },
+      "speedup_ratio_dfa_vs_re": 3.59
+    },
+    {
+      "target_id": "synthetic_1mb",
+      "title": "Synthetic 1MB Scaled Corpus",
+      "char_count": 1014507,
+      "re_count": 3653,
+      "dfa_count": 3653,
+      "identical_match_sets": true,
+      "re_timing_us": {
+        "runs": 500,
+        "mean_us": 166324.6,
+        "median_us": 166837.65,
+        "min_us": 135914.3,
+        "max_us": 258512.4,
+        "stdev_us": 11696.08
+      },
+      "dfa_timing_us": {
+        "runs": 500,
+        "mean_us": 337513.45,
+        "median_us": 259135.6,
+        "min_us": 245207.0,
+        "max_us": 622110.7,
+        "stdev_us": 131527.91
+      },
+      "speedup_ratio_dfa_vs_re": 2.03
+    }
+  ],
+  "loc_metrics": {
+    "re": {
+      "engine_file_loc": 206,
+      "patterns_file_loc": 94,
+      "core_logic_loc": 28,
+      "description": "Python re.finditer compiled C-engine binding + token wrapper"
+    },
+    "dfa": {
+      "definition_file_loc": 160,
+      "engine_file_loc": 240,
+      "total_dfa_loc": 400,
+      "description": "Hand-built transition matrix, char classifier, and single-pass scanner without regex libraries"
+    }
+  },
+  "accuracy": {
+    "total_test_cases": 48,
+    "re_metrics": {
+      "true_positives": 37,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    },
+    "dfa_metrics": {
+      "true_positives": 37,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    },
+    "cases": [
+      {
+        "id": 1,
+        "input": "learning",
+        "category": "standard_word",
+        "expected": [
+          "learning"
+        ],
+        "re_predicted": [
+          "learning"
+        ],
+        "dfa_predicted": [
+          "learning"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 2,
+        "input": "ring",
+        "category": "standard_word",
+        "expected": [
+          "ring"
+        ],
+        "re_predicted": [
+          "ring"
+        ],
+        "dfa_predicted": [
+          "ring"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 3,
+        "input": "sing",
+        "category": "standard_word",
+        "expected": [
+          "sing"
+        ],
+        "re_predicted": [
+          "sing"
+        ],
+        "dfa_predicted": [
+          "sing"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 4,
+        "input": "bring",
+        "category": "standard_word",
+        "expected": [
+          "bring"
+        ],
+        "re_predicted": [
+          "bring"
+        ],
+        "dfa_predicted": [
+          "bring"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 5,
+        "input": "king",
+        "category": "standard_word",
+        "expected": [
+          "king"
+        ],
+        "re_predicted": [
+          "king"
+        ],
+        "dfa_predicted": [
+          "king"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 6,
+        "input": "singing",
+        "category": "compound_syllable",
+        "expected": [
+          "singing"
+        ],
+        "re_predicted": [
+          "singing"
+        ],
+        "dfa_predicted": [
+          "singing"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 7,
+        "input": "thing",
+        "category": "standard_word",
+        "expected": [
+          "thing"
+        ],
+        "re_predicted": [
+          "thing"
+        ],
+        "dfa_predicted": [
+          "thing"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 8,
+        "input": "inging",
+        "category": "compound_syllable",
+        "expected": [
+          "inging"
+        ],
+        "re_predicted": [
+          "inging"
+        ],
+        "dfa_predicted": [
+          "inging"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 9,
+        "input": "string",
+        "category": "standard_word",
+        "expected": [
+          "string"
+        ],
+        "re_predicted": [
+          "string"
+        ],
+        "dfa_predicted": [
+          "string"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 10,
+        "input": "spring",
+        "category": "standard_word",
+        "expected": [
+          "spring"
+        ],
+        "re_predicted": [
+          "spring"
+        ],
+        "dfa_predicted": [
+          "spring"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 11,
+        "input": "wing",
+        "category": "standard_word",
+        "expected": [
+          "wing"
+        ],
+        "re_predicted": [
+          "wing"
+        ],
+        "dfa_predicted": [
+          "wing"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 12,
+        "input": "running",
+        "category": "doubled_consonant",
+        "expected": [
+          "running"
+        ],
+        "re_predicted": [
+          "running"
+        ],
+        "dfa_predicted": [
+          "running"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 13,
+        "input": "testing",
+        "category": "standard_word",
+        "expected": [
+          "testing"
+        ],
+        "re_predicted": [
+          "testing"
+        ],
+        "dfa_predicted": [
+          "testing"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 14,
+        "input": "programming",
+        "category": "long_word",
+        "expected": [
+          "programming"
+        ],
+        "re_predicted": [
+          "programming"
+        ],
+        "dfa_predicted": [
+          "programming"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 15,
+        "input": "debugging",
+        "category": "long_word",
+        "expected": [
+          "debugging"
+        ],
+        "re_predicted": [
+          "debugging"
+        ],
+        "dfa_predicted": [
+          "debugging"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 16,
+        "input": "PARSING",
+        "category": "case_variation",
+        "expected": [
+          "parsing"
+        ],
+        "re_predicted": [
+          "parsing"
+        ],
+        "dfa_predicted": [
+          "parsing"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 17,
+        "input": "Writing",
+        "category": "case_variation",
+        "expected": [
+          "writing"
+        ],
+        "re_predicted": [
+          "writing"
+        ],
+        "dfa_predicted": [
+          "writing"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 18,
+        "input": "skiing",
+        "category": "vowel_run",
+        "expected": [
+          "skiing"
+        ],
+        "re_predicted": [
+          "skiing"
+        ],
+        "dfa_predicted": [
+          "skiing"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 19,
+        "input": "iing",
+        "category": "minimal_edge",
+        "expected": [
+          "iing"
+        ],
+        "re_predicted": [
+          "iing"
+        ],
+        "dfa_predicted": [
+          "iing"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 20,
+        "input": "winning",
+        "category": "doubled_consonant",
+        "expected": [
+          "winning"
+        ],
+        "re_predicted": [
+          "winning"
+        ],
+        "dfa_predicted": [
+          "winning"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 21,
+        "input": "beginning",
+        "category": "long_word",
+        "expected": [
+          "beginning"
+        ],
+        "re_predicted": [
+          "beginning"
+        ],
+        "dfa_predicted": [
+          "beginning"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 22,
+        "input": "dinging",
+        "category": "compound_syllable",
+        "expected": [
+          "dinging"
+        ],
+        "re_predicted": [
+          "dinging"
+        ],
+        "dfa_predicted": [
+          "dinging"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 23,
+        "input": "ing",
+        "category": "sub_length_negative",
+        "expected": [],
+        "re_predicted": [],
+        "dfa_predicted": [],
+        "agreed": true
+      },
+      {
+        "id": 24,
+        "input": "Ing",
+        "category": "sub_length_negative",
+        "expected": [],
+        "re_predicted": [],
+        "dfa_predicted": [],
+        "agreed": true
+      },
+      {
+        "id": 25,
+        "input": "ING",
+        "category": "sub_length_negative",
+        "expected": [],
+        "re_predicted": [],
+        "dfa_predicted": [],
+        "agreed": true
+      },
+      {
+        "id": 26,
+        "input": "in",
+        "category": "sub_length_negative",
+        "expected": [],
+        "re_predicted": [],
+        "dfa_predicted": [],
+        "agreed": true
+      },
+      {
+        "id": 27,
+        "input": "INGest",
+        "category": "internal_substring_negative",
+        "expected": [],
+        "re_predicted": [],
+        "dfa_predicted": [],
+        "agreed": true
+      },
+      {
+        "id": 28,
+        "input": "finger",
+        "category": "internal_substring_negative",
+        "expected": [],
+        "re_predicted": [],
+        "dfa_predicted": [],
+        "agreed": true
+      },
+      {
+        "id": 29,
+        "input": "singer",
+        "category": "internal_substring_negative",
+        "expected": [],
+        "re_predicted": [],
+        "dfa_predicted": [],
+        "agreed": true
+      },
+      {
+        "id": 30,
+        "input": "ring123",
+        "category": "boundary_negative",
+        "expected": [],
+        "re_predicted": [],
+        "dfa_predicted": [],
+        "agreed": true
+      },
+      {
+        "id": 31,
+        "input": "123sing",
+        "category": "boundary_negative",
+        "expected": [],
+        "re_predicted": [],
+        "dfa_predicted": [],
+        "agreed": true
+      },
+      {
+        "id": 32,
+        "input": "ding_dong",
+        "category": "boundary_negative",
+        "expected": [],
+        "re_predicted": [],
+        "dfa_predicted": [],
+        "agreed": true
+      },
+      {
+        "id": 33,
+        "input": "HEIs_Violating_Regulations",
+        "category": "boundary_negative",
+        "expected": [],
+        "re_predicted": [],
+        "dfa_predicted": [],
+        "agreed": true
+      },
+      {
+        "id": 34,
+        "input": "",
+        "category": "empty_negative",
+        "expected": [],
+        "re_predicted": [],
+        "dfa_predicted": [],
+        "agreed": true
+      },
+      {
+        "id": 35,
+        "input": "a",
+        "category": "sub_length_negative",
+        "expected": [],
+        "re_predicted": [],
+        "dfa_predicted": [],
+        "agreed": true
+      },
+      {
+        "id": 36,
+        "input": "inn",
+        "category": "suffix_negative",
+        "expected": [],
+        "re_predicted": [],
+        "dfa_predicted": [],
+        "agreed": true
+      },
+      {
+        "id": 37,
+        "input": "signing1",
+        "category": "boundary_negative",
+        "expected": [],
+        "re_predicted": [],
+        "dfa_predicted": [],
+        "agreed": true
+      },
+      {
+        "id": 38,
+        "input": "hello",
+        "category": "suffix_negative",
+        "expected": [],
+        "re_predicted": [],
+        "dfa_predicted": [],
+        "agreed": true
+      },
+      {
+        "id": 39,
+        "input": "stringy",
+        "category": "suffix_negative",
+        "expected": [],
+        "re_predicted": [],
+        "dfa_predicted": [],
+        "agreed": true
+      },
+      {
+        "id": 40,
+        "input": "thing.",
+        "category": "punctuation_delimiter",
+        "expected": [
+          "thing"
+        ],
+        "re_predicted": [
+          "thing"
+        ],
+        "dfa_predicted": [
+          "thing"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 41,
+        "input": "sing,",
+        "category": "punctuation_delimiter",
+        "expected": [
+          "sing"
+        ],
+        "re_predicted": [
+          "sing"
+        ],
+        "dfa_predicted": [
+          "sing"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 42,
+        "input": "sing-song",
+        "category": "hyphenated_delimiter",
+        "expected": [
+          "sing"
+        ],
+        "re_predicted": [
+          "sing"
+        ],
+        "dfa_predicted": [
+          "sing"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 43,
+        "input": "re-sing",
+        "category": "hyphenated_delimiter",
+        "expected": [
+          "sing"
+        ],
+        "re_predicted": [
+          "sing"
+        ],
+        "dfa_predicted": [
+          "sing"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 44,
+        "input": "king's",
+        "category": "apostrophe_delimiter",
+        "expected": [
+          "king"
+        ],
+        "re_predicted": [
+          "king"
+        ],
+        "dfa_predicted": [
+          "king"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 45,
+        "input": "The king was singing while stringing the golden bow.",
+        "category": "sentence_prose",
+        "expected": [
+          "king",
+          "singing",
+          "stringing"
+        ],
+        "re_predicted": [
+          "king",
+          "singing",
+          "stringing"
+        ],
+        "dfa_predicted": [
+          "king",
+          "singing",
+          "stringing"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 46,
+        "input": "Is ing alone valid or is jumping and dancing preferred?",
+        "category": "sentence_prose",
+        "expected": [
+          "jumping",
+          "dancing"
+        ],
+        "re_predicted": [
+          "jumping",
+          "dancing"
+        ],
+        "dfa_predicted": [
+          "jumping",
+          "dancing"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 47,
+        "input": "He was INGESTing food rapidly before running.",
+        "category": "mixed_case_sentence",
+        "expected": [
+          "ingesting",
+          "running"
+        ],
+        "re_predicted": [
+          "ingesting",
+          "running"
+        ],
+        "dfa_predicted": [
+          "ingesting",
+          "running"
+        ],
+        "agreed": true
+      },
+      {
+        "id": 48,
+        "input": "Engineering students are studying compiler design and building DFAs.",
+        "category": "sentence_prose",
+        "expected": [
+          "engineering",
+          "studying",
+          "building"
+        ],
+        "re_predicted": [
+          "engineering",
+          "studying",
+          "building"
+        ],
+        "dfa_predicted": [
+          "engineering",
+          "studying",
+          "building"
+        ],
+        "agreed": true
+      }
+    ]
+  },
+  "frequency_analysis": {
+    "pages": {
+      "page1": {
+        "id": "page1",
+        "title": "Welcome to UGC, New Delhi, India",
+        "category": "Educational",
+        "url": "https://www.ugc.gov.in/",
+        "char_count": 27264,
+        "line_count": 968,
+        "patterns": {
+          "email": {
+            "label": "Email Address",
+            "count": 5,
+            "unique_count": 5,
+            "density_per_1k": 0.183
+          },
+          "mobile": {
+            "label": "Indian Mobile Number",
+            "count": 0,
+            "unique_count": 0,
+            "density_per_1k": 0.0
+          },
+          "date": {
+            "label": "Date (DD-MM-YYYY)",
+            "count": 8,
+            "unique_count": 7,
+            "density_per_1k": 0.293
+          },
+          "url": {
+            "label": "Web URL",
+            "count": 133,
+            "unique_count": 127,
+            "density_per_1k": 4.878
+          },
+          "hashtag": {
+            "label": "Hashtag",
+            "count": 0,
+            "unique_count": 0,
+            "density_per_1k": 0.0
+          },
+          "time": {
+            "label": "24-Hour Time (HH:MM)",
+            "count": 0,
+            "unique_count": 0,
+            "density_per_1k": 0.0
+          },
+          "ing_word": {
+            "label": "Words ending in 'ing'",
+            "count": 92,
+            "unique_count": 31,
+            "density_per_1k": 3.374
+          }
+        }
+      },
+      "page2": {
+        "id": "page2",
+        "title": "Mumbai engineering student suicide: How to help a young person during an emotional crisis | Health and Wellness News - The Indian Express",
+        "category": "News Portal",
+        "url": "https://indianexpress.com/article/health-wellness/mumbai-ict-student-death-mental-health-warning-signs-depression-help-10938783/",
+        "char_count": 31938,
+        "line_count": 783,
+        "patterns": {
+          "email": {
+            "label": "Email Address",
+            "count": 4,
+            "unique_count": 4,
+            "density_per_1k": 0.125
+          },
+          "mobile": {
+            "label": "Indian Mobile Number",
+            "count": 5,
+            "unique_count": 5,
+            "density_per_1k": 0.157
+          },
+          "date": {
+            "label": "Date (DD-MM-YYYY)",
+            "count": 0,
+            "unique_count": 0,
+            "density_per_1k": 0.0
+          },
+          "url": {
+            "label": "Web URL",
+            "count": 280,
+            "unique_count": 190,
+            "density_per_1k": 8.767
+          },
+          "hashtag": {
+            "label": "Hashtag",
+            "count": 0,
+            "unique_count": 0,
+            "density_per_1k": 0.0
+          },
+          "time": {
+            "label": "24-Hour Time (HH:MM)",
+            "count": 2,
+            "unique_count": 2,
+            "density_per_1k": 0.063
+          },
+          "ing_word": {
+            "label": "Words ending in 'ing'",
+            "count": 97,
+            "unique_count": 65,
+            "density_per_1k": 3.037
+          }
+        }
+      },
+      "page3": {
+        "id": "page3",
+        "title": "Python - DEV Community",
+        "category": "Tech Blog / Community",
+        "url": "https://dev.to/t/python",
+        "char_count": 18835,
+        "line_count": 648,
+        "patterns": {
+          "email": {
+            "label": "Email Address",
+            "count": 0,
+            "unique_count": 0,
+            "density_per_1k": 0.0
+          },
+          "mobile": {
+            "label": "Indian Mobile Number",
+            "count": 0,
+            "unique_count": 0,
+            "density_per_1k": 0.0
+          },
+          "date": {
+            "label": "Date (DD-MM-YYYY)",
+            "count": 0,
+            "unique_count": 0,
+            "density_per_1k": 0.0
+          },
+          "url": {
+            "label": "Web URL",
+            "count": 86,
+            "unique_count": 50,
+            "density_per_1k": 4.566
+          },
+          "hashtag": {
+            "label": "Hashtag",
+            "count": 63,
+            "unique_count": 19,
+            "density_per_1k": 3.345
+          },
+          "time": {
+            "label": "24-Hour Time (HH:MM)",
+            "count": 0,
+            "unique_count": 0,
+            "density_per_1k": 0.0
+          },
+          "ing_word": {
+            "label": "Words ending in 'ing'",
+            "count": 92,
+            "unique_count": 38,
+            "density_per_1k": 4.885
+          }
+        }
+      }
+    },
+    "summary_table": [
+      {
+        "page_id": "page1",
+        "category": "Educational",
+        "pattern_key": "email",
+        "label": "Email Address",
+        "count": 5,
+        "unique_count": 5,
+        "density_per_1k": 0.183
+      },
+      {
+        "page_id": "page1",
+        "category": "Educational",
+        "pattern_key": "mobile",
+        "label": "Indian Mobile Number",
+        "count": 0,
+        "unique_count": 0,
+        "density_per_1k": 0.0
+      },
+      {
+        "page_id": "page1",
+        "category": "Educational",
+        "pattern_key": "date",
+        "label": "Date (DD-MM-YYYY)",
+        "count": 8,
+        "unique_count": 7,
+        "density_per_1k": 0.293
+      },
+      {
+        "page_id": "page1",
+        "category": "Educational",
+        "pattern_key": "url",
+        "label": "Web URL",
+        "count": 133,
+        "unique_count": 127,
+        "density_per_1k": 4.878
+      },
+      {
+        "page_id": "page1",
+        "category": "Educational",
+        "pattern_key": "hashtag",
+        "label": "Hashtag",
+        "count": 0,
+        "unique_count": 0,
+        "density_per_1k": 0.0
+      },
+      {
+        "page_id": "page1",
+        "category": "Educational",
+        "pattern_key": "time",
+        "label": "24-Hour Time (HH:MM)",
+        "count": 0,
+        "unique_count": 0,
+        "density_per_1k": 0.0
+      },
+      {
+        "page_id": "page1",
+        "category": "Educational",
+        "pattern_key": "ing_word",
+        "label": "Words ending in 'ing'",
+        "count": 92,
+        "unique_count": 31,
+        "density_per_1k": 3.374
+      },
+      {
+        "page_id": "page2",
+        "category": "News Portal",
+        "pattern_key": "email",
+        "label": "Email Address",
+        "count": 4,
+        "unique_count": 4,
+        "density_per_1k": 0.125
+      },
+      {
+        "page_id": "page2",
+        "category": "News Portal",
+        "pattern_key": "mobile",
+        "label": "Indian Mobile Number",
+        "count": 5,
+        "unique_count": 5,
+        "density_per_1k": 0.157
+      },
+      {
+        "page_id": "page2",
+        "category": "News Portal",
+        "pattern_key": "date",
+        "label": "Date (DD-MM-YYYY)",
+        "count": 0,
+        "unique_count": 0,
+        "density_per_1k": 0.0
+      },
+      {
+        "page_id": "page2",
+        "category": "News Portal",
+        "pattern_key": "url",
+        "label": "Web URL",
+        "count": 280,
+        "unique_count": 190,
+        "density_per_1k": 8.767
+      },
+      {
+        "page_id": "page2",
+        "category": "News Portal",
+        "pattern_key": "hashtag",
+        "label": "Hashtag",
+        "count": 0,
+        "unique_count": 0,
+        "density_per_1k": 0.0
+      },
+      {
+        "page_id": "page2",
+        "category": "News Portal",
+        "pattern_key": "time",
+        "label": "24-Hour Time (HH:MM)",
+        "count": 2,
+        "unique_count": 2,
+        "density_per_1k": 0.063
+      },
+      {
+        "page_id": "page2",
+        "category": "News Portal",
+        "pattern_key": "ing_word",
+        "label": "Words ending in 'ing'",
+        "count": 97,
+        "unique_count": 65,
+        "density_per_1k": 3.037
+      },
+      {
+        "page_id": "page3",
+        "category": "Tech Blog / Community",
+        "pattern_key": "email",
+        "label": "Email Address",
+        "count": 0,
+        "unique_count": 0,
+        "density_per_1k": 0.0
+      },
+      {
+        "page_id": "page3",
+        "category": "Tech Blog / Community",
+        "pattern_key": "mobile",
+        "label": "Indian Mobile Number",
+        "count": 0,
+        "unique_count": 0,
+        "density_per_1k": 0.0
+      },
+      {
+        "page_id": "page3",
+        "category": "Tech Blog / Community",
+        "pattern_key": "date",
+        "label": "Date (DD-MM-YYYY)",
+        "count": 0,
+        "unique_count": 0,
+        "density_per_1k": 0.0
+      },
+      {
+        "page_id": "page3",
+        "category": "Tech Blog / Community",
+        "pattern_key": "url",
+        "label": "Web URL",
+        "count": 86,
+        "unique_count": 50,
+        "density_per_1k": 4.566
+      },
+      {
+        "page_id": "page3",
+        "category": "Tech Blog / Community",
+        "pattern_key": "hashtag",
+        "label": "Hashtag",
+        "count": 63,
+        "unique_count": 19,
+        "density_per_1k": 3.345
+      },
+      {
+        "page_id": "page3",
+        "category": "Tech Blog / Community",
+        "pattern_key": "time",
+        "label": "24-Hour Time (HH:MM)",
+        "count": 0,
+        "unique_count": 0,
+        "density_per_1k": 0.0
+      },
+      {
+        "page_id": "page3",
+        "category": "Tech Blog / Community",
+        "pattern_key": "ing_word",
+        "label": "Words ending in 'ing'",
+        "count": 92,
+        "unique_count": 38,
+        "density_per_1k": 4.885
+      }
+    ],
+    "category_explanations": {
+      "Educational (page1)": "Characterized by high URL density (4.88 per 1k) and formal communication notices (Email: 5). Dates (8) reflect administrative notifications and circular issuance schedules. Has zero mobile numbers and zero hashtags due to institutional publication guidelines.",
+      "News Portal (page2)": "Dominated by contact directory details (Mobile: 5, Email: 4) and navigation links (URLs: 280, density 8.77 per 1k). Contains timestamped publishing records (Time: 2) capturing editorial timestamps. High frequency of '-ing' words (97) due to narrative journalistic reporting of ongoing events.",
+      "Tech Blog (page3)": "Exhibits overwhelming hashtag density (63 tags, 3.34 per 1k) representing folksonomy tagging systems (#python, #webdev, #ai). Features low date/time counts, with high URL references (86) to open-source GitHub repositories and technical documentation."
+    }
+  }
+}

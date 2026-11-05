@@ -104,7 +104,7 @@ PATTERNS: dict[str, dict[str, Any]] = {
         "regex": EMAIL_REGEX,
         "flags": 0,
         "description": "Standard email address matching local username, '@', domain, and a 2+ letter TLD.",
-        "example": "student.support@university.edu"
+        "example": "student.support@university.edu",
     },
     "mobile": {
         "key": "mobile",
@@ -112,7 +112,7 @@ PATTERNS: dict[str, dict[str, Any]] = {
         "regex": MOBILE_REGEX,
         "flags": 0,
         "description": "Indian 10-digit mobile number starting with 6-9, optional +91/91/0 prefix, space/hyphen separator.",
-        "example": "+91 9876543210"
+        "example": "+91 9876543210",
     },
     "date": {
         "key": "date",
@@ -120,7 +120,7 @@ PATTERNS: dict[str, dict[str, Any]] = {
         "regex": DATE_REGEX,
         "flags": 0,
         "description": "Date in DD-MM-YYYY format with valid ranges (DD: 01-31, MM: 01-12, YYYY: 1900-2099).",
-        "example": "15-08-1947"
+        "example": "15-08-1947",
     },
     "url": {
         "key": "url",
@@ -128,7 +128,7 @@ PATTERNS: dict[str, dict[str, Any]] = {
         "regex": URL_REGEX,
         "flags": 0,
         "description": "HTTP or HTTPS web link with trailing punctuation stripped cleanly.",
-        "example": "https://www.example.org/admissions/index.html"
+        "example": "https://www.example.org/admissions/index.html",
     },
     "hashtag": {
         "key": "hashtag",
@@ -136,7 +136,7 @@ PATTERNS: dict[str, dict[str, Any]] = {
         "regex": HASHTAG_REGEX,
         "flags": 0,
         "description": "Social/topic hashtag starting with '#' and a letter, followed by letters, digits, or underscores.",
-        "example": "#TheoryOfComputation"
+        "example": "#TheoryOfComputation",
     },
     "time": {
         "key": "time",
@@ -144,7 +144,7 @@ PATTERNS: dict[str, dict[str, Any]] = {
         "regex": TIME_REGEX,
         "flags": 0,
         "description": "24-hour clock time in HH:MM format (HH: 00-23, MM: 00-59).",
-        "example": "14:30"
+        "example": "14:30",
     },
     "ing_word": {
         "key": "ing_word",
@@ -152,8 +152,8 @@ PATTERNS: dict[str, dict[str, Any]] = {
         "regex": ING_WORD_REGEX,
         "flags": re.IGNORECASE,
         "description": "English words ending in suffix 'ing' with at least 1 preceding letter (case-insensitive).",
-        "example": "engineering"
-    }
+        "example": "engineering",
+    },
 }
 
 
@@ -174,7 +174,7 @@ def get_all_patterns() -> dict[str, dict[str, Any]]:
             "regex": p["regex"],
             "flags": int(p["flags"]),
             "description": p["description"],
-            "example": p["example"]
+            "example": p["example"],
         }
     return result
 

@@ -23,18 +23,15 @@ from tests.test_data import TEST_CASES
 # 1. PARAMETRIZED REGEX TESTS (Positives & Negatives for all 7 patterns)
 # ==============================================================================
 
+
 @pytest.mark.parametrize(
     "pattern_key, case",
-    [
-        (key, case)
-        for key, cases in TEST_CASES.items()
-        for case in cases
-    ],
+    [(key, case) for key, cases in TEST_CASES.items() for case in cases],
     ids=[
         f"{key}_{'pos' if case['expected'] else 'neg'}_{idx}"
         for key, cases in TEST_CASES.items()
         for idx, case in enumerate(cases)
-    ]
+    ],
 )
 def test_pattern_matching(pattern_key: str, case: dict):
     compiled_re = get_compiled_pattern(pattern_key)
@@ -45,7 +42,9 @@ def test_pattern_matching(pattern_key: str, case: dict):
     matches = list(compiled_re.finditer(input_text))
 
     if expected:
-        assert len(matches) > 0, f"Expected match for pattern '{pattern_key}' on input: '{input_text}'"
+        assert len(matches) > 0, (
+            f"Expected match for pattern '{pattern_key}' on input: '{input_text}'"
+        )
         # The match should cover the token
         matched_str = matches[0].group(0)
         assert len(matched_str) > 0
@@ -57,12 +56,15 @@ def test_pattern_matching(pattern_key: str, case: dict):
             # Negatives like '98765432101' should not match as valid 10-digit mobile
             # Negatives like '24:00' should not match
             # Negatives like 'word#inline' should not match '#inline'
-            assert False, f"Unexpected match for negative case '{input_text}' under '{pattern_key}': got '{matches[0].group(0)}'"
+            assert False, (
+                f"Unexpected match for negative case '{input_text}' under '{pattern_key}': got '{matches[0].group(0)}'"
+            )
 
 
 # ==============================================================================
 # 2. UTILITY TESTS (offset_to_line_col)
 # ==============================================================================
+
 
 def test_offset_to_line_col():
     sample = "Line 1\nLine 2 with words\nLine 3"
@@ -88,6 +90,7 @@ def test_offset_to_line_col():
 # ==============================================================================
 # 3. RE ENGINE EXTRACTION TESTS
 # ==============================================================================
+
 
 def test_extract_engine():
     text = (
@@ -120,7 +123,9 @@ def test_extract_engine():
     assert "https://example.com/portal" in [m["text"] for m in res["url"]["matches"]]
 
     assert res["hashtag"]["count"] == 2
-    assert {"#TOC", "#computing"}.issubset({m["text"] for m in res["hashtag"]["matches"]})
+    assert {"#TOC", "#computing"}.issubset(
+        {m["text"] for m in res["hashtag"]["matches"]}
+    )
 
     assert res["ing_word"]["count"] >= 3
     ing_words = {m["text"].lower() for m in res["ing_word"]["matches"]}
@@ -141,6 +146,7 @@ def test_extract_pattern_filter():
 # ==============================================================================
 # 4. SSRF SECURITY TESTS
 # ==============================================================================
+
 
 def test_ssrf_protection():
     # Loopback / Localhost
@@ -164,6 +170,7 @@ def test_ssrf_protection():
 # ==============================================================================
 # 5. FLASK API ENDPOINT TESTS
 # ==============================================================================
+
 
 @pytest.fixture
 def client():
@@ -220,7 +227,7 @@ def test_api_patterns(client):
 def test_api_analyze_re_with_text(client):
     payload = {
         "text": "Send inquiry to info@test.com before 31-12-2025 #deadline.",
-        "patterns": ["email", "date", "hashtag"]
+        "patterns": ["email", "date", "hashtag"],
     }
     res = client.post("/api/analyze/re", json=payload)
     assert res.status_code == 200

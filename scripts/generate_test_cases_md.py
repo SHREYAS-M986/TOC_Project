@@ -33,13 +33,15 @@ def generate_markdown() -> str:
         flags_str = "re.IGNORECASE" if p["flags"] else "None"
         lines.append(f"| `{key}` | {p['label']} | `{escaped_regex}` | `{flags_str}` |")
 
-    lines.extend([
-        "",
-        "## Test Execution Results",
-        "",
-        "| Pattern | Input | Expected | Observed | Pass/Fail | Description |",
-        "|---|---|---|---|---|---|",
-    ])
+    lines.extend(
+        [
+            "",
+            "## Test Execution Results",
+            "",
+            "| Pattern | Input | Expected | Observed | Pass/Fail | Description |",
+            "|---|---|---|---|---|---|",
+        ]
+    )
 
     total_tests = 0
     passed_tests = 0
@@ -56,7 +58,7 @@ def generate_markdown() -> str:
             is_match = len(matches) > 0
 
             # Determine pass/fail
-            passed = (is_match == expected)
+            passed = is_match == expected
             if passed:
                 passed_tests += 1
                 status = "**PASS**"
@@ -77,17 +79,19 @@ def generate_markdown() -> str:
                 f"| `{pattern_key}` | `{safe_input}` | {expected_str} | {observed_str} | {status} | {safe_desc} |"
             )
 
-    lines.extend([
-        "",
-        "## Test Statistics",
-        "",
-        f"- **Total Test Cases:** {total_tests}",
-        f"- **Passed:** {passed_tests}",
-        f"- **Failed:** {total_tests - passed_tests}",
-        f"- **Pass Rate:** {(passed_tests / total_tests) * 100:.1f}%",
-        "",
-        "All test cases strictly conform to the 4+ positive and 4+ negative criteria specified in Stage 1 requirements.",
-    ])
+    lines.extend(
+        [
+            "",
+            "## Test Statistics",
+            "",
+            f"- **Total Test Cases:** {total_tests}",
+            f"- **Passed:** {passed_tests}",
+            f"- **Failed:** {total_tests - passed_tests}",
+            f"- **Pass Rate:** {(passed_tests / total_tests) * 100:.1f}%",
+            "",
+            "All test cases strictly conform to the 4+ positive and 4+ negative criteria specified in Stage 1 requirements.",
+        ]
+    )
 
     return "\n".join(lines) + "\n"
 

@@ -7,8 +7,6 @@ Generates:
 """
 
 import json
-import os
-import sys
 import time
 from pathlib import Path
 
@@ -57,6 +55,7 @@ def build_markdown_report(sources, results, frequency, ground_truth) -> str:
 **Institution:** Department of Computer Science & Engineering  
 **Submission Date:** November 2026  
 **Repository:** [https://github.com/SHREYAS-M986/TOC_Project](https://github.com/SHREYAS-M986/TOC_Project)  
+**Live Production URL:** [https://toc-project-six.vercel.app](https://toc-project-six.vercel.app)  
 
 ---
 
@@ -455,6 +454,8 @@ The test suite contains 134 automated unit and integration tests across `tests/t
 
 ## 13. System Architecture & UI Screenshots
 
+The Web Content Analyzer is architected as a full-stack, cloud-native application deployed on **Vercel** serverless infrastructure at [https://toc-project-six.vercel.app](https://toc-project-six.vercel.app). The responsive frontend is served statically via Vercel's global Edge CDN, communicating with a Python 3.12 Flask WSGI backend packaged as a serverless function with SSRF-protected web scraping and custom URL rewrite middleware.
+
 The system was verified using automated headless browser testing with **0 console errors**:
 
 ### 1. Tab 1: Pattern Analyzer (Page 1)
@@ -545,7 +546,10 @@ def export_pdf_via_playwright(markdown_content: str):
     def replace_code_block(match):
         code = html.escape(match.group(2))
         return f"<pre><code>{code}</code></pre>"
-    html_body = re.sub(r"```(.*?)\n(.*?)```", replace_code_block, html_body, flags=re.DOTALL)
+
+    html_body = re.sub(
+        r"```(.*?)\n(.*?)```", replace_code_block, html_body, flags=re.DOTALL
+    )
 
     # Convert inline code
     html_body = re.sub(r"`([^`]+)`", r"<code>\1</code>", html_body)
@@ -557,6 +561,7 @@ def export_pdf_via_playwright(markdown_content: str):
         # Convert relative docs path to absolute file URI
         abs_src = (DOCS_DIR / src).resolve().as_uri()
         return f'<div class="img-container"><img src="{abs_src}" alt="{alt}"/><p class="caption">{alt}</p></div>'
+
     html_body = re.sub(r"!\[(.*?)\]\((.*?)\)", replace_image, html_body)
 
     # Convert bold / italics
@@ -565,7 +570,9 @@ def export_pdf_via_playwright(markdown_content: str):
 
     # Convert markdown tables to HTML tables
     def markdown_table_to_html(match):
-        lines = [line.strip() for line in match.group(0).strip().splitlines() if line.strip()]
+        lines = [
+            line.strip() for line in match.group(0).strip().splitlines() if line.strip()
+        ]
         if len(lines) < 2:
             return match.group(0)
         header_cols = [c.strip() for c in lines[0].strip("|").split("|")]
@@ -577,7 +584,11 @@ def export_pdf_via_playwright(markdown_content: str):
         ths = "".join(f"<th>{h}</th>" for h in header_cols)
         return f"<table><thead><tr>{ths}</tr></thead><tbody>{''.join(rows_html)}</tbody></table>"
 
-    html_body = re.sub(r"(\|[^\n]+\|\n\|[-:| ]+\|\n(?:\|[^\n]+\|\n?)+)", markdown_table_to_html, html_body)
+    html_body = re.sub(
+        r"(\|[^\n]+\|\n\|[-:| ]+\|\n(?:\|[^\n]+\|\n?)+)",
+        markdown_table_to_html,
+        html_body,
+    )
 
     # Wrap in paragraphs
     paragraphs = html_body.split("\n\n")
@@ -586,7 +597,13 @@ def export_pdf_via_playwright(markdown_content: str):
         p_str = p.strip()
         if not p_str:
             continue
-        if p_str.startswith("<h") or p_str.startswith("<table") or p_str.startswith("<pre") or p_str.startswith("<div") or p_str.startswith("<hr"):
+        if (
+            p_str.startswith("<h")
+            or p_str.startswith("<table")
+            or p_str.startswith("<pre")
+            or p_str.startswith("<div")
+            or p_str.startswith("<hr")
+        ):
             formatted_paras.append(p_str)
         else:
             formatted_paras.append(f"<p>{p_str}</p>")
@@ -706,7 +723,7 @@ def export_pdf_via_playwright(markdown_content: str):
             path=str(out_pdf),
             format="A4",
             print_background=True,
-            margin={"top": "15mm", "bottom": "15mm", "left": "15mm", "right": "15mm"}
+            margin={"top": "15mm", "bottom": "15mm", "left": "15mm", "right": "15mm"},
         )
         browser.close()
 
@@ -721,7 +738,9 @@ def main():
     markdown_report = build_markdown_report(sources, results, frequency, ground_truth)
     report_md_path = DOCS_DIR / "REPORT.md"
     report_md_path.write_text(markdown_report, encoding="utf-8")
-    print(f"Saved complete markdown report: {report_md_path} ({len(markdown_report):,} chars)")
+    print(
+        f"Saved complete markdown report: {report_md_path} ({len(markdown_report):,} chars)"
+    )
 
     export_pdf_via_playwright(markdown_report)
     export_docx(markdown_report)
@@ -731,8 +750,7 @@ def export_docx(markdown_content: str):
     """Generate Word Document version of the report (docs/REPORT.docx)."""
     try:
         from docx import Document
-        from docx.shared import Inches, Pt, RGBColor
-        from docx.enum.text import WD_ALIGN_PARAGRAPH
+        from docx.shared import Inches, Pt
 
         doc = Document()
 
@@ -763,7 +781,11 @@ def export_docx(markdown_content: str):
                 h = doc.add_heading(line[4:], level=3)
                 h.paragraph_format.space_before = Pt(8)
                 h.paragraph_format.space_after = Pt(2)
-            elif line.startswith("|") and i + 1 < len(lines) and lines[i + 1].strip().startswith("|"):
+            elif (
+                line.startswith("|")
+                and i + 1 < len(lines)
+                and lines[i + 1].strip().startswith("|")
+            ):
                 # Table parsing
                 table_lines = []
                 while i < len(lines) and lines[i].strip().startswith("|"):
@@ -771,13 +793,16 @@ def export_docx(markdown_content: str):
                     i += 1
                 if len(table_lines) >= 3:
                     header = [c.strip() for c in table_lines[0].strip("|").split("|")]
-                    data_rows = [[c.strip() for c in row.strip("|").split("|")] for row in table_lines[2:]]
+                    data_rows = [
+                        [c.strip() for c in row.strip("|").split("|")]
+                        for row in table_lines[2:]
+                    ]
                     table = doc.add_table(rows=len(data_rows) + 1, cols=len(header))
-                    table.style = 'Light Shading Accent 1'
+                    table.style = "Light Shading Accent 1"
                     for c_idx, col_name in enumerate(header):
                         table.cell(0, c_idx).text = col_name
                     for r_idx, row_data in enumerate(data_rows):
-                        for c_idx, val in enumerate(row_data[:len(header)]):
+                        for c_idx, val in enumerate(row_data[: len(header)]):
                             table.cell(r_idx + 1, c_idx).text = val
                 continue
             elif line.startswith("```"):
@@ -787,10 +812,11 @@ def export_docx(markdown_content: str):
                     code_lines.append(lines[i])
                     i += 1
                 p = doc.add_paragraph("\n".join(code_lines))
-                p.style = 'Quote'
+                p.style = "Quote"
             elif line.startswith("!["):
                 # Image
                 import re
+
                 m = re.match(r"!\[(.*?)\]\((.*?)\)", line)
                 if m:
                     alt, src = m.groups()
@@ -799,14 +825,16 @@ def export_docx(markdown_content: str):
                         doc.add_paragraph(f"[{alt}]")
                         doc.add_picture(str(img_path), width=Inches(5.5))
             elif line.startswith("- "):
-                doc.add_paragraph(line[2:], style='List Bullet')
+                doc.add_paragraph(line[2:], style="List Bullet")
             else:
                 doc.add_paragraph(line)
             i += 1
 
         out_docx = DOCS_DIR / "REPORT.docx"
         doc.save(str(out_docx))
-        print(f"Successfully generated Word Document: {out_docx} ({out_docx.stat().st_size:,} bytes)")
+        print(
+            f"Successfully generated Word Document: {out_docx} ({out_docx.stat().st_size:,} bytes)"
+        )
     except Exception as e:
         print(f"Warning: DOCX export skipped: {e}")
 

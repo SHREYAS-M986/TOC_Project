@@ -49,7 +49,6 @@ HAND_WRITTEN_TEST_WORDS = [
     ("winning", True, "Standard 7-letter word"),
     ("beginning", True, "Longer participle"),
     ("dinging", True, "Repeated ing syllables"),
-
     # 22-38: Negatives
     ("ing", False, "Length 3 alone without prefix letter"),
     ("Ing", False, "Length 3 capitalized without prefix"),
@@ -74,6 +73,7 @@ HAND_WRITTEN_TEST_WORDS = [
 # 1. BIT-FOR-BIT EQUALITY ACROSS ALL 3 PAGES
 # ==============================================================================
 
+
 @pytest.mark.parametrize("page_id", ["page1", "page2", "page3"])
 def test_dfa_equals_re_on_snapshots(page_id: str):
     """Confirm DFA scanner matches RE engine exactly on positions, counts, and text."""
@@ -90,8 +90,12 @@ def test_dfa_equals_re_on_snapshots(page_id: str):
     dfa_matches = scan_text(text)
 
     # Convert to comparable tuples (text, start, end, line, column)
-    re_tuples = [(m["text"], m["start"], m["end"], m["line"], m["column"]) for m in re_matches]
-    dfa_tuples = [(m["text"], m["start"], m["end"], m["line"], m["column"]) for m in dfa_matches]
+    re_tuples = [
+        (m["text"], m["start"], m["end"], m["line"], m["column"]) for m in re_matches
+    ]
+    dfa_tuples = [
+        (m["text"], m["start"], m["end"], m["line"], m["column"]) for m in dfa_matches
+    ]
 
     assert len(re_matches) > 0, f"Page {page_id} should have matches"
     assert len(re_matches) == len(dfa_matches), (
@@ -104,6 +108,7 @@ def test_dfa_equals_re_on_snapshots(page_id: str):
 # 2. HAND-WRITTEN BENCHMARK TOKENS (35+ test words)
 # ==============================================================================
 
+
 @pytest.mark.parametrize("word, expected, desc", HAND_WRITTEN_TEST_WORDS)
 def test_hand_written_words(word: str, expected: bool, desc: str):
     tr = trace(word)
@@ -115,6 +120,7 @@ def test_hand_written_words(word: str, expected: bool, desc: str):
 # ==============================================================================
 # 3. TOKEN BOUNDARY & PUNCTUATION TESTS
 # ==============================================================================
+
 
 def test_token_boundaries_in_prose():
     prose = "He was sing. They started sing-song, then re-sing for king's pleasure, but not 123sing or sing123."
@@ -133,6 +139,7 @@ def test_token_boundaries_in_prose():
 # 4. STEP-BY-STEP TRACE SIMULATOR
 # ==============================================================================
 
+
 def test_trace_simulation_details():
     res = trace("sing")
     assert res["accepted"] is True
@@ -141,10 +148,10 @@ def test_trace_simulation_details():
 
     step_states = [(s["from_state"], s["to_state"]) for s in res["steps"]]
     assert step_states == [
-        ("q0", "q1"), # 's'
-        ("q1", "q2"), # 'i'
-        ("q2", "q3"), # 'n'
-        ("q3", "q4")  # 'g'
+        ("q0", "q1"),  # 's'
+        ("q1", "q2"),  # 'i'
+        ("q2", "q3"),  # 'n'
+        ("q3", "q4"),  # 'g'
     ]
 
 
@@ -156,15 +163,16 @@ def test_trace_rejected_details():
 
     step_states = [(s["from_state"], s["to_state"]) for s in res["steps"]]
     assert step_states == [
-        ("q0", "q1"), # 'i'
-        ("q1", "q1"), # 'n'
-        ("q1", "q1")  # 'g'
+        ("q0", "q1"),  # 'i'
+        ("q1", "q1"),  # 'n'
+        ("q1", "q1"),  # 'g'
     ]
 
 
 # ==============================================================================
 # 5. NEW API ENDPOINTS
 # ==============================================================================
+
 
 @pytest.fixture
 def client():

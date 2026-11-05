@@ -2,13 +2,17 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/api",
+      "destination": "/api/index?__route__=/"
+    },
+    {
       "source": "/api/(.*)",
-      "destination": "/api/index.py"
+      "destination": "/api/index?__route__=/$1"
     }
   ],
   "functions": {
     "api/index.py": {
-      "includeFiles": "{data/**,core/**}"
+      "includeFiles": "{data/**,core/**,tests/**}"
     }
   }
 }

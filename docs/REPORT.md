@@ -10,6 +10,7 @@
 **Institution:** Department of Computer Science & Engineering  
 **Submission Date:** November 2026  
 **Repository:** [https://github.com/SHREYAS-M986/TOC_Project](https://github.com/SHREYAS-M986/TOC_Project)  
+**Live Production URL:** [https://toc-project-six.vercel.app](https://toc-project-six.vercel.app)  
 
 ---
 
@@ -140,18 +141,20 @@ def extract_single_pattern(text: str, pattern_key: str, line_starts=None):
     for match in compiled_re.finditer(text):
         start, end = match.span()
         line, col = offset_to_line_col(start, line_starts)
-        matches.append({
-            "text": match.group(),
-            "start": start,
-            "end": end,
-            "line": line,
-            "column": col
-        })
+        matches.append(
+            {
+                "text": match.group(),
+                "start": start,
+                "end": end,
+                "line": line,
+                "column": col,
+            }
+        )
     return {
         "key": pattern_key,
         "count": len(matches),
         "unique_count": len({m["text"] for m in matches}),
-        "matches": matches
+        "matches": matches,
     }
 ```
 
@@ -295,20 +298,28 @@ def scan_text(text: str) -> List[Dict[str, Any]]:
                 word_line = line
                 word_col = col
                 # Boundary rule: verify preceding char is not alphanumeric or underscore
-                valid_start_boundary = (idx == 0) or not is_alphanumeric_or_underscore(text[idx - 1])
+                valid_start_boundary = (idx == 0) or not is_alphanumeric_or_underscore(
+                    text[idx - 1]
+                )
                 state = START_STATE
             state = DELTA[state][cls]
         else:
             if word_start is not None:
                 valid_end_boundary = not is_alphanumeric_or_underscore(ch)
-                if state in ACCEPTING_STATES and valid_start_boundary and valid_end_boundary:
-                    matches.append({
-                        "text": text[word_start:idx],
-                        "start": word_start,
-                        "end": idx,
-                        "line": word_line,
-                        "column": word_col
-                    })
+                if (
+                    state in ACCEPTING_STATES
+                    and valid_start_boundary
+                    and valid_end_boundary
+                ):
+                    matches.append(
+                        {
+                            "text": text[word_start:idx],
+                            "start": word_start,
+                            "end": idx,
+                            "line": word_line,
+                            "column": word_col,
+                        }
+                    )
                 word_start = None
                 state = START_STATE
         if ch == "\\n":
@@ -407,6 +418,8 @@ The test suite contains 134 automated unit and integration tests across `tests/t
 ---
 
 ## 13. System Architecture & UI Screenshots
+
+The Web Content Analyzer is architected as a full-stack, cloud-native application deployed on **Vercel** serverless infrastructure at [https://toc-project-six.vercel.app](https://toc-project-six.vercel.app). The responsive frontend is served statically via Vercel's global Edge CDN, communicating with a Python 3.12 Flask WSGI backend packaged as a serverless function with SSRF-protected web scraping and custom URL rewrite middleware.
 
 The system was verified using automated headless browser testing with **0 console errors**:
 

@@ -16,7 +16,7 @@ USER_AGENT = (
 )
 
 MAX_FETCH_BYTES = 2 * 1024 * 1024  # 2 MB limit
-MAX_RETURN_CHARS = 100_000         # 100k char limit for text extraction
+MAX_RETURN_CHARS = 100_000  # 100k char limit for text extraction
 
 
 class ScraperSecurityError(Exception):
@@ -49,7 +49,9 @@ def validate_url_security(url: str) -> str:
     """Validate URL scheme and resolve DNS to ensure no private/internal IPs are accessed."""
     parsed = urlparse(url)
     if parsed.scheme.lower() not in ("http", "https"):
-        raise ScraperSecurityError(f"Unsupported URL scheme '{parsed.scheme}'. Only http and https are allowed.")
+        raise ScraperSecurityError(
+            f"Unsupported URL scheme '{parsed.scheme}'. Only http and https are allowed."
+        )
 
     hostname = parsed.hostname
     if not hostname:
@@ -57,7 +59,9 @@ def validate_url_security(url: str) -> str:
 
     # Reject known local identifiers directly
     if hostname.lower() in ("localhost", "127.0.0.1", "::1", "0.0.0.0"):
-        raise ScraperSecurityError("Access to localhost / loopback addresses is forbidden.")
+        raise ScraperSecurityError(
+            "Access to localhost / loopback addresses is forbidden."
+        )
 
     # Resolve hostname to all associated IPs and verify each
     try:
@@ -89,7 +93,9 @@ def clean_html(html_content: str) -> tuple[str, str]:
         title = soup.title.string.strip()
 
     # Remove non-content elements
-    for tag in soup(["script", "style", "noscript", "svg", "iframe", "header_nav", "canvas"]):
+    for tag in soup(
+        ["script", "style", "noscript", "svg", "iframe", "header_nav", "canvas"]
+    ):
         tag.decompose()
 
     # Preserve link targets and mailto targets in text
@@ -107,7 +113,21 @@ def clean_html(html_content: str) -> tuple[str, str]:
             a.append(f" ({href})")
 
     # Add line breaks around block elements
-    block_tags = ["p", "div", "h1", "h2", "h3", "h4", "h5", "h6", "li", "tr", "section", "article", "br"]
+    block_tags = [
+        "p",
+        "div",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "li",
+        "tr",
+        "section",
+        "article",
+        "br",
+    ]
     for tag_name in block_tags:
         for tag in soup.find_all(tag_name):
             tag.insert_before("\n")
@@ -134,7 +154,7 @@ def fetch_and_clean_page(
     url: str,
     timeout: int = 15,
     max_bytes: int = MAX_FETCH_BYTES,
-    max_return_chars: int = MAX_RETURN_CHARS
+    max_return_chars: int = MAX_RETURN_CHARS,
 ) -> dict[str, Any]:
     """Securely fetch a web page and clean its text.
 
@@ -161,7 +181,12 @@ def fetch_and_clean_page(
 
             # Check Content-Type if present
             content_type = resp.headers.get("Content-Type", "")
-            if content_type and "text" not in content_type and "html" not in content_type and "xml" not in content_type:
+            if (
+                content_type
+                and "text" not in content_type
+                and "html" not in content_type
+                and "xml" not in content_type
+            ):
                 raise ScraperFetchError(f"Unsupported content type: {content_type}")
 
             # Read up to max_bytes
@@ -170,7 +195,9 @@ def fetch_and_clean_page(
             for chunk in resp.iter_content(chunk_size=8192, decode_unicode=False):
                 bytes_read += len(chunk)
                 if bytes_read > max_bytes:
-                    raise ScraperFetchError(f"Page response exceeds maximum size of {max_bytes} bytes.")
+                    raise ScraperFetchError(
+                        f"Page response exceeds maximum size of {max_bytes} bytes."
+                    )
                 content_chunks.append(chunk)
 
             raw_bytes = b"".join(content_chunks)
@@ -178,7 +205,9 @@ def fetch_and_clean_page(
             html_content = raw_bytes.decode(encoding, errors="replace")
 
     except requests.Timeout:
-        raise ScraperFetchError(f"Request to '{url}' timed out after {timeout} seconds.")
+        raise ScraperFetchError(
+            f"Request to '{url}' timed out after {timeout} seconds."
+        )
     except requests.RequestException as e:
         raise ScraperFetchError(f"Failed to fetch '{url}': {e}")
 
@@ -194,5 +223,5 @@ def fetch_and_clean_page(
         "title": title or url,
         "text": cleaned_text,
         "char_count": len(cleaned_text),
-        "line_count": len(lines)
+        "line_count": len(lines),
     }

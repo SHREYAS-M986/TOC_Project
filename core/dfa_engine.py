@@ -38,13 +38,15 @@ def trace(word: str) -> dict[str, Any]:
     for idx, ch in enumerate(word):
         cls = classify_char(ch)
         next_state = DELTA[state][cls]
-        steps.append({
-            "step": idx + 1,
-            "char": ch,
-            "class": cls,
-            "from_state": state,
-            "to_state": next_state
-        })
+        steps.append(
+            {
+                "step": idx + 1,
+                "char": ch,
+                "class": cls,
+                "from_state": state,
+                "to_state": next_state,
+            }
+        )
         state = next_state
 
     # Machine accepts if in accepting state (q4)
@@ -55,7 +57,7 @@ def trace(word: str) -> dict[str, Any]:
         "accepted": accepted,
         "final_state": state,
         "length": len(word),
-        "steps": steps
+        "steps": steps,
     }
 
 
@@ -90,7 +92,9 @@ def scan_text(text: str) -> list[dict[str, Any]]:
                 state = START_STATE
                 # Check preceding character for token boundary:
                 # Must not be preceded by alphanumeric or underscore (e.g. 123sing, _Violating)
-                valid_start_boundary = (idx == 0 or not is_alphanumeric_or_underscore(text[idx - 1]))
+                valid_start_boundary = idx == 0 or not is_alphanumeric_or_underscore(
+                    text[idx - 1]
+                )
 
             # Core DFA table transition
             state = DELTA[state][cls]
@@ -102,15 +106,21 @@ def scan_text(text: str) -> list[dict[str, Any]]:
                 # Must not be immediately followed by digit/underscore (e.g. sing123, backing25)
                 valid_end_boundary = not is_alphanumeric_or_underscore(ch)
 
-                if state in ACCEPTING_STATES and valid_start_boundary and valid_end_boundary:
+                if (
+                    state in ACCEPTING_STATES
+                    and valid_start_boundary
+                    and valid_end_boundary
+                ):
                     matched_str = text[word_start:idx]
-                    matches.append({
-                        "text": matched_str,
-                        "start": word_start,
-                        "end": idx,
-                        "line": word_line,
-                        "column": word_col
-                    })
+                    matches.append(
+                        {
+                            "text": matched_str,
+                            "start": word_start,
+                            "end": idx,
+                            "line": word_line,
+                            "column": word_col,
+                        }
+                    )
 
                 word_start = None
                 state = START_STATE
@@ -124,13 +134,15 @@ def scan_text(text: str) -> list[dict[str, Any]]:
 
     # End of string boundary check
     if word_start is not None and state in ACCEPTING_STATES and valid_start_boundary:
-        matches.append({
-            "text": text[word_start:n],
-            "start": word_start,
-            "end": n,
-            "line": word_line,
-            "column": word_col
-        })
+        matches.append(
+            {
+                "text": text[word_start:n],
+                "start": word_start,
+                "end": n,
+                "line": word_line,
+                "column": word_col,
+            }
+        )
 
     return matches
 
@@ -158,7 +170,7 @@ def extract(text: str, pattern_keys: list[str] | None = None) -> dict[str, Any]:
         "regex": r"\b[A-Za-z]+ing\b",
         "count": len(matches),
         "unique_count": len(unique_items),
-        "matches": matches
+        "matches": matches,
     }
 
     results = {"ing_word": pattern_result}
@@ -168,7 +180,7 @@ def extract(text: str, pattern_keys: list[str] | None = None) -> dict[str, Any]:
         "patterns": results,
         "total_matches": len(matches),
         "elapsed_seconds": elapsed_seconds,
-        "elapsed_ms": elapsed_ms
+        "elapsed_ms": elapsed_ms,
     }
 
 
@@ -191,6 +203,7 @@ def benchmark_dfa(text: str, runs: int = 200) -> float:
 # CLI INTERFACE: python -m core.dfa_engine --page 1
 # ==============================================================================
 
+
 def format_cli_table(results: dict[str, Any]) -> str:
     """Format ASCII table of DFA extraction matches."""
     headers = ["Pattern", "Count", "Extracted items", "Positions (L:C)"]
@@ -198,10 +211,12 @@ def format_cli_table(results: dict[str, Any]) -> str:
 
     def truncate(s: str, max_len: int) -> str:
         s = s.replace("\n", " ")
-        return s if len(s) <= max_len else s[:max_len - 3] + "..."
+        return s if len(s) <= max_len else s[: max_len - 3] + "..."
 
     sep = "+" + "+".join("-" * (w + 2) for w in col_widths) + "+"
-    header_row = "| " + " | ".join(h.ljust(col_widths[i]) for i, h in enumerate(headers)) + " |"
+    header_row = (
+        "| " + " | ".join(h.ljust(col_widths[i]) for i, h in enumerate(headers)) + " |"
+    )
     lines = [sep, header_row, sep]
 
     data = results["results"]["ing_word"]
@@ -227,7 +242,7 @@ def format_cli_table(results: dict[str, Any]) -> str:
         )
 
         max_extra = min(6, len(matches) - 1)
-        for m in matches[1:1 + max_extra]:
+        for m in matches[1 : 1 + max_extra]:
             m_pos = f"{m['line']}:{m['column']}"
             lines.append(
                 f"| {' '.ljust(col_widths[0])} "
@@ -252,11 +267,19 @@ def format_cli_table(results: dict[str, Any]) -> str:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="DFA Engine: Extract '-ing' words without regex.")
-    parser.add_argument("--page", type=int, choices=[1, 2, 3], help="Page snapshot number (1, 2, or 3)")
+    parser = argparse.ArgumentParser(
+        description="DFA Engine: Extract '-ing' words without regex."
+    )
+    parser.add_argument(
+        "--page", type=int, choices=[1, 2, 3], help="Page snapshot number (1, 2, or 3)"
+    )
     parser.add_argument("--file", type=str, help="Path to text file to analyze")
-    parser.add_argument("--word", type=str, help="Single word to trace step-by-step through DFA")
-    parser.add_argument("--benchmark", action="store_true", help="Run 200-run timing benchmark")
+    parser.add_argument(
+        "--word", type=str, help="Single word to trace step-by-step through DFA"
+    )
+    parser.add_argument(
+        "--benchmark", action="store_true", help="Run 200-run timing benchmark"
+    )
 
     args = parser.parse_args()
     project_root = Path(__file__).resolve().parent.parent
@@ -300,7 +323,9 @@ def main() -> None:
     if args.benchmark:
         print("\n--- Benchmark (Average over 200 runs) ---")
         avg_sec = benchmark_dfa(text, runs=200)
-        print(f"  DFA Scan Time: {avg_sec * 1_000_000:8.2f} µs ({avg_sec * 1000:8.4f} ms)")
+        print(
+            f"  DFA Scan Time: {avg_sec * 1_000_000:8.2f} µs ({avg_sec * 1000:8.4f} ms)"
+        )
 
 
 if __name__ == "__main__":

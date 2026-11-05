@@ -16,7 +16,7 @@ from typing import Any
 
 def build_line_starts(text: str) -> list[int]:
     """Precompute 0-based character offsets where each line begins.
-    
+
     Line 1 always begins at offset 0. Subsequent lines begin immediately
     following each newline character ('\n').
     """
@@ -28,9 +28,7 @@ def build_line_starts(text: str) -> list[int]:
 
 
 def offset_to_line_col(
-    offset: int,
-    text: str | None = None,
-    line_starts: list[int] | None = None
+    offset: int, text: str | None = None, line_starts: list[int] | None = None
 ) -> tuple[int, int]:
     """Convert a 0-based character offset into 1-based (line, column) numbers.
 
@@ -90,7 +88,9 @@ def benchmark(func: Callable, *args: Any, runs: int = 200, **kwargs: Any) -> flo
     return total_time / runs
 
 
-def count_loc(root_dir: str | Path, extensions: list[str] | None = None) -> dict[str, Any]:
+def count_loc(
+    root_dir: str | Path, extensions: list[str] | None = None
+) -> dict[str, Any]:
     """Count lines of code (total, code, comments, blank) for files in root_dir.
 
     Args:
@@ -106,10 +106,24 @@ def count_loc(root_dir: str | Path, extensions: list[str] | None = None) -> dict
 
     root_path = Path(root_dir)
     files_stats = []
-    totals = {"files": 0, "total_lines": 0, "code_lines": 0, "comment_lines": 0, "blank_lines": 0}
+    totals = {
+        "files": 0,
+        "total_lines": 0,
+        "code_lines": 0,
+        "comment_lines": 0,
+        "blank_lines": 0,
+    }
 
     # Directories to ignore
-    ignored_dirs = {".git", ".venv", "venv", "__pycache__", "node_modules", ".pytest_cache", ".vercel"}
+    ignored_dirs = {
+        ".git",
+        ".venv",
+        "venv",
+        "__pycache__",
+        "node_modules",
+        ".pytest_cache",
+        ".vercel",
+    }
 
     for dirpath, dirnames, filenames in os.walk(root_path):
         dirnames[:] = [d for d in dirnames if d not in ignored_dirs]
@@ -132,7 +146,12 @@ def count_loc(root_dir: str | Path, extensions: list[str] | None = None) -> dict
                     stripped = line.strip()
                     if not stripped:
                         blank += 1
-                    elif stripped.startswith("#") or stripped.startswith("//") or stripped.startswith("/*") or stripped.startswith("*"):
+                    elif (
+                        stripped.startswith("#")
+                        or stripped.startswith("//")
+                        or stripped.startswith("/*")
+                        or stripped.startswith("*")
+                    ):
                         comment += 1
                     else:
                         code += 1
@@ -143,7 +162,7 @@ def count_loc(root_dir: str | Path, extensions: list[str] | None = None) -> dict
                     "total": total,
                     "code": code,
                     "comment": comment,
-                    "blank": blank
+                    "blank": blank,
                 }
                 files_stats.append(file_info)
                 totals["files"] += 1
@@ -180,10 +199,14 @@ def count_single_file_loc(file_path: str | Path) -> dict[str, int]:
         stripped = line.strip()
         if not stripped:
             blank += 1
-        elif stripped.startswith("#") or stripped.startswith("//") or stripped.startswith("/*") or stripped.startswith("*"):
+        elif (
+            stripped.startswith("#")
+            or stripped.startswith("//")
+            or stripped.startswith("/*")
+            or stripped.startswith("*")
+        ):
             comment += 1
         else:
             code += 1
 
     return {"total": total, "code": code, "comment": comment, "blank": blank}
-

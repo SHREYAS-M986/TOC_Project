@@ -53,12 +53,14 @@ def load_snapshots() -> dict[str, dict[str, Any]]:
             "metadata": src,
             "text": text,
             "char_count": len(text),
-            "line_count": len(text.splitlines())
+            "line_count": len(text.splitlines()),
         }
     return snapshots
 
 
-def benchmark_single(func, *args, runs: int = 500, warmup: int = 25) -> dict[str, float]:
+def benchmark_single(
+    func, *args, runs: int = 500, warmup: int = 25
+) -> dict[str, float]:
     """Execute warmup, then measure runs iterations in microseconds."""
     for _ in range(warmup):
         func(*args)
@@ -76,7 +78,9 @@ def benchmark_single(func, *args, runs: int = 500, warmup: int = 25) -> dict[str
         "median_us": round(statistics.median(durations_us), 2),
         "min_us": round(min(durations_us), 2),
         "max_us": round(max(durations_us), 2),
-        "stdev_us": round(statistics.stdev(durations_us), 2) if len(durations_us) > 1 else 0.0
+        "stdev_us": round(statistics.stdev(durations_us), 2)
+        if len(durations_us) > 1
+        else 0.0,
     }
 
 
@@ -100,14 +104,14 @@ def compute_loc_breakdown() -> dict[str, Any]:
             "engine_file_loc": re_engine_loc["code"],
             "patterns_file_loc": patterns_loc["code"],
             "core_logic_loc": re_core_lines,
-            "description": "Python re.finditer compiled C-engine binding + token wrapper"
+            "description": "Python re.finditer compiled C-engine binding + token wrapper",
         },
         "dfa": {
             "definition_file_loc": dfa_def_loc["code"],
             "engine_file_loc": dfa_engine_loc["code"],
             "total_dfa_loc": dfa_def_loc["code"] + dfa_engine_loc["code"],
-            "description": "Hand-built transition matrix, char classifier, and single-pass scanner without regex libraries"
-        }
+            "description": "Hand-built transition matrix, char classifier, and single-pass scanner without regex libraries",
+        },
     }
 
 
@@ -133,14 +137,20 @@ def evaluate_accuracy() -> dict[str, Any]:
 
         # RE extraction
         re_res = re_engine.extract(text, pattern_keys=["ing_word"])
-        re_predicted = [m["text"].lower() for m in re_res["results"]["ing_word"]["matches"]]
+        re_predicted = [
+            m["text"].lower() for m in re_res["results"]["ing_word"]["matches"]
+        ]
 
         # DFA extraction
         dfa_res = dfa_engine.extract(text)
-        dfa_predicted = [m["text"].lower() for m in dfa_res["results"]["ing_word"]["matches"]]
+        dfa_predicted = [
+            m["text"].lower() for m in dfa_res["results"]["ing_word"]["matches"]
+        ]
 
         # Calculate metrics for this case
-        def evaluate_match_sets(pred: list[str], exp: list[str]) -> tuple[int, int, int]:
+        def evaluate_match_sets(
+            pred: list[str], exp: list[str]
+        ) -> tuple[int, int, int]:
             pred_copy = list(pred)
             tp = 0
             for w in exp:
@@ -162,38 +172,46 @@ def evaluate_accuracy() -> dict[str, Any]:
         dfa_fp += d_fp
         dfa_fn += d_fn
 
-        case_results.append({
-            "id": item["id"],
-            "input": text,
-            "category": item.get("category", "general"),
-            "expected": expected,
-            "re_predicted": re_predicted,
-            "dfa_predicted": dfa_predicted,
-            "agreed": (re_predicted == dfa_predicted == expected)
-        })
+        case_results.append(
+            {
+                "id": item["id"],
+                "input": text,
+                "category": item.get("category", "general"),
+                "expected": expected,
+                "re_predicted": re_predicted,
+                "dfa_predicted": dfa_predicted,
+                "agreed": (re_predicted == dfa_predicted == expected),
+            }
+        )
 
     def calc_scores(tp: int, fp: int, fn: int) -> dict[str, float]:
         precision = tp / (tp + fp) if (tp + fp) > 0 else 1.0
         recall = tp / (tp + fn) if (tp + fn) > 0 else 1.0
-        f1 = (2 * precision * recall) / (precision + recall) if (precision + recall) > 0 else 0.0
+        f1 = (
+            (2 * precision * recall) / (precision + recall)
+            if (precision + recall) > 0
+            else 0.0
+        )
         return {
             "true_positives": tp,
             "false_positives": fp,
             "false_negatives": fn,
             "precision": round(precision, 4),
             "recall": round(recall, 4),
-            "f1_score": round(f1, 4)
+            "f1_score": round(f1, 4),
         }
 
     return {
         "total_test_cases": len(ground_truth),
         "re_metrics": calc_scores(re_tp, re_fp, re_fn),
         "dfa_metrics": calc_scores(dfa_tp, dfa_fp, dfa_fn),
-        "cases": case_results
+        "cases": case_results,
     }
 
 
-def compute_cross_page_frequency(snapshots: dict[str, dict[str, Any]]) -> dict[str, Any]:
+def compute_cross_page_frequency(
+    snapshots: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
     """Compute counts, unique counts, and density per 1,000 characters for all 7 patterns."""
     pattern_keys = list(PATTERNS.keys())
     results: dict[str, Any] = {"pages": {}, "summary_table": []}
@@ -210,7 +228,7 @@ def compute_cross_page_frequency(snapshots: dict[str, dict[str, Any]]) -> dict[s
             "url": meta["url"],
             "char_count": char_count,
             "line_count": sdata["line_count"],
-            "patterns": {}
+            "patterns": {},
         }
 
         re_out = re_engine.extract(text)
@@ -223,18 +241,20 @@ def compute_cross_page_frequency(snapshots: dict[str, dict[str, Any]]) -> dict[s
                 "label": res["label"],
                 "count": count,
                 "unique_count": unique,
-                "density_per_1k": density
+                "density_per_1k": density,
             }
 
-            results["summary_table"].append({
-                "page_id": page_id,
-                "category": meta["category"],
-                "pattern_key": pkey,
-                "label": res["label"],
-                "count": count,
-                "unique_count": unique,
-                "density_per_1k": density
-            })
+            results["summary_table"].append(
+                {
+                    "page_id": page_id,
+                    "category": meta["category"],
+                    "pattern_key": pkey,
+                    "label": res["label"],
+                    "count": count,
+                    "unique_count": unique,
+                    "density_per_1k": density,
+                }
+            )
 
         results["pages"][page_id] = page_stats
 
@@ -253,7 +273,7 @@ def compute_cross_page_frequency(snapshots: dict[str, dict[str, Any]]) -> dict[s
         "Tech Blog (page3)": (
             "Exhibits overwhelming hashtag density (63 tags, 3.34 per 1k) representing folksonomy tagging systems (#python, #webdev, #ai). "
             "Features low date/time counts, with high URL references (86) to open-source GitHub repositories and technical documentation."
-        )
+        ),
     }
 
     return results
@@ -267,18 +287,26 @@ def run_full_benchmark() -> None:
     snapshots = load_snapshots()
 
     # 1. Scaling synthetic corpus (~1 MB)
-    concat_text = snapshots["page1"]["text"] + "\n" + snapshots["page2"]["text"] + "\n" + snapshots["page3"]["text"]
+    concat_text = (
+        snapshots["page1"]["text"]
+        + "\n"
+        + snapshots["page2"]["text"]
+        + "\n"
+        + snapshots["page3"]["text"]
+    )
     repeat_factor = math.ceil(1_000_000 / len(concat_text))
     synthetic_1mb = concat_text * repeat_factor
     synthetic_char_count = len(synthetic_1mb)
-    print(f"Loaded 3 page snapshots. Created synthetic 1MB corpus: {synthetic_char_count:,} characters.")
+    print(
+        f"Loaded 3 page snapshots. Created synthetic 1MB corpus: {synthetic_char_count:,} characters."
+    )
 
     # 2. Timing benchmarks: RE vs DFA on each page and 1MB synthetic
     timing_targets = [
         ("page1", snapshots["page1"]["metadata"]["title"], snapshots["page1"]["text"]),
         ("page2", snapshots["page2"]["metadata"]["title"], snapshots["page2"]["text"]),
         ("page3", snapshots["page3"]["metadata"]["title"], snapshots["page3"]["text"]),
-        ("synthetic_1mb", "Synthetic 1MB Scaled Corpus", synthetic_1mb)
+        ("synthetic_1mb", "Synthetic 1MB Scaled Corpus", synthetic_1mb),
     ]
 
     benchmark_records = []
@@ -288,7 +316,9 @@ def run_full_benchmark() -> None:
         print(f"  Measuring {tid} ({len(text):,} chars)...", end="", flush=True)
 
         # RE extraction timing (ing_word only)
-        re_timing = benchmark_single(re_engine.extract, text, ["ing_word"], runs=500, warmup=25)
+        re_timing = benchmark_single(
+            re_engine.extract, text, ["ing_word"], runs=500, warmup=25
+        )
         re_res = re_engine.extract(text, ["ing_word"])
         re_matches = re_res["results"]["ing_word"]["matches"]
 
@@ -301,8 +331,12 @@ def run_full_benchmark() -> None:
         re_set = {(m["text"].lower(), m["start"], m["end"]) for m in re_matches}
         dfa_set = {(m["text"].lower(), m["start"], m["end"]) for m in dfa_matches}
 
-        is_equal = (re_set == dfa_set)
-        speedup_factor = round(dfa_timing["mean_us"] / re_timing["mean_us"], 2) if re_timing["mean_us"] > 0 else 1.0
+        is_equal = re_set == dfa_set
+        speedup_factor = (
+            round(dfa_timing["mean_us"] / re_timing["mean_us"], 2)
+            if re_timing["mean_us"] > 0
+            else 1.0
+        )
 
         rec = {
             "target_id": tid,
@@ -313,22 +347,32 @@ def run_full_benchmark() -> None:
             "identical_match_sets": is_equal,
             "re_timing_us": re_timing,
             "dfa_timing_us": dfa_timing,
-            "speedup_ratio_dfa_vs_re": speedup_factor
+            "speedup_ratio_dfa_vs_re": speedup_factor,
         }
         benchmark_records.append(rec)
-        print(f" Done. RE: {re_timing['mean_us']} \u03bcs | DFA: {dfa_timing['mean_us']} \u03bcs | Identical: {is_equal}")
+        print(
+            f" Done. RE: {re_timing['mean_us']} \u03bcs | DFA: {dfa_timing['mean_us']} \u03bcs | Identical: {is_equal}"
+        )
 
     # 3. LOC breakdown
     print("\n[2/4] Computing non-blank, non-comment Lines of Code (LOC)...")
     loc_metrics = compute_loc_breakdown()
-    print(f"  RE Engine file: {loc_metrics['re']['engine_file_loc']} LOC (Core ing_word logic: {loc_metrics['re']['core_logic_loc']} LOC)")
-    print(f"  DFA Engine: {loc_metrics['dfa']['engine_file_loc']} LOC | Definition: {loc_metrics['dfa']['definition_file_loc']} LOC (Total: {loc_metrics['dfa']['total_dfa_loc']} LOC)")
+    print(
+        f"  RE Engine file: {loc_metrics['re']['engine_file_loc']} LOC (Core ing_word logic: {loc_metrics['re']['core_logic_loc']} LOC)"
+    )
+    print(
+        f"  DFA Engine: {loc_metrics['dfa']['engine_file_loc']} LOC | Definition: {loc_metrics['dfa']['definition_file_loc']} LOC (Total: {loc_metrics['dfa']['total_dfa_loc']} LOC)"
+    )
 
     # 4. Accuracy evaluation
     print("\n[3/4] Evaluating Accuracy on 48 Ground-Truth Test Cases...")
     accuracy_metrics = evaluate_accuracy()
-    print(f"  RE Precision: {accuracy_metrics['re_metrics']['precision']*100:.1f}%, Recall: {accuracy_metrics['re_metrics']['recall']*100:.1f}%, F1: {accuracy_metrics['re_metrics']['f1_score']:.4f}")
-    print(f"  DFA Precision: {accuracy_metrics['dfa_metrics']['precision']*100:.1f}%, Recall: {accuracy_metrics['dfa_metrics']['recall']*100:.1f}%, F1: {accuracy_metrics['dfa_metrics']['f1_score']:.4f}")
+    print(
+        f"  RE Precision: {accuracy_metrics['re_metrics']['precision'] * 100:.1f}%, Recall: {accuracy_metrics['re_metrics']['recall'] * 100:.1f}%, F1: {accuracy_metrics['re_metrics']['f1_score']:.4f}"
+    )
+    print(
+        f"  DFA Precision: {accuracy_metrics['dfa_metrics']['precision'] * 100:.1f}%, Recall: {accuracy_metrics['dfa_metrics']['recall'] * 100:.1f}%, F1: {accuracy_metrics['dfa_metrics']['f1_score']:.4f}"
+    )
 
     # 5. Cross-page frequency analysis
     print("\n[4/4] Computing Cross-Page Pattern Frequencies and Densities...")
@@ -340,7 +384,7 @@ def run_full_benchmark() -> None:
         "benchmarks": benchmark_records,
         "loc_metrics": loc_metrics,
         "accuracy": accuracy_metrics,
-        "frequency_analysis": freq_data
+        "frequency_analysis": freq_data,
     }
 
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
@@ -367,7 +411,9 @@ def generate_results_markdown(data: dict[str, Any]) -> None:
     md.append("# Experimental Benchmark & Comparative Analysis Results")
     md.append(f"\n*Auto-generated on {data['timestamp']}*\n")
     md.append("## 1. Execution Performance (RE vs DFA across 500 Iterations)\n")
-    md.append("| Target Corpus | Size (Chars) | RE Count | DFA Count | Match Sets Identical | RE Mean (\u03bcs) | RE Median (\u03bcs) | DFA Mean (\u03bcs) | DFA Median (\u03bcs) | DFA/RE Ratio |")
+    md.append(
+        "| Target Corpus | Size (Chars) | RE Count | DFA Count | Match Sets Identical | RE Mean (\u03bcs) | RE Median (\u03bcs) | DFA Mean (\u03bcs) | DFA Median (\u03bcs) | DFA/RE Ratio |"
+    )
     md.append("|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|")
 
     for b in data["benchmarks"]:
@@ -381,38 +427,62 @@ def generate_results_markdown(data: dict[str, Any]) -> None:
         dm = f"{b['dfa_timing_us']['mean_us']:,.1f}"
         dmed = f"{b['dfa_timing_us']['median_us']:,.1f}"
         ratio = f"{b['speedup_ratio_dfa_vs_re']}x"
-        md.append(f"| `{tid}` | {chars} | {rc} | {dc} | {eq} | {rm} | {rmed} | {dm} | {dmed} | {ratio} |")
+        md.append(
+            f"| `{tid}` | {chars} | {rc} | {dc} | {eq} | {rm} | {rmed} | {dm} | {dmed} | {ratio} |"
+        )
 
     md.append("\n### Detailed Timing Statistics (\u03bcs):\n")
-    md.append("| Target | RE Min | RE Max | RE StdDev | DFA Min | DFA Max | DFA StdDev |")
+    md.append(
+        "| Target | RE Min | RE Max | RE StdDev | DFA Min | DFA Max | DFA StdDev |"
+    )
     md.append("|---|:---:|:---:|:---:|:---:|:---:|:---:|")
     for b in data["benchmarks"]:
-        md.append(f"| `{b['target_id']}` | {b['re_timing_us']['min_us']:.1f} | {b['re_timing_us']['max_us']:.1f} | {b['re_timing_us']['stdev_us']:.1f} | {b['dfa_timing_us']['min_us']:.1f} | {b['dfa_timing_us']['max_us']:.1f} | {b['dfa_timing_us']['stdev_us']:.1f} |")
+        md.append(
+            f"| `{b['target_id']}` | {b['re_timing_us']['min_us']:.1f} | {b['re_timing_us']['max_us']:.1f} | {b['re_timing_us']['stdev_us']:.1f} | {b['dfa_timing_us']['min_us']:.1f} | {b['dfa_timing_us']['max_us']:.1f} | {b['dfa_timing_us']['stdev_us']:.1f} |"
+        )
 
     md.append("\n---\n")
     md.append("## 2. Implementation Complexity & Lines of Code (LOC)\n")
     loc = data["loc_metrics"]
-    md.append("| Paradigm | Implementation Component | Files Involved | Non-Blank Non-Comment LOC | Implementation Notes |")
+    md.append(
+        "| Paradigm | Implementation Component | Files Involved | Non-Blank Non-Comment LOC | Implementation Notes |"
+    )
     md.append("|---|---|---|:---:|---|")
-    md.append(f"| **Python Regular Expression (RE)** | Pattern Spec + Scanner Hook | `core/patterns.py`, `core/re_engine.py` | **{loc['re']['core_logic_loc']}** | Concise, declarative expression leveraging Python's internal C-based PCRE engine. |")
-    md.append(f"| **Hand-Built DFA Engine** | State Matrix + Char Classifier + Scanner | `core/dfa_definition.py`, `core/dfa_engine.py` | **{loc['dfa']['total_dfa_loc']}** | Pure table-driven algorithmic simulation without external or standard regex dependencies. |")
+    md.append(
+        f"| **Python Regular Expression (RE)** | Pattern Spec + Scanner Hook | `core/patterns.py`, `core/re_engine.py` | **{loc['re']['core_logic_loc']}** | Concise, declarative expression leveraging Python's internal C-based PCRE engine. |"
+    )
+    md.append(
+        f"| **Hand-Built DFA Engine** | State Matrix + Char Classifier + Scanner | `core/dfa_definition.py`, `core/dfa_engine.py` | **{loc['dfa']['total_dfa_loc']}** | Pure table-driven algorithmic simulation without external or standard regex dependencies. |"
+    )
 
     md.append("\n---\n")
-    md.append("## 3. Accuracy Evaluation on Hand-Labelled Ground Truth (48 Test Cases)\n")
+    md.append(
+        "## 3. Accuracy Evaluation on Hand-Labelled Ground Truth (48 Test Cases)\n"
+    )
     acc = data["accuracy"]
-    md.append("| Engine | Total Test Cases | True Positives (TP) | False Positives (FP) | False Negatives (FN) | Precision | Recall | F1-Score |")
+    md.append(
+        "| Engine | Total Test Cases | True Positives (TP) | False Positives (FP) | False Negatives (FN) | Precision | Recall | F1-Score |"
+    )
     md.append("|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|")
     r = acc["re_metrics"]
     d = acc["dfa_metrics"]
-    md.append(f"| **RE Engine** | {acc['total_test_cases']} | {r['true_positives']} | {r['false_positives']} | {r['false_negatives']} | **{r['precision']*100:.2f}%** | **{r['recall']*100:.2f}%** | **{r['f1_score']:.4f}** |")
-    md.append(f"| **DFA Engine** | {acc['total_test_cases']} | {d['true_positives']} | {d['false_positives']} | {d['false_negatives']} | **{d['precision']*100:.2f}%** | **{d['recall']*100:.2f}%** | **{d['f1_score']:.4f}** |")
+    md.append(
+        f"| **RE Engine** | {acc['total_test_cases']} | {r['true_positives']} | {r['false_positives']} | {r['false_negatives']} | **{r['precision'] * 100:.2f}%** | **{r['recall'] * 100:.2f}%** | **{r['f1_score']:.4f}** |"
+    )
+    md.append(
+        f"| **DFA Engine** | {acc['total_test_cases']} | {d['true_positives']} | {d['false_positives']} | {d['false_negatives']} | **{d['precision'] * 100:.2f}%** | **{d['recall'] * 100:.2f}%** | **{d['f1_score']:.4f}** |"
+    )
 
     md.append("\n---\n")
     md.append("## 4. Cross-Page Pattern Frequency & Density Distribution\n")
-    md.append("| Page ID | Category | Pattern Name | Count | Unique | Density (per 1,000 Chars) |")
+    md.append(
+        "| Page ID | Category | Pattern Name | Count | Unique | Density (per 1,000 Chars) |"
+    )
     md.append("|---|---|---|:---:|:---:|:---:|")
     for row in data["frequency_analysis"]["summary_table"]:
-        md.append(f"| `{row['page_id']}` | {row['category']} | {row['label']} | {row['count']} | {row['unique_count']} | {row['density_per_1k']:.3f} |")
+        md.append(
+            f"| `{row['page_id']}` | {row['category']} | {row['label']} | {row['count']} | {row['unique_count']} | {row['density_per_1k']:.3f} |"
+        )
 
     md.append("\n### Domain Category Justifications:\n")
     for cat, expl in data["frequency_analysis"]["category_explanations"].items():
@@ -426,6 +496,7 @@ def generate_frequency_chart(freq_data: dict[str, Any]) -> None:
     """Generate matplotlib chart visualizing pattern distribution across the 3 web pages."""
     try:
         import matplotlib
+
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
         import numpy as np
@@ -450,14 +521,48 @@ def generate_frequency_chart(freq_data: dict[str, Any]) -> None:
         fig.patch.set_facecolor("#ffffff")
         ax.set_facecolor("#f8fafc")
 
-        rects1 = ax.bar(x - width, counts["page1"], width, label=page_names[0], color=colors[0], edgecolor="#1e293b", linewidth=0.5)
-        rects2 = ax.bar(x, counts["page2"], width, label=page_names[1], color=colors[1], edgecolor="#1e293b", linewidth=0.5)
-        rects3 = ax.bar(x + width, counts["page3"], width, label=page_names[2], color=colors[2], edgecolor="#1e293b", linewidth=0.5)
+        rects1 = ax.bar(
+            x - width,
+            counts["page1"],
+            width,
+            label=page_names[0],
+            color=colors[0],
+            edgecolor="#1e293b",
+            linewidth=0.5,
+        )
+        rects2 = ax.bar(
+            x,
+            counts["page2"],
+            width,
+            label=page_names[1],
+            color=colors[1],
+            edgecolor="#1e293b",
+            linewidth=0.5,
+        )
+        rects3 = ax.bar(
+            x + width,
+            counts["page3"],
+            width,
+            label=page_names[2],
+            color=colors[2],
+            edgecolor="#1e293b",
+            linewidth=0.5,
+        )
 
-        ax.set_ylabel("Match Frequency Count", fontsize=12, fontweight="bold", color="#0f172a")
-        ax.set_title("Cross-Page Pattern Frequency Distribution (TOC Case Study)", fontsize=14, fontweight="bold", color="#0f172a", pad=15)
+        ax.set_ylabel(
+            "Match Frequency Count", fontsize=12, fontweight="bold", color="#0f172a"
+        )
+        ax.set_title(
+            "Cross-Page Pattern Frequency Distribution (TOC Case Study)",
+            fontsize=14,
+            fontweight="bold",
+            color="#0f172a",
+            pad=15,
+        )
         ax.set_xticks(x)
-        ax.set_xticklabels(labels, rotation=18, ha="right", fontsize=10, fontweight="bold")
+        ax.set_xticklabels(
+            labels, rotation=18, ha="right", fontsize=10, fontweight="bold"
+        )
         ax.legend(frameon=True, facecolor="#ffffff", edgecolor="#cbd5e1")
         ax.grid(axis="y", linestyle="--", alpha=0.5)
 
@@ -466,11 +571,16 @@ def generate_frequency_chart(freq_data: dict[str, Any]) -> None:
             for rect in rects:
                 height = rect.get_height()
                 if height > 0:
-                    ax.annotate(f"{int(height)}",
-                                xy=(rect.get_x() + rect.get_width() / 2, height),
-                                xytext=(0, 3),
-                                textcoords="offset points",
-                                ha="center", va="bottom", fontsize=8, color="#334155")
+                    ax.annotate(
+                        f"{int(height)}",
+                        xy=(rect.get_x() + rect.get_width() / 2, height),
+                        xytext=(0, 3),
+                        textcoords="offset points",
+                        ha="center",
+                        va="bottom",
+                        fontsize=8,
+                        color="#334155",
+                    )
 
         plt.tight_layout()
         out_chart = DOCS_DIR / "cross_page_frequency.png"

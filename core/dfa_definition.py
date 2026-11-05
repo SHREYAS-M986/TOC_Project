@@ -21,7 +21,7 @@ ALPHABET_CLASSES: dict[str, str] = {
     "N": "Letter 'n' or 'N'",
     "G": "Letter 'g' or 'G'",
     "OTHER_LETTER": "Any alphabetic letter except i, n, g (case-insensitive)",
-    "NON_LETTER": "Any non-alphabetic character (digits, whitespace, punctuation)"
+    "NON_LETTER": "Any non-alphabetic character (digits, whitespace, punctuation)",
 }
 
 # ==============================================================================
@@ -35,43 +35,43 @@ STATES: dict[str, dict[str, Any]] = {
         "label": "q0: Start",
         "meaning": "Initial state; 0 letters seen in current token (no progress).",
         "is_start": True,
-        "is_accepting": False
+        "is_accepting": False,
     },
     "q1": {
         "id": "q1",
         "label": "q1: Prefix >= 1 letter",
         "meaning": "At least 1 letter seen; current suffix does not end in 'i', 'in', or 'ing'.",
         "is_start": False,
-        "is_accepting": False
+        "is_accepting": False,
     },
     "q2": {
         "id": "q2",
         "label": "q2: Suffix 'i'",
         "meaning": "At least 2 letters seen; current suffix ends in 'i'.",
         "is_start": False,
-        "is_accepting": False
+        "is_accepting": False,
     },
     "q3": {
         "id": "q3",
         "label": "q3: Suffix 'in'",
         "meaning": "At least 3 letters seen; current suffix ends in 'in'.",
         "is_start": False,
-        "is_accepting": False
+        "is_accepting": False,
     },
     "q4": {
         "id": "q4",
         "label": "q4: Suffix 'ing' (Accept)",
         "meaning": "At least 4 letters seen; current suffix ends in 'ing'. ACCEPTING STATE.",
         "is_start": False,
-        "is_accepting": True
+        "is_accepting": True,
     },
     "q_trap": {
         "id": "q_trap",
         "label": "q_trap: Trap / Dead",
         "meaning": "Dead state entered when an invalid non-letter is encountered inside a word.",
         "is_start": False,
-        "is_accepting": False
-    }
+        "is_accepting": False,
+    },
 }
 
 START_STATE: str = "q0"
@@ -88,43 +88,43 @@ DELTA: dict[str, dict[str, str]] = {
         "N": "q1",
         "G": "q1",
         "OTHER_LETTER": "q1",
-        "NON_LETTER": "q_trap"
+        "NON_LETTER": "q_trap",
     },
     "q1": {
         "I": "q2",
         "N": "q1",
         "G": "q1",
         "OTHER_LETTER": "q1",
-        "NON_LETTER": "q_trap"
+        "NON_LETTER": "q_trap",
     },
     "q2": {
         "I": "q2",
         "N": "q3",
         "G": "q1",
         "OTHER_LETTER": "q1",
-        "NON_LETTER": "q_trap"
+        "NON_LETTER": "q_trap",
     },
     "q3": {
         "I": "q2",
         "N": "q1",
         "G": "q4",
         "OTHER_LETTER": "q1",
-        "NON_LETTER": "q_trap"
+        "NON_LETTER": "q_trap",
     },
     "q4": {
         "I": "q2",
         "N": "q1",
         "G": "q1",
         "OTHER_LETTER": "q1",
-        "NON_LETTER": "q_trap"
+        "NON_LETTER": "q_trap",
     },
     "q_trap": {
         "I": "q_trap",
         "N": "q_trap",
         "G": "q_trap",
         "OTHER_LETTER": "q_trap",
-        "NON_LETTER": "q_trap"
-    }
+        "NON_LETTER": "q_trap",
+    },
 }
 
 
@@ -132,9 +132,10 @@ DELTA: dict[str, dict[str, str]] = {
 # CHARACTER CLASSIFICATION (STRICTLY NO REGEX, PURE ORD/COMPUTE)
 # ==============================================================================
 
+
 def classify_char(ch: str) -> str:
     """Classify a single character into one of the 5 alphabet classes.
-    
+
     Uses only ord() and explicit character checks (no regex, no str methods).
     """
     if not ch:
@@ -165,8 +166,8 @@ def is_alphanumeric_or_underscore(ch: str) -> bool:
         return False
     o = ord(ch)
     return (
-        (65 <= o <= 90)     # A-Z
-        or (97 <= o <= 122) # a-z
+        (65 <= o <= 90)  # A-Z
+        or (97 <= o <= 122)  # a-z
         or (48 <= o <= 57)  # 0-9
         or (ch == "_")
     )
@@ -186,7 +187,7 @@ def get_dfa_definition() -> dict[str, Any]:
             "meaning": STATES[s]["meaning"],
             "is_start": STATES[s]["is_start"],
             "is_accepting": STATES[s]["is_accepting"],
-            "transitions": {cls: DELTA[s][cls] for cls in class_order}
+            "transitions": {cls: DELTA[s][cls] for cls in class_order},
         }
         table.append(row)
 
@@ -199,9 +200,9 @@ def get_dfa_definition() -> dict[str, Any]:
             "Sigma": class_order,
             "delta": DELTA,
             "q0": START_STATE,
-            "F": list(ACCEPTING_STATES)
+            "F": list(ACCEPTING_STATES),
         },
         "states": STATES,
         "alphabet_classes": ALPHABET_CLASSES,
-        "transition_table": table
+        "transition_table": table,
     }

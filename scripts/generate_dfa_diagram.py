@@ -19,6 +19,7 @@ from core.dfa_definition import (
 
 try:
     from PIL import Image, ImageDraw, ImageFont
+
     HAS_PIL = True
 except ImportError:
     HAS_PIL = False
@@ -33,7 +34,7 @@ def generate_svg() -> str:
         "q2": (500, 240),
         "q3": (700, 240),
         "q4": (900, 240),
-        "q_trap": (500, 430)
+        "q_trap": (500, 430),
     }
 
     radius = 38
@@ -41,7 +42,9 @@ def generate_svg() -> str:
 
     svg = []
     svg.append('<?xml version="1.0" encoding="UTF-8"?>')
-    svg.append('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 520" width="1020" height="520">')
+    svg.append(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 520" width="1020" height="520">'
+    )
     svg.append("""  <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M 0 1 L 10 5 L 0 9 z" fill="#3b82f6" />
@@ -70,39 +73,55 @@ def generate_svg() -> str:
     svg.append('  <rect width="1020" height="520" fill="#ffffff" rx="12" />')
 
     # Header Title
-    svg.append('  <text x="510" y="38" text-anchor="middle" class="title">Minimal DFA State Transition Diagram</text>')
-    svg.append('  <text x="510" y="62" text-anchor="middle" class="subtitle">Pattern: [A-Za-z]+ing (Tokens ending in &quot;ing&quot; with length &gt;= 4)</text>')
+    svg.append(
+        '  <text x="510" y="38" text-anchor="middle" class="title">Minimal DFA State Transition Diagram</text>'
+    )
+    svg.append(
+        '  <text x="510" y="62" text-anchor="middle" class="subtitle">Pattern: [A-Za-z]+ing (Tokens ending in &quot;ing&quot; with length &gt;= 4)</text>'
+    )
 
     # 1. Start Arrow pointing to q0
-    svg.append('  <!-- Start State Arrow -->')
-    svg.append('  <path d="M 40 240 L 78 240" fill="none" stroke="#10b981" stroke-width="3" marker-end="url(#arrow-start)" />')
-    svg.append('  <text x="50" y="228" font-family="sans-serif" font-size="12" font-weight="700" fill="#10b981">START</text>')
+    svg.append("  <!-- Start State Arrow -->")
+    svg.append(
+        '  <path d="M 40 240 L 78 240" fill="none" stroke="#10b981" stroke-width="3" marker-end="url(#arrow-start)" />'
+    )
+    svg.append(
+        '  <text x="50" y="228" font-family="sans-serif" font-size="12" font-weight="700" fill="#10b981">START</text>'
+    )
 
     # 2. Forward transitions along the spine (q0 -> q1 -> q2 -> q3 -> q4)
-    svg.append('  <!-- Forward Transitions -->')
+    svg.append("  <!-- Forward Transitions -->")
     # q0 -> q1 on I, N, G, OTHER
     svg.append('  <path d="M 158 240 L 260 240" class="edge" />')
-    svg.append('  <rect x="175" y="218" width="70" height="18" fill="#ffffff" rx="4" opacity="0.9" />')
+    svg.append(
+        '  <rect x="175" y="218" width="70" height="18" fill="#ffffff" rx="4" opacity="0.9" />'
+    )
     svg.append('  <text x="210" y="231" class="edge-label">I,N,G,O</text>')
 
     # q1 -> q2 on I
     svg.append('  <path d="M 338 240 L 460 240" class="edge" />')
-    svg.append('  <rect x="382" y="220" width="36" height="18" fill="#ffffff" rx="4" opacity="0.9" />')
+    svg.append(
+        '  <rect x="382" y="220" width="36" height="18" fill="#ffffff" rx="4" opacity="0.9" />'
+    )
     svg.append('  <text x="400" y="233" class="edge-label">I</text>')
 
     # q2 -> q3 on N
     svg.append('  <path d="M 538 240 L 660 240" class="edge" />')
-    svg.append('  <rect x="582" y="220" width="36" height="18" fill="#ffffff" rx="4" opacity="0.9" />')
+    svg.append(
+        '  <rect x="582" y="220" width="36" height="18" fill="#ffffff" rx="4" opacity="0.9" />'
+    )
     svg.append('  <text x="600" y="233" class="edge-label">N</text>')
 
     # q3 -> q4 on G
     svg.append('  <path d="M 738 240 L 860 240" class="edge" stroke="#059669" />')
-    svg.append('  <rect x="782" y="220" width="36" height="18" fill="#ffffff" rx="4" opacity="0.9" />')
+    svg.append(
+        '  <rect x="782" y="220" width="36" height="18" fill="#ffffff" rx="4" opacity="0.9" />'
+    )
     svg.append('  <text x="800" y="233" class="edge-label" fill="#059669">G</text>')
 
     # 3. Self Loops
     # q1 self-loop on N, G, OTHER (top arc)
-    svg.append('  <!-- Self Loops -->')
+    svg.append("  <!-- Self Loops -->")
     svg.append('  <path d="M 285 204 C 270 140, 330 140, 315 204" class="edge" />')
     svg.append('  <text x="300" y="148" class="edge-label">N, G, O</text>')
 
@@ -115,7 +134,7 @@ def generate_svg() -> str:
     svg.append('  <text x="500" y="508" class="edge-label" fill="#dc2626">ALL</text>')
 
     # 4. Backward Transitions
-    svg.append('  <!-- Backward Transitions -->')
+    svg.append("  <!-- Backward Transitions -->")
     # q2 -> q1 on G, OTHER (lower curved arc)
     svg.append('  <path d="M 480 270 C 430 320, 370 320, 320 270" class="edge" />')
     svg.append('  <text x="400" y="322" class="edge-label">G, O</text>')
@@ -137,31 +156,57 @@ def generate_svg() -> str:
     svg.append('  <text x="600" y="396" class="edge-label">N, G, O</text>')
 
     # 5. Trap State Transitions (dashed red)
-    svg.append('  <!-- Trap State Edges -->')
+    svg.append("  <!-- Trap State Edges -->")
     svg.append('  <path d="M 140 275 C 240 430, 380 430, 460 430" class="edge-trap" />')
-    svg.append('  <text x="260" y="445" class="edge-label" fill="#dc2626">NON_LETTER</text>')
+    svg.append(
+        '  <text x="260" y="445" class="edge-label" fill="#dc2626">NON_LETTER</text>'
+    )
 
     # 6. Draw States
-    svg.append('  <!-- States -->')
+    svg.append("  <!-- States -->")
     for sid, (cx, cy) in coords.items():
         st = STATES[sid]
         if st["is_accepting"]:
             # Double circle for accepting state
-            svg.append(f'  <circle cx="{cx}" cy="{cy}" r="{radius}" class="state-accept" />')
-            svg.append(f'  <circle cx="{cx}" cy="{cy}" r="{inner_radius}" class="state-accept" />')
-            svg.append(f'  <text x="{cx}" y="{cy - 5}" class="state-text" fill="#047857">{sid}</text>')
-            svg.append(f'  <text x="{cx}" y="{cy + 14}" class="state-sub" fill="#059669">Accept</text>')
+            svg.append(
+                f'  <circle cx="{cx}" cy="{cy}" r="{radius}" class="state-accept" />'
+            )
+            svg.append(
+                f'  <circle cx="{cx}" cy="{cy}" r="{inner_radius}" class="state-accept" />'
+            )
+            svg.append(
+                f'  <text x="{cx}" y="{cy - 5}" class="state-text" fill="#047857">{sid}</text>'
+            )
+            svg.append(
+                f'  <text x="{cx}" y="{cy + 14}" class="state-sub" fill="#059669">Accept</text>'
+            )
         elif sid == "q_trap":
-            svg.append(f'  <circle cx="{cx}" cy="{cy}" r="{radius - 3}" class="state-trap" />')
-            svg.append(f'  <text x="{cx}" y="{cy - 4}" class="state-text" fill="#b91c1c">{sid}</text>')
-            svg.append(f'  <text x="{cx}" y="{cy + 13}" class="state-sub" fill="#dc2626">Trap</text>')
+            svg.append(
+                f'  <circle cx="{cx}" cy="{cy}" r="{radius - 3}" class="state-trap" />'
+            )
+            svg.append(
+                f'  <text x="{cx}" y="{cy - 4}" class="state-text" fill="#b91c1c">{sid}</text>'
+            )
+            svg.append(
+                f'  <text x="{cx}" y="{cy + 13}" class="state-sub" fill="#dc2626">Trap</text>'
+            )
         else:
-            svg.append(f'  <circle cx="{cx}" cy="{cy}" r="{radius}" class="state-bg" />')
+            svg.append(
+                f'  <circle cx="{cx}" cy="{cy}" r="{radius}" class="state-bg" />'
+            )
             svg.append(f'  <text x="{cx}" y="{cy - 4}" class="state-text">{sid}</text>')
-            sub = "Start" if st["is_start"] else ("'i'" if sid == "q2" else ("'in'" if sid == "q3" else "&gt;=1 letter"))
+            sub = (
+                "Start"
+                if st["is_start"]
+                else (
+                    "'i'"
+                    if sid == "q2"
+                    else ("'in'" if sid == "q3" else "&gt;=1 letter")
+                )
+            )
             svg.append(f'  <text x="{cx}" y="{cy + 13}" class="state-sub">{sub}</text>')
 
-    svg.append('</svg>')
+    svg.append("</svg>")
     return "\n".join(svg)
 
 
@@ -181,7 +226,7 @@ def generate_png_with_pillow(output_path: Path) -> None:
         "q2": (500, 240),
         "q3": (700, 240),
         "q4": (900, 240),
-        "q_trap": (500, 430)
+        "q_trap": (500, 430),
     }
 
     radius = 38
@@ -189,7 +234,11 @@ def generate_png_with_pillow(output_path: Path) -> None:
 
     # Draw title
     draw.text((360, 20), "Minimal DFA State Transition Diagram", fill=(15, 23, 42))
-    draw.text((380, 45), "[A-Za-z]+ing (Words ending in 'ing', length >= 4)", fill=(100, 116, 139))
+    draw.text(
+        (380, 45),
+        "[A-Za-z]+ing (Words ending in 'ing', length >= 4)",
+        fill=(100, 116, 139),
+    )
 
     # Draw forward arrows along spine
     # q0 -> q1
@@ -222,15 +271,39 @@ def generate_png_with_pillow(output_path: Path) -> None:
         st = STATES[sid]
         if st["is_accepting"]:
             # Outer circle
-            draw.ellipse([cx - radius, cy - radius, cx + radius, cy + radius], outline=(5, 150, 105), width=3, fill=(236, 253, 245))
+            draw.ellipse(
+                [cx - radius, cy - radius, cx + radius, cy + radius],
+                outline=(5, 150, 105),
+                width=3,
+                fill=(236, 253, 245),
+            )
             # Inner circle
-            draw.ellipse([cx - inner_radius, cy - inner_radius, cx + inner_radius, cy + inner_radius], outline=(5, 150, 105), width=2)
+            draw.ellipse(
+                [
+                    cx - inner_radius,
+                    cy - inner_radius,
+                    cx + inner_radius,
+                    cy + inner_radius,
+                ],
+                outline=(5, 150, 105),
+                width=2,
+            )
             draw.text((cx - 10, cy - 8), sid, fill=(4, 120, 87))
         elif sid == "q_trap":
-            draw.ellipse([cx - radius + 3, cy - radius + 3, cx + radius - 3, cy + radius - 3], outline=(220, 38, 38), width=3, fill=(254, 242, 242))
+            draw.ellipse(
+                [cx - radius + 3, cy - radius + 3, cx + radius - 3, cy + radius - 3],
+                outline=(220, 38, 38),
+                width=3,
+                fill=(254, 242, 242),
+            )
             draw.text((cx - 18, cy - 8), sid, fill=(185, 28, 28))
         else:
-            draw.ellipse([cx - radius, cy - radius, cx + radius, cy + radius], outline=(59, 130, 246), width=3, fill=(248, 250, 252))
+            draw.ellipse(
+                [cx - radius, cy - radius, cx + radius, cy + radius],
+                outline=(59, 130, 246),
+                width=3,
+                fill=(248, 250, 252),
+            )
             draw.text((cx - 10, cy - 8), sid, fill=(15, 23, 42))
 
     img.save(output_path, "PNG")

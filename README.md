@@ -4,13 +4,13 @@
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Tests: 134 Passed](https://img.shields.io/badge/tests-134%20passed-brightgreen.svg)](tests/)
-[![Vercel Deployment](https://img.shields.io/badge/deployment-vercel-black.svg)](https://vercel.com)
+[![Vercel Deployment](https://img.shields.io/badge/deployment-vercel-success.svg)](https://toc-project-six.vercel.app)
 
 A full-stack Theory of Computation (TOC) case study application comparing **Python Regular Expressions (RE)** against a **Hand-Built Deterministic Finite Automaton (DFA)** for tokenizing and extracting structured patterns from real-world web pages.
 
 - **GitHub Repository:** [https://github.com/SHREYAS-M986/TOC_Project](https://github.com/SHREYAS-M986/TOC_Project)
 - **Comprehensive Academic Report:** [docs/REPORT.md](docs/REPORT.md) | [docs/REPORT.pdf](docs/REPORT.pdf) | [docs/REPORT.docx](docs/REPORT.docx)
-- **Live Deployment (Vercel):** *Pending deployment verification*
+- **Live Production URL:** [https://toc-project-six.vercel.app](https://toc-project-six.vercel.app)
 
 ---
 

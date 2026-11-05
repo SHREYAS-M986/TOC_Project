@@ -17,9 +17,7 @@ from core.utils import build_line_starts, offset_to_line_col
 
 
 def extract_single_pattern(
-    text: str,
-    pattern_key: str,
-    line_starts: list[int] | None = None
+    text: str, pattern_key: str, line_starts: list[int] | None = None
 ) -> dict[str, Any]:
     """Extract matches for a single pattern key from text.
 
@@ -43,13 +41,9 @@ def extract_single_pattern(
         start = match.start()
         end = match.end()
         line, col = offset_to_line_col(start, line_starts=line_starts)
-        matches.append({
-            "text": m_text,
-            "start": start,
-            "end": end,
-            "line": line,
-            "column": col
-        })
+        matches.append(
+            {"text": m_text, "start": start, "end": end, "line": line, "column": col}
+        )
 
     unique_items = {m["text"] for m in matches}
 
@@ -59,14 +53,11 @@ def extract_single_pattern(
         "regex": pattern_meta["regex"],
         "count": len(matches),
         "unique_count": len(unique_items),
-        "matches": matches
+        "matches": matches,
     }
 
 
-def extract(
-    text: str,
-    pattern_keys: list[str] | None = None
-) -> dict[str, Any]:
+def extract(text: str, pattern_keys: list[str] | None = None) -> dict[str, Any]:
     """Extract all or selected patterns from text using Python regular expressions.
 
     Args:
@@ -101,7 +92,7 @@ def extract(
         "patterns": results,  # Alias for flexibility
         "total_matches": total_matches,
         "elapsed_seconds": elapsed_seconds,
-        "elapsed_ms": elapsed_ms
+        "elapsed_ms": elapsed_ms,
     }
 
 
@@ -143,6 +134,7 @@ def benchmark_all(text: str, runs: int = 200) -> dict[str, float]:
 # CLI INTERFACE: python -m core.re_engine --page 1
 # ==============================================================================
 
+
 def format_cli_table(results: dict[str, Any]) -> str:
     """Render a clean ASCII table of extraction results for terminal/screenshots."""
     headers = ["Pattern", "Count", "Extracted items", "Positions (L:C)"]
@@ -150,10 +142,12 @@ def format_cli_table(results: dict[str, Any]) -> str:
 
     def truncate(s: str, max_len: int) -> str:
         s = s.replace("\n", " ")
-        return s if len(s) <= max_len else s[:max_len - 3] + "..."
+        return s if len(s) <= max_len else s[: max_len - 3] + "..."
 
     sep = "+" + "+".join("-" * (w + 2) for w in col_widths) + "+"
-    header_row = "| " + " | ".join(h.ljust(col_widths[i]) for i, h in enumerate(headers)) + " |"
+    header_row = (
+        "| " + " | ".join(h.ljust(col_widths[i]) for i, h in enumerate(headers)) + " |"
+    )
 
     lines = [sep, header_row, sep]
 
@@ -185,7 +179,7 @@ def format_cli_table(results: dict[str, Any]) -> str:
 
             # Subsequent rows for up to 4 more items to keep table clean and informative
             max_extra = min(4, len(matches) - 1)
-            for m in matches[1:1 + max_extra]:
+            for m in matches[1 : 1 + max_extra]:
                 m_item = m["text"]
                 m_pos = f"{m['line']}:{m['column']}"
                 lines.append(
@@ -213,10 +207,18 @@ def format_cli_table(results: dict[str, Any]) -> str:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="RE Engine: Extract TOC patterns from text.")
-    parser.add_argument("--page", type=int, choices=[1, 2, 3], help="Page snapshot number (1, 2, or 3)")
+    parser = argparse.ArgumentParser(
+        description="RE Engine: Extract TOC patterns from text."
+    )
+    parser.add_argument(
+        "--page", type=int, choices=[1, 2, 3], help="Page snapshot number (1, 2, or 3)"
+    )
     parser.add_argument("--file", type=str, help="Path to custom text file to analyze")
-    parser.add_argument("--benchmark", action="store_true", help="Run 200-iteration benchmark per pattern")
+    parser.add_argument(
+        "--benchmark",
+        action="store_true",
+        help="Run 200-iteration benchmark per pattern",
+    )
     parser.add_argument("--json", action="store_true", help="Output raw JSON results")
 
     args = parser.parse_args()

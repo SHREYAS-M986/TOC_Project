@@ -28,14 +28,18 @@ def capture_cli_outputs():
 
     # RE CLI
     cmd_re = [py, "-m", "core.re_engine", "--page", "1"]
-    res_re = subprocess.run(cmd_re, cwd=str(PROJECT_ROOT), capture_output=True, text=True)
+    res_re = subprocess.run(
+        cmd_re, cwd=str(PROJECT_ROOT), capture_output=True, text=True
+    )
     out_re = res_re.stdout + res_re.stderr
     (SCREENSHOTS_DIR / "cli_re_engine.txt").write_text(out_re, encoding="utf-8")
     print("  -> Saved cli_re_engine.txt")
 
     # DFA CLI
     cmd_dfa = [py, "-m", "core.dfa_engine", "--page", "1"]
-    res_dfa = subprocess.run(cmd_dfa, cwd=str(PROJECT_ROOT), capture_output=True, text=True)
+    res_dfa = subprocess.run(
+        cmd_dfa, cwd=str(PROJECT_ROOT), capture_output=True, text=True
+    )
     out_dfa = res_dfa.stdout + res_dfa.stderr
     (SCREENSHOTS_DIR / "cli_dfa_engine.txt").write_text(out_dfa, encoding="utf-8")
     print("  -> Saved cli_dfa_engine.txt")
@@ -47,6 +51,7 @@ def run_browser_verification():
     server_proc = None
     try:
         import urllib.request
+
         urllib.request.urlopen("http://127.0.0.1:5000/api/health", timeout=1)
         print("Existing Flask server detected on port 5000.")
     except Exception:
@@ -55,7 +60,7 @@ def run_browser_verification():
             [sys.executable, "api/index.py"],
             cwd=str(PROJECT_ROOT),
             stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL
+            stderr=subprocess.DEVNULL,
         )
         time.sleep(2)
 
@@ -65,14 +70,19 @@ def run_browser_verification():
         browser = p.chromium.launch(
             executable_path=EDGE_PATH,
             headless=True,
-            args=["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"]
+            args=["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"],
         )
         context = browser.new_context(viewport={"width": 1280, "height": 900})
         page = context.new_page()
 
         # Listen for console errors
         console_errors = []
-        page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)
+        page.on(
+            "console",
+            lambda msg: (
+                console_errors.append(msg.text) if msg.type == "error" else None
+            ),
+        )
 
         print("Navigating to http://127.0.0.1:5000/ ...")
         page.goto("http://127.0.0.1:5000/", wait_until="networkidle")
@@ -113,7 +123,7 @@ def run_browser_verification():
         print("2. Exercising Tab 2: Cross-Page Comparison...")
         page.click("#tab-btn-comparison")
         page.wait_for_selector("#cross-page-chart", state="visible", timeout=10000)
-        time.sleep(1.5) # Allow Chart.js animation
+        time.sleep(1.5)  # Allow Chart.js animation
         shot2 = SCREENSHOTS_DIR / "02_cross_page.png"
         page.screenshot(path=str(shot2), full_page=False)
         print(f"  -> Captured: {shot2.name}")
@@ -133,7 +143,7 @@ def run_browser_verification():
         print("   Running Simulator on 'learning'...")
         page.fill("#simulator-word-input", "learning")
         page.click("#btn-sim-play")
-        time.sleep(5) # Wait for animation to finish (8 steps @ 500ms = 4s)
+        time.sleep(5)  # Wait for animation to finish (8 steps @ 500ms = 4s)
 
         shot4 = SCREENSHOTS_DIR / "04_dfa_simulator.png"
         page.screenshot(path=str(shot4), full_page=False)
@@ -153,8 +163,10 @@ def run_browser_verification():
         print("4. Exercising Tab 4: RE vs DFA Comparison...")
         page.click("#tab-btn-compare")
         page.click("#btn-run-compare")
-        page.wait_for_selector("#compare-equivalence-banner", state="visible", timeout=10000)
-        time.sleep(2) # Allow Chart.js charts to finish render
+        page.wait_for_selector(
+            "#compare-equivalence-banner", state="visible", timeout=10000
+        )
+        time.sleep(2)  # Allow Chart.js charts to finish render
         shot5 = SCREENSHOTS_DIR / "05_compare.png"
         page.screenshot(path=str(shot5), full_page=False)
         print(f"  -> Captured: {shot5.name}")
@@ -164,7 +176,9 @@ def run_browser_verification():
         # ------------------------------------------------------------------
         print("5. Exercising Tab 5: About & Test Cases...")
         page.click("#tab-btn-about")
-        page.wait_for_selector("#testcases-table-body tr", state="visible", timeout=10000)
+        page.wait_for_selector(
+            "#testcases-table-body tr", state="visible", timeout=10000
+        )
         time.sleep(1)
         shot6 = SCREENSHOTS_DIR / "06_testcases.png"
         page.screenshot(path=str(shot6), full_page=False)

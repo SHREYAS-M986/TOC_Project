@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 520" width="1020" height="520">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#3b82f6" />
+    </marker>
+    <marker id="arrow-trap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#ef4444" />
+    </marker>
+    <marker id="arrow-start" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#10b981" />
+    </marker>
+    <style>
+      .state-bg { fill: #f8fafc; stroke: #3b82f6; stroke-width: 2.5; }
+      .state-accept { fill: #ecfdf5; stroke: #059669; stroke-width: 2.5; }
+      .state-trap { fill: #fef2f2; stroke: #dc2626; stroke-width: 2.5; }
+      .state-text { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 700; font-size: 18px; text-anchor: middle; dominant-baseline: central; fill: #0f172a; }
+      .state-sub { font-size: 11px; font-weight: 500; fill: #64748b; }
+      .edge { fill: none; stroke: #3b82f6; stroke-width: 2; marker-end: url(#arrow); }
+      .edge-trap { fill: none; stroke: #ef4444; stroke-width: 1.5; stroke-dasharray: 4,4; marker-end: url(#arrow-trap); }
+      .edge-label { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+      .title { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 20px; font-weight: 800; fill: #0f172a; }
+      .subtitle { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 13px; font-weight: 500; fill: #64748b; }
+    </style>
+  </defs>
+  <rect width="1020" height="520" fill="#ffffff" rx="12" />
+  <text x="510" y="38" text-anchor="middle" class="title">Minimal DFA State Transition Diagram</text>
+  <text x="510" y="62" text-anchor="middle" class="subtitle">Pattern: [A-Za-z]+ing (Tokens ending in &quot;ing&quot; with length &gt;= 4)</text>
+  <!-- Start State Arrow -->
+  <path d="M 40 240 L 78 240" fill="none" stroke="#10b981" stroke-width="3" marker-end="url(#arrow-start)" />
+  <text x="50" y="228" font-family="sans-serif" font-size="12" font-weight="700" fill="#10b981">START</text>
+  <!-- Forward Transitions -->
+  <path d="M 158 240 L 260 240" class="edge" />
+  <rect x="175" y="218" width="70" height="18" fill="#ffffff" rx="4" opacity="0.9" />
+  <text x="210" y="231" class="edge-label">I,N,G,O</text>
+  <path d="M 338 240 L 460 240" class="edge" />
+  <rect x="382" y="220" width="36" height="18" fill="#ffffff" rx="4" opacity="0.9" />
+  <text x="400" y="233" class="edge-label">I</text>
+  <path d="M 538 240 L 660 240" class="edge" />
+  <rect x="582" y="220" width="36" height="18" fill="#ffffff" rx="4" opacity="0.9" />
+  <text x="600" y="233" class="edge-label">N</text>
+  <path d="M 738 240 L 860 240" class="edge" stroke="#059669" />
+  <rect x="782" y="220" width="36" height="18" fill="#ffffff" rx="4" opacity="0.9" />
+  <text x="800" y="233" class="edge-label" fill="#059669">G</text>
+  <!-- Self Loops -->
+  <path d="M 285 204 C 270 140, 330 140, 315 204" class="edge" />
+  <text x="300" y="148" class="edge-label">N, G, O</text>
+  <path d="M 485 204 C 470 140, 530 140, 515 204" class="edge" />
+  <text x="500" y="148" class="edge-label">I</text>
+  <path d="M 485 468 C 470 515, 530 515, 515 468" class="edge-trap" />
+  <text x="500" y="508" class="edge-label" fill="#dc2626">ALL</text>
+  <!-- Backward Transitions -->
+  <path d="M 480 270 C 430 320, 370 320, 320 270" class="edge" />
+  <text x="400" y="322" class="edge-label">G, O</text>
+  <path d="M 680 270 C 580 360, 420 360, 315 275" class="edge" />
+  <text x="480" y="358" class="edge-label">N, O</text>
+  <path d="M 680 215 C 630 170, 570 170, 520 215" class="edge" />
+  <text x="600" y="178" class="edge-label">I</text>
+  <path d="M 880 215 C 780 120, 620 120, 525 218" class="edge" />
+  <text x="700" y="128" class="edge-label">I</text>
+  <path d="M 885 272 C 750 390, 450 390, 310 276" class="edge" />
+  <text x="600" y="396" class="edge-label">N, G, O</text>
+  <!-- Trap State Edges -->
+  <path d="M 140 275 C 240 430, 380 430, 460 430" class="edge-trap" />
+  <text x="260" y="445" class="edge-label" fill="#dc2626">NON_LETTER</text>
+  <!-- States -->
+  <circle cx="120" cy="240" r="38" class="state-bg" />
+  <text x="120" y="236" class="state-text">q0</text>
+  <text x="120" y="253" class="state-sub">Start</text>
+  <circle cx="300" cy="240" r="38" class="state-bg" />
+  <text x="300" y="236" class="state-text">q1</text>
+  <text x="300" y="253" class="state-sub">&gt;=1 letter</text>
+  <circle cx="500" cy="240" r="38" class="state-bg" />
+  <text x="500" y="236" class="state-text">q2</text>
+  <text x="500" y="253" class="state-sub">'i'</text>
+  <circle cx="700" cy="240" r="38" class="state-bg" />
+  <text x="700" y="236" class="state-text">q3</text>
+  <text x="700" y="253" class="state-sub">'in'</text>
+  <circle cx="900" cy="240" r="38" class="state-accept" />
+  <circle cx="900" cy="240" r="32" class="state-accept" />
+  <text x="900" y="235" class="state-text" fill="#047857">q4</text>
+  <text x="900" y="254" class="state-sub" fill="#059669">Accept</text>
+  <circle cx="500" cy="430" r="35" class="state-trap" />
+  <text x="500" y="426" class="state-text" fill="#b91c1c">q_trap</text>
+  <text x="500" y="443" class="state-sub" fill="#dc2626">Trap</text>
+</svg>

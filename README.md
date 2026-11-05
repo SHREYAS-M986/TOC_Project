@@ -3,9 +3,9 @@
 A full-stack Theory of Computation (TOC) case study application comparing **Python Regular Expressions (RE)** against a **Hand-Built Deterministic Finite Automaton (DFA)** for tokenizing and extracting structured patterns from real-world web pages.
 
 Built in 3 development stages:
-- **Stage 1 (Current):** Project skeleton, data snapshots, formal RE pattern registry & engine, secure REST API, test suite, and CI verification.
-- **Stage 2 (Next):** Hand-built DFA engine, performance benchmark suite, and interactive frontend UI.
-- **Stage 3 (Future):** Comprehensive TOC analytical report, comparative metrics, and cloud deployment on Vercel.
+- **Stage 1 (Completed):** Project skeleton, data snapshots, formal RE pattern registry & engine, secure REST API, test suite, and CI verification.
+- **Stage 2 (Completed):** Hand-built DFA engine without regex libraries, formal TOC derivation (Thompson's NFA, subset construction, Hopcroft minimization), state diagrams (SVG/PNG), REST API extensions, 100% RE vs DFA equivalence verification across all 3 pages, and modern 5-tab responsive UI with step-by-step simulator.
+- **Stage 3 (Next):** Comprehensive TOC analytical report, empirical benchmarks, and cloud deployment on Vercel.
 
 ---
 
@@ -35,7 +35,8 @@ TOC_Project/
 │   ├── __init__.py         # Package initialization
 │   ├── patterns.py         # Formal pattern registry, specs, and regex explanations
 │   ├── re_engine.py        # RE extraction engine, timing, and CLI reporter
-│   ├── dfa_engine.py       # DFA engine stub (to be implemented in Stage 2)
+│   ├── dfa_definition.py   # Single source of truth for DFA (states, alphabet, delta)
+│   ├── dfa_engine.py       # Pure table-driven DFA engine (zero regex libraries)
 │   ├── scraper.py          # Web fetcher with SSRF protection and HTML cleaner
 │   └── utils.py            # Line/col calculator, timing benchmark, and LOC counter
 ├── data/
@@ -44,14 +45,26 @@ TOC_Project/
 │       ├── page2.txt       # Cleaned text snapshot: The Indian Express (News)
 │       ├── page3.txt       # Cleaned text snapshot: DEV Community (Tech Blog)
 │       └── sources.json    # Metadata, category, and stats for snapshots
-├── docs/                   # Diagrams, benchmarks, and TOC reports (Stages 2 & 3)
-├── public/                 # Static frontend HTML/CSS/JS (Stage 2)
+├── docs/                   # Formal TOC derivation, state diagrams, tables, and screenshots
+│   ├── dfa_derivation.md   # Complete TOC mathematical derivation & proofs
+│   ├── dfa_diagram.svg     # Scalable vector graphics transition diagram
+│   ├── dfa_diagram.png     # Rendered raster transition diagram
+│   ├── dfa_table.md        # State transition markdown table
+│   └── screenshots/        # UI screenshots and CLI capture outputs
+├── public/                 # Static responsive frontend (HTML5/CSS3/Vanilla JS + Chart.js)
+│   ├── index.html          # Modern 5-tab application interface
+│   ├── styles.css          # Theme system with dark/light mode toggle
+│   └── app.js              # Client controller, API client, and DFA visualizer
 ├── scripts/
 │   ├── collect_pages.py    # Fetches snapshots from public sources and saves metadata
-│   └── generate_test_cases_md.py # Generates markdown verification table
+│   ├── generate_dfa_diagram.py   # Generates SVG and PNG state diagrams
+│   ├── generate_dfa_table.py     # Generates Markdown state transition matrix
+│   ├── generate_test_cases_md.py # Generates markdown verification table
+│   └── verify_ui_screenshots.py  # Playwright automated browser test & screenshot tool
 ├── tests/
 │   ├── test_data.py        # Positives and negatives test dataset (70 cases)
-│   ├── test_re_engine.py   # Comprehensive Pytest test suite (84 tests)
+│   ├── test_re_engine.py   # Comprehensive Pytest suite for RE engine (84 tests)
+│   ├── test_dfa_engine.py  # Equivalence & unit tests for DFA engine (50 tests)
 │   └── test_cases.md       # Auto-generated verification matrix
 ├── .gitignore              # Git ignore rules
 ├── README.md               # Project documentation
@@ -106,8 +119,8 @@ Three publicly accessible web pages representing distinct domains were collected
 
 ## 5. Running the Application
 
-### Running the CLI Analyzer
-Analyze any page snapshot with clean ASCII table output:
+### Running the CLI Analyzers
+**RE Engine CLI:**
 ```bash
 python -m core.re_engine --page 1
 python -m core.re_engine --page 2
@@ -115,7 +128,21 @@ python -m core.re_engine --page 3
 ```
 Add `--benchmark` to run a 200-iteration performance benchmark per pattern.
 
-### Starting the Flask Backend Server
+**DFA Engine CLI:**
+```bash
+# Scan a page snapshot with the pure DFA engine
+python -m core.dfa_engine --page 1
+python -m core.dfa_engine --page 2
+python -m core.dfa_engine --page 3
+
+# Trace an individual word step-by-step
+python -m core.dfa_engine --word learning
+python -m core.dfa_engine --word singing
+python -m core.dfa_engine --word ing
+```
+Add `--benchmark` to run a 200-iteration DFA benchmark.
+
+### Starting the Flask Backend Server & Web UI
 ```bash
 python api/index.py
 ```
@@ -123,7 +150,7 @@ Or with Flask CLI:
 ```bash
 flask --app api/index.py run --port 5000
 ```
-The server will listen at `http://127.0.0.1:5000`.
+Open `http://127.0.0.1:5000` in any web browser to use the full interactive application (Analyzer, Cross-Page Summary, DFA Machine & Step-by-Step Simulator, Side-by-Side Comparison, and Test Cases).
 
 ---
 
@@ -138,12 +165,17 @@ The server will listen at `http://127.0.0.1:5000`.
 | `POST` | `/api/analyze/re` | Analyzes text/page/URL using RE engine (`body: {page_id, text, url, patterns}`) |
 | `POST` | `/api/fetch` | Live URL fetch with SSRF protection (10s timeout, 2MB max, private IP blocking) |
 | `GET` | `/api/summary` | Cross-page comparison summary counts for all 7 patterns |
+| `GET` | `/api/dfa/definition` | Formal DFA machine definition, states, alphabet classes, and transition matrix |
+| `POST` | `/api/analyze/dfa` | Scans text/page/URL using hand-built DFA engine (`body: {page_id, text, url}`) |
+| `POST` | `/api/dfa/trace` | Single-word step-by-step state transition tracer (`body: {word}`) |
+| `POST` | `/api/compare` | Runs RE and DFA side-by-side, reports set difference, 200-run timing benchmark, and LOC metrics |
+| `GET` | `/api/testcases` | Pre-defined verification test suite and expected results |
 
 ---
 
 ## 7. Running Tests & Verifying Test Cases
 
-Run the test suite with `pytest`:
+Run the test suite with `pytest` (134 unit & integration tests covering both engines):
 ```bash
 pytest -v
 ```
@@ -153,10 +185,16 @@ Regenerate the automated verification table `tests/test_cases.md`:
 python scripts/generate_test_cases_md.py
 ```
 
+Regenerate DFA state diagrams and transition tables:
+```bash
+python scripts/generate_dfa_diagram.py
+python scripts/generate_dfa_table.py
+```
+
 ---
 
 ## 8. Roadmap & Later Stages
 
 - [x] **Stage 1:** Project skeleton, data snapshots, RE engine, Flask API, SSRF protection, pytest suite, Git push.
-- [ ] **Stage 2:** Hand-built DFA engine (`core/dfa_engine.py`), state transition matrices, equivalence testing, execution benchmark comparison, and interactive single-page web UI (`public/`).
+- [x] **Stage 2:** Hand-built DFA engine (`core/dfa_engine.py`), formal derivation (`docs/dfa_derivation.md`), state transition matrices & diagrams (`docs/dfa_diagram.svg`), bit-for-bit equivalence testing, execution benchmark comparison, and interactive 5-tab web UI (`public/`).
 - [ ] **Stage 3:** Vercel deployment, empirical time complexity analysis report, LOC metrics, and TOC theoretical study comparison.

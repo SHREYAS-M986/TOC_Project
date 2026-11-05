@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Content Analyzer: RE vs DFA | TOC Case Study</title>
+  <meta name="description" content="A Theory of Computation case study comparing Python Regular Expressions against a Hand-Built Deterministic Finite Automaton (DFA) for web content analysis." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%94%8D</text></svg>" />
+  <!-- Chart.js via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+</head>
+<body data-theme="light">
+
+  <!-- ====================================================================== -->
+  <!-- TOP HEADER & NAVIGATION                                                -->
+  <!-- ====================================================================== -->
+  <header class="app-header">
+    <div class="header-inner container">
+      <div class="brand">
+        <div class="brand-badge">TOC CASE STUDY</div>
+        <h1 class="brand-title">Web Content Analyzer: RE vs DFA</h1>
+        <p class="brand-subtitle">Empirical Comparison of Regular Expressions and Deterministic Finite Automata</p>
+      </div>
+      <div class="header-actions">
+        <button id="theme-toggle" class="btn btn-outline" aria-label="Toggle dark/light mode">
+          <span class="theme-icon" aria-hidden="true">Theme</span>
+          <span id="theme-text">Dark Mode</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs-nav" aria-label="Main Navigation">
+      <div class="container tabs-list" role="tablist">
+        <button class="tab-btn active" role="tab" id="tab-btn-analyzer" aria-selected="true" aria-controls="pane-analyzer" data-tab="analyzer">
+          1. Analyzer
+        </button>
+        <button class="tab-btn" role="tab" id="tab-btn-comparison" aria-selected="false" aria-controls="pane-comparison" data-tab="comparison">
+          2. Cross-Page Comparison
+        </button>
+        <button class="tab-btn" role="tab" id="tab-btn-dfa" aria-selected="false" aria-controls="pane-dfa" data-tab="dfa">
+          3. DFA Machine & Simulator
+        </button>
+        <button class="tab-btn" role="tab" id="tab-btn-compare" aria-selected="false" aria-controls="pane-compare" data-tab="compare">
+          4. RE vs DFA Comparison
+        </button>
+        <button class="tab-btn" role="tab" id="tab-btn-about" aria-selected="false" aria-controls="pane-about" data-tab="about">
+          5. About & Test Cases
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ====================================================================== -->
+  <!-- MAIN CONTENT CONTAINER                                                 -->
+  <!-- ====================================================================== -->
+  <main class="container main-content">
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+    <!-- -------------------------------------------------------------------- -->
+    <!-- TAB 1: ANALYZER                                                      -->
+    <!-- -------------------------------------------------------------------- -->
+    <section id="pane-analyzer" class="tab-pane active" role="tabpanel" aria-labelledby="tab-btn-analyzer">
+      
+      <!-- Source Selection Card -->
+      <div class="card source-card">
+        <h2 class="card-title">1. Select Input Source</h2>
+        <div class="source-options">
+          <label class="radio-label">
+            <input type="radio" name="source-type" value="snapshot" checked />
+            <span>Pre-fetched Snapshot</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="source-type" value="custom" />
+            <span>Custom Text Input</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="source-type" value="url" />
+            <span>Live URL (SSRF Protected)</span>
+          </label>
+        </div>
+
+        <!-- Snapshot Picker -->
+        <div id="snapshot-controls" class="source-inputs">
+          <label for="snapshot-select" class="form-label">Choose Web Page Corpus:</label>
+          <div class="snapshot-cards-grid" id="snapshot-cards">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Custom Text Input -->
+        <div id="custom-text-controls" class="source-inputs hidden">
+          <label for="custom-text-input" class="form-label">Paste Raw Text to Analyze:</label>
+          <textarea id="custom-text-input" class="form-textarea" rows="6" placeholder="Paste text containing emails, phone numbers, URLs, dates (DD-MM-YYYY), hashtags, times, or -ing words..."></textarea>
+        </div>
+
+        <!-- Live URL Input -->
+        <div id="live-url-controls" class="source-inputs hidden">
+          <label for="live-url-input" class="form-label">Enter Public HTTP/HTTPS URL:</label>
+          <div class="url-input-group">
+            <input type="url" id="live-url-input" class="form-input" placeholder="https://example.com/article" />
+            <button id="btn-fetch-url" class="btn btn-secondary">Fetch & Clean</button>
+          </div>
+          <small class="form-help">Security protected: Localhost, private RFC-1918 IPs, and non-HTTP protocols are blocked.</small>
+        </div>
+      </div>
+
+      <!-- Pattern Selector Card -->
+      <div class="card pattern-card">
+        <div class="pattern-header">
+          <h2 class="card-title">2. Target Patterns (RE Engine)</h2>
+          <div class="pattern-actions">
+            <button id="btn-select-all-patterns" class="btn btn-sm btn-link">Select All</button>
+            <span class="divider">|</span>
+            <button id="btn-clear-patterns" class="btn btn-sm btn-link">Clear</button>
+          </div>
+        </div>
+        <div id="patterns-checklist" class="patterns-grid">
+          <!-- Dynamically populated with 7 patterns -->
+        </div>
+
+        <div class="run-actions">
+          <button id="btn-run-analysis" class="btn btn-primary btn-lg">
+            <span id="run-btn-text">Execute Extraction</span>
+            <span id="run-spinner" class="spinner hidden" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Results Section -->
+      <div id="analyzer-results" class="results-section hidden">
+        <!-- Summary Cards Grid -->
+        <div class="summary-cards-container">
+          <h3 class="section-title">Pattern Extraction Summary</h3>
+          <div id="summary-cards-grid" class="cards-grid"></div>
+        </div>
+
+        <!-- Tabbed Split View: Results Table & Text Highlighter -->
+        <div class="analysis-split-view">
+          <!-- Results Table Panel -->
+          <div class="split-panel table-panel card">
+            <div class="panel-header">
+              <h3 class="card-title">Extracted Matches Table</h3>
+              <div class="table-tools">
+                <input type="text" id="table-search" class="form-input form-input-sm" placeholder="Search matches..." />
+                <select id="table-pattern-filter" class="form-select form-select-sm">
+                  <option value="all">All Patterns</option>
+                </select>
+                <button id="btn-export-csv" class="btn btn-sm btn-outline">CSV</button>
+                <button id="btn-export-json" class="btn btn-sm btn-outline">JSON</button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table id="matches-table" class="data-table">
+                <thead>
+                  <tr>
+                    <th data-sort="pattern">Pattern</th>
+                    <th data-sort="text">Extracted Token</th>
+                    <th data-sort="line">Line:Col</th>
+                    <th data-sort="start">Offset</th>
+                  </tr>
+                </thead>
+                <tbody id="matches-table-body"></tbody>
+              </table>
+            </div>
+
+            <div class="table-pagination">
+              <span id="pagination-info" class="pagination-info">Showing 0 of 0 matches</span>
+              <div class="pagination-buttons">
+                <button id="btn-prev-page" class="btn btn-sm btn-outline" disabled>Previous</button>
+                <button id="btn-next-page" class="btn btn-sm btn-outline" disabled>Next</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Highlighted Text Viewer Panel -->
+          <div class="split-panel viewer-panel card">
+            <div class="panel-header">
+              <h3 class="card-title">Highlighted Corpus Viewer</h3>
+              <div class="legend-container" id="pattern-legend"></div>
+            </div>
+            <div id="text-viewer" class="text-viewer-box">
+              <p class="placeholder-text">Text will appear here with highlighted matches...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- -------------------------------------------------------------------- -->
+    <!-- TAB 2: CROSS-PAGE COMPARISON                                         -->
+    <!-- -------------------------------------------------------------------- -->
+    <section id="pane-comparison" class="tab-pane hidden" role="tabpanel" aria-labelledby="tab-btn-comparison">
+      <div class="card">
+        <div class="panel-header">
+          <div>
+            <h2 class="card-title">Cross-Page Pattern Frequencies</h2>
+            <p class="card-subtitle">Distribution of token patterns across the 3 public snapshot corpora</p>
+          </div>
+          <button id="btn-refresh-summary" class="btn btn-sm btn-outline">Refresh Data</button>
+        </div>
+
+        <!-- Frequency Chart -->
+        <div class="chart-container" style="position: relative; height: 380px;">
+          <canvas id="cross-page-chart"></canvas>
+        </div>
+
+        <!-- Automated Insights Box -->
+        <div id="comparison-insights" class="insights-box">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- Heatmap / Table -->
+        <h3 class="subsection-title">Pattern Counts & Normalized Frequencies</h3>
+        <div class="table-responsive">
+          <table class="data-table heatmap-table" id="summary-table">
+            <thead>
+              <tr>
+                <th>Pattern Key</th>
+                <th>Formal Language</th>
+                <th>Page 1 (UGC Edu)</th>
+                <th>Page 2 (IE News)</th>
+                <th>Page 3 (DEV Blog)</th>
+                <th>Total Matches</th>
+                <th>Per 1,000 Chars (Avg)</th>
+              </tr>
+            </thead>
+            <tbody id="summary-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- -------------------------------------------------------------------- -->
+    <!-- TAB 3: DFA MACHINE & SIMULATOR                                       -->
+    <!-- -------------------------------------------------------------------- -->
+    <section id="pane-dfa" class="tab-pane hidden" role="tabpanel" aria-labelledby="tab-btn-dfa">
+      
+      <!-- Interactive DFA Simulator -->
+      <div class="card simulator-card">
+        <h2 class="card-title">Deterministic Finite Automaton Interactive Simulator</h2>
+        <p class="card-subtitle">Language: Words ending in "ing" ($[A-Za-z]+ing$, length &ge; 4, case-insensitive)</p>
+
+        <div class="simulator-input-row">
+          <div class="input-with-chips">
+            <input type="text" id="simulator-word-input" class="form-input form-input-lg" placeholder="Type candidate word (e.g. learning, sing, ing)..." value="learning" />
+            <div class="example-chips">
+              <span class="chip-label">Quick examples:</span>
+              <button class="chip-btn" data-word="learning">learning</button>
+              <button class="chip-btn" data-word="sing">sing</button>
+              <button class="chip-btn" data-word="string">string</button>
+              <button class="chip-btn" data-word="ing">ing</button>
+              <button class="chip-btn" data-word="in">in</button>
+              <button class="chip-btn" data-word="singing">singing</button>
+              <button class="chip-btn" data-word="INGest">INGest</button>
+            </div>
+          </div>
+          <div class="simulator-controls">
+            <button id="btn-sim-step" class="btn btn-secondary">Step &rarr;</button>
+            <button id="btn-sim-play" class="btn btn-primary">Play &#9658;</button>
+            <button id="btn-sim-reset" class="btn btn-outline">Reset &#8634;</button>
+          </div>
+        </div>
+
+        <!-- Simulation Progress Tape -->
+        <div class="sim-tape-container">
+          <div class="tape-label">Character Input Tape:</div>
+          <div id="sim-tape" class="sim-tape"></div>
+        </div>
+
+        <!-- Simulator Result Banner -->
+        <div id="sim-status-banner" class="sim-status-banner status-idle">
+          <span class="status-badge" id="sim-status-badge">READY</span>
+          <span class="status-msg" id="sim-status-msg">Press Step or Play to execute state transitions</span>
+        </div>
+      </div>
+
+      <!-- State Diagram & 5-Tuple Split View -->
+      <div class="dfa-spec-grid">
+        <!-- SVG Transition Diagram -->
+        <div class="card diagram-card">
+          <div class="panel-header">
+            <h3 class="card-title">State Transition Diagram</h3>
+            <span class="badge badge-accent">6 States (Minimal)</span>
+          </div>
+          <div id="dfa-svg-wrapper" class="dfa-svg-wrapper">
+            <!-- Inline SVG generated dynamically with active state highlight -->
+          </div>
+        </div>
+
+        <!-- Formal 5-Tuple & Semantics -->
+        <div class="card tuple-card">
+          <h3 class="card-title">Formal 5-Tuple Definition</h3>
+          <div class="tuple-math-box">
+            <p><strong>$M = (Q, \Sigma, \delta, q_0, F)$</strong></p>
+            <ul>
+              <li><strong>$Q$:</strong> <code>{ q0, q1, q2, q3, q4, q_trap }</code></li>
+              <li><strong>$\Sigma$:</strong> <code>{ I, N, G, OTHER_LETTER, NON_LETTER }</code></li>
+              <li><strong>$q_0$:</strong> <code>q0</code> (Start)</li>
+              <li><strong>$F$:</strong> <code>{ q4 }</code> (Concentric Double Circle)</li>
+              <li><strong>$\delta$:</strong> $Q \times \Sigma \to Q$</li>
+            </ul>
+          </div>
+
+          <h4 class="subsection-title">State Semantics in Plain Words:</h4>
+          <ul class="state-semantics-list" id="state-semantics-list"></ul>
+        </div>
+      </div>
+
+      <!-- Full Transition Table -->
+      <div class="card">
+        <h3 class="card-title">Formal State Transition Table ($\delta$)</h3>
+        <div class="table-responsive">
+          <table class="data-table" id="dfa-transition-table">
+            <thead>
+              <tr>
+                <th>State ($q$)</th>
+                <th>Meaning</th>
+                <th>Class 'I' (i, I)</th>
+                <th>Class 'N' (n, N)</th>
+                <th>Class 'G' (g, G)</th>
+                <th>Class 'OTHER'</th>
+                <th>Class 'NON_LETTER'</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="dfa-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- -------------------------------------------------------------------- -->
+    <!-- TAB 4: RE VS DFA COMPARISON                                          -->
+    <!-- -------------------------------------------------------------------- -->
+    <section id="pane-compare" class="tab-pane hidden" role="tabpanel" aria-labelledby="tab-btn-compare">
+      <div class="card">
+        <h2 class="card-title">Empirical Benchmark: RE vs DFA on "-ing" Words</h2>
+        <p class="card-subtitle">Head-to-head performance, equivalence verification, and software metrics</p>
+
+        <!-- Benchmark Target Selection -->
+        <div class="compare-controls-row">
+          <div class="compare-page-select">
+            <label for="compare-page-picker" class="form-label">Select Evaluation Corpus:</label>
+            <select id="compare-page-picker" class="form-select">
+              <option value="page1">Page 1: UGC Portal (Educational)</option>
+              <option value="page2">Page 2: The Indian Express (News Portal)</option>
+              <option value="page3">Page 3: DEV Community (Tech Blog)</option>
+            </select>
+          </div>
+          <button id="btn-run-compare" class="btn btn-primary btn-lg">
+            <span>Run Head-to-Head Comparison</span>
+            <span id="compare-spinner" class="spinner hidden" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <!-- Equivalence Banner -->
+        <div id="compare-equivalence-banner" class="equivalence-banner hidden">
+          <div class="banner-badge" id="compare-equal-badge">IDENTICAL RESULTS</div>
+          <div class="banner-text" id="compare-equal-text">Both engines produced bit-for-bit identical match sets and positions.</div>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div id="compare-metrics-grid" class="compare-metrics-grid hidden">
+          <div class="metric-card">
+            <span class="metric-label">RE Matches</span>
+            <span class="metric-value" id="metric-re-count">-</span>
+            <span class="metric-sub">Python <code>re.finditer</code></span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">DFA Matches</span>
+            <span class="metric-value" id="metric-dfa-count">-</span>
+            <span class="metric-sub">Table-driven loop</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">RE Scan Time</span>
+            <span class="metric-value" id="metric-re-time">-</span>
+            <span class="metric-sub">&mu;s (200-run avg)</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">DFA Scan Time</span>
+            <span class="metric-value" id="metric-dfa-time">-</span>
+            <span class="metric-sub">&mu;s (200-run avg)</span>
+          </div>
+          <div class="metric-card highlight-card">
+            <span class="metric-label">Faster Engine</span>
+            <span class="metric-value" id="metric-speedup">-</span>
+            <span class="metric-sub" id="metric-faster-desc">Speedup ratio</span>
+          </div>
+        </div>
+
+        <!-- Timing Chart -->
+        <div id="compare-charts-row" class="compare-charts-row hidden">
+          <div class="chart-panel card">
+            <h3 class="card-title">Execution Latency (&mu;s, Lower is Faster)</h3>
+            <div style="height: 260px; position: relative;">
+              <canvas id="compare-timing-chart"></canvas>
+            </div>
+          </div>
+          <div class="chart-panel card">
+            <h3 class="card-title">Code Implementation (Lines of Code)</h3>
+            <div style="height: 260px; position: relative;">
+              <canvas id="compare-loc-chart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comprehensive Analytical Comparison Table -->
+        <h3 class="subsection-title">Qualitative and Quantitative Evaluation</h3>
+        <div class="table-responsive">
+          <table class="data-table comparison-matrix-table" id="comparison-matrix-table">
+            <thead>
+              <tr>
+                <th style="width: 22%;">Evaluation Criterion</th>
+                <th style="width: 39%;">Python Regular Expression (RE)</th>
+                <th style="width: 39%;">Hand-Built Deterministic Finite Automaton (DFA)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Implementation Complexity</strong></td>
+                <td>Minimal code overhead; leverages standard compiled C engine (SRE in CPython).</td>
+                <td>Higher engineering complexity; requires formal 5-tuple, state matrix, and character classification logic.</td>
+              </tr>
+              <tr>
+                <td><strong>Lines of Code (LOC)</strong></td>
+                <td id="cell-re-loc">Loading...</td>
+                <td id="cell-dfa-loc">Loading...</td>
+              </tr>
+              <tr>
+                <td><strong>Execution Latency</strong></td>
+                <td id="cell-re-time">Run benchmark</td>
+                <td id="cell-dfa-time">Run benchmark</td>
+              </tr>
+              <tr>
+                <td><strong>Theoretical Time Complexity</strong></td>
+                <td>Worst-case $O(2^n)$ on catastrophic backtracking patterns, though $O(n)$ on deterministic linear subsets.</td>
+                <td>Strict $O(n)$ guaranteed real-time token processing with zero backtracking.</td>
+              </tr>
+              <tr>
+                <td><strong>Accuracy & Equivalence</strong></td>
+                <td>100% compliant with standard Unicode word boundaries.</td>
+                <td>100% bit-for-bit identical to RE on word boundary invariant.</td>
+              </tr>
+              <tr>
+                <td><strong>Ease of Modification</strong></td>
+                <td>High; changing the regex pattern string requires 1 line of code.</td>
+                <td>Low; modifying patterns requires re-deriving NFA, subset construction, and updating the $\delta$ transition table.</td>
+              </tr>
+              <tr>
+                <td><strong>Primary Advantages</strong></td>
+                <td>Concise syntax, rapid prototyping, built-in engine optimization in C.</td>
+                <td>Guaranteed linear time, deterministic latency, zero external library dependencies, transparent execution trace.</td>
+              </tr>
+              <tr>
+                <td><strong>Primary Limitations</strong></td>
+                <td>Opaque internal execution; potential backtracking vulnerabilities (ReDoS).</td>
+                <td>Verbose definition; rigid state transition table tailored specifically to one target pattern.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- -------------------------------------------------------------------- -->
+    <!-- TAB 5: ABOUT & TEST CASES                                            -->
+    <!-- -------------------------------------------------------------------- -->
+    <section id="pane-about" class="tab-pane hidden" role="tabpanel" aria-labelledby="tab-btn-about">
+      
+      <!-- Project Architecture Overview -->
+      <div class="card">
+        <h2 class="card-title">Theory of Computation Project Overview</h2>
+        <p>This prototype demonstrates the theoretical foundations and empirical tradeoffs of <strong>Regular Languages</strong> (Chomsky Type-3). By extracting seven distinct token patterns from real-world web corpora, we compare the declarative convenience of <strong>Regular Expressions</strong> against the low-level mechanical transparency of a <strong>Deterministic Finite Automaton</strong>.</p>
+        
+        <h3 class="subsection-title">Data Collection Sources</h3>
+        <div class="sources-list" id="sources-info-list"></div>
+      </div>
+
+      <!-- Pattern Registry Explanations -->
+      <div class="card">
+        <h2 class="card-title">Pattern Registry & Mathematical Specifications</h2>
+        <div class="table-responsive">
+          <table class="data-table" id="registry-table">
+            <thead>
+              <tr>
+                <th>Key</th>
+                <th>Label</th>
+                <th>Regular Expression</th>
+                <th>Flags</th>
+                <th>Formal Description</th>
+              </tr>
+            </thead>
+            <tbody id="registry-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Formal Test Cases Verification Matrix -->
+      <div class="card">
+        <div class="panel-header">
+          <div>
+            <h2 class="card-title">Verification Test Suite (70+ Formal Cases)</h2>
+            <p class="card-subtitle">Automated verification matrix covering at least 4 positive and 4 negative edge cases per pattern</p>
+          </div>
+          <div class="testcase-tools">
+            <input type="text" id="testcase-search" class="form-input form-input-sm" placeholder="Search test input..." />
+            <select id="testcase-pattern-filter" class="form-select form-select-sm">
+              <option value="all">All Patterns</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table" id="testcases-table">
+            <thead>
+              <tr>
+                <th>Pattern</th>
+                <th>Test Input</th>
+                <th>Expected Outcome</th>
+                <th>Description</th>
+                <th>Verification</th>
+              </tr>
+            </thead>
+            <tbody id="testcases-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ====================================================================== -->
+  <!-- FOOTER                                                                 -->
+  <!-- ====================================================================== -->
+  <footer class="app-footer">
+    <div class="container footer-content">
+      <p><strong>Web Content Analyzer: RE vs DFA</strong> &bull; Theory of Computation Prototype (Stages 1 &amp; 2)</p>
+      <p class="footer-meta">Repository: <a href="https://github.com/SHREYAS-M986/TOC_Project" target="_blank" rel="noopener noreferrer">SHREYAS-M986/TOC_Project</a></p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

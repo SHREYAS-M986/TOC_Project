@@ -154,3 +154,37 @@ def count_loc(root_dir: str | Path, extensions: Optional[List[str]] = None) -> D
                 totals["blank_lines"] += blank
 
     return {"summary": totals, "files": files_stats}
+
+
+def count_single_file_loc(file_path: str | Path) -> Dict[str, int]:
+    """Count non-blank, non-comment lines of code for a single file.
+
+    Returns:
+        {"total": total, "code": code, "comment": comment, "blank": blank}
+    """
+    fpath = Path(file_path)
+    if not fpath.exists():
+        return {"total": 0, "code": 0, "comment": 0, "blank": 0}
+
+    try:
+        with open(fpath, "r", encoding="utf-8", errors="replace") as f:
+            lines = f.readlines()
+    except Exception:
+        return {"total": 0, "code": 0, "comment": 0, "blank": 0}
+
+    total = len(lines)
+    blank = 0
+    comment = 0
+    code = 0
+
+    for line in lines:
+        stripped = line.strip()
+        if not stripped:
+            blank += 1
+        elif stripped.startswith("#") or stripped.startswith("//") or stripped.startswith("/*") or stripped.startswith("*"):
+            comment += 1
+        else:
+            code += 1
+
+    return {"total": total, "code": code, "comment": comment, "blank": blank}
+

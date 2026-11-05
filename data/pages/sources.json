@@ -1,0 +1,62 @@
+[
+  {
+    "id": "page1",
+    "title": "Welcome to UGC, New Delhi, India",
+    "url": "https://www.ugc.gov.in/",
+    "category": "Educational",
+    "fetched_on": "2026-11-05T16:17:05.953404+00:00",
+    "char_count": 27264,
+    "line_count": 968,
+    "pattern_counts": {
+      "email": 5,
+      "mobile": 0,
+      "date": 8,
+      "url": 133,
+      "hashtag": 0,
+      "time": 0,
+      "ing_word": 92
+    },
+    "qualifying_patterns": 4,
+    "reason": "Official apex higher education regulatory portal in India rich in circulars, official emails, DD-MM-YYYY dates, URLs, and academic terminology."
+  },
+  {
+    "id": "page2",
+    "title": "Mumbai engineering student suicide: How to help a young person during an emotional crisis | Health and Wellness News - The Indian Express",
+    "url": "https://indianexpress.com/article/health-wellness/mumbai-ict-student-death-mental-health-warning-signs-depression-help-10938783/",
+    "category": "News Portal",
+    "fetched_on": "2026-11-05T16:17:06.918122+00:00",
+    "char_count": 31938,
+    "line_count": 783,
+    "pattern_counts": {
+      "email": 4,
+      "mobile": 5,
+      "date": 0,
+      "url": 280,
+      "hashtag": 0,
+      "time": 2,
+      "ing_word": 97
+    },
+    "qualifying_patterns": 3,
+    "reason": "National news article featuring verified Indian crisis helpline mobile numbers (+91 / 98...), support emails, published timestamps, URLs, and reportage."
+  },
+  {
+    "id": "page3",
+    "title": "Python - DEV Community",
+    "url": "https://dev.to/t/python",
+    "category": "Tech Blog / Community",
+    "fetched_on": "2026-11-05T16:17:07.998234+00:00",
+    "char_count": 18835,
+    "line_count": 648,
+    "pattern_counts": {
+      "email": 0,
+      "mobile": 0,
+      "date": 0,
+      "url": 86,
+      "hashtag": 63,
+      "time": 0,
+      "ing_word": 92
+    },
+    "qualifying_patterns": 3,
+    "reason": "Developer community publishing platform rich in hashtags (#python, #webdev, etc.), external code links, author posts, and tech vocabulary."
+  }
+]

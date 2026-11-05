@@ -1,0 +1,648 @@
+Python - DEV Community
+
+Skip to content
+
+(/)
+
+Powered by Algolia
+
+(https://www.algolia.com/developers/?utm_source=devto&utm_medium=referral)
+
+Log in
+(https://dev.to/enter?signup_subforem=1)
+
+Create account
+(https://dev.to/enter?signup_subforem=1&state=new-user)
+
+DEV Community
+
+Python
+
+import antigravity
+
+Follow
+
+Hide
+
+Create Post
+(/new/python)
+
+submission guidelines
+
+Articles and discussions should be directly related to the Python programming language.
+
+Questions are encouraged! (See the #help tag)
+
+about #python
+
+Python is an interpreted programming language that is considered "batteries-included". It was created by Guido van Rossum in 1991, and is popular for application and web development, as well as for scientific computing and data analysis.
+
+Python 3 is the current language version. Python 2 is set to be deprecated in 2020.
+
+Official Website (https://www.python.org/)
+
+Older #python posts
+
+1
+2 (https://dev.to/t/python/page/2)
+3 (https://dev.to/t/python/page/3)
+4 (https://dev.to/t/python/page/4)
+5 (https://dev.to/t/python/page/5)
+6 (https://dev.to/t/python/page/6)
+7 (https://dev.to/t/python/page/7)
+8 (https://dev.to/t/python/page/8)
+9 (https://dev.to/t/python/page/9)
+
+…75 (https://dev.to/t/python/page/75)
+…100 (https://dev.to/t/python/page/100)
+
+Posts
+
+👋 Sign in (https://dev.to/enter?signup_subforem=1) for the ability to sort posts by relevant, latest, or top.
+
+Pair the Runs Before You Compare Two Models (https://dev.to/apppro_5726/pair-the-runs-before-you-compare-two-models-44gn)
+
+(/apppro_5726)
+
+Avery Wang
+(/apppro_5726)
+
+Avery Wang
+
+Avery Wang
+(/apppro_5726)
+
+Follow
+
+Nov 5 (https://dev.to/apppro_5726/pair-the-runs-before-you-compare-two-models-44gn)
+
+Pair the Runs Before You Compare Two Models
+(https://dev.to/apppro_5726/pair-the-runs-before-you-compare-two-models-44gn)
+
+#ai (/t/ai)
+#testing (/t/testing)
+#python (/t/python)
+#llm (/t/llm)
+
+Add Comment
+(https://dev.to/apppro_5726/pair-the-runs-before-you-compare-two-models-44gn#comments)
+
+5 min read
+
+Testei LLMs no ENEM 2024, e o ranking não diz o que parece (https://dev.to/vitoriaayres/testei-llms-no-enem-2024-e-o-ranking-nao-diz-o-que-parece-2ong)
+
+(/vitoriaayres)
+
+Vitoria AYRES
+(/vitoriaayres)
+
+Vitoria AYRES
+
+Vitoria AYRES
+(/vitoriaayres)
+
+Follow
+
+Nov 5 (https://dev.to/vitoriaayres/testei-llms-no-enem-2024-e-o-ranking-nao-diz-o-que-parece-2ong)
+
+Testei LLMs no ENEM 2024, e o ranking não diz o que parece
+(https://dev.to/vitoriaayres/testei-llms-no-enem-2024-e-o-ranking-nao-diz-o-que-parece-2ong)
+
+#ai (/t/ai)
+#python (/t/python)
+#llm (/t/llm)
+#benchmark (/t/benchmark)
+
+Add Comment
+(https://dev.to/vitoriaayres/testei-llms-no-enem-2024-e-o-ranking-nao-diz-o-que-parece-2ong#comments)
+
+8 min read
+
+Your Agent Does Not Need Your API Key (https://dev.to/devrs_886/your-agent-does-not-need-your-api-key-4c19)
+
+(/devrs_886)
+
+Riley Lin
+(/devrs_886)
+
+Riley Lin
+
+Riley Lin
+(/devrs_886)
+
+Follow
+
+Nov 5 (https://dev.to/devrs_886/your-agent-does-not-need-your-api-key-4c19)
+
+Your Agent Does Not Need Your API Key
+(https://dev.to/devrs_886/your-agent-does-not-need-your-api-key-4c19)
+
+#security (/t/security)
+#ai (/t/ai)
+#python (/t/python)
+#opensource (/t/opensource)
+
+Add Comment
+(https://dev.to/devrs_886/your-agent-does-not-need-your-api-key-4c19#comments)
+
+5 min read
+
+The Redaction Gate: What Must Never Leave the Host When an Agent Needs a Cloud Model (https://dev.to/codepro_9661/the-redaction-gate-what-must-never-leave-the-host-when-an-agent-needs-a-cloud-model-14pn)
+
+(/codepro_9661)
+
+Emery Li
+(/codepro_9661)
+
+Emery Li
+
+Emery Li
+(/codepro_9661)
+
+Follow
+
+Nov 5 (https://dev.to/codepro_9661/the-redaction-gate-what-must-never-leave-the-host-when-an-agent-needs-a-cloud-model-14pn)
+
+The Redaction Gate: What Must Never Leave the Host When an Agent Needs a Cloud Model
+(https://dev.to/codepro_9661/the-redaction-gate-what-must-never-leave-the-host-when-an-agent-needs-a-cloud-model-14pn)
+
+#ai (/t/ai)
+#security (/t/security)
+#opensource (/t/opensource)
+#python (/t/python)
+
+Add Comment
+(https://dev.to/codepro_9661/the-redaction-gate-what-must-never-leave-the-host-when-an-agent-needs-a-cloud-model-14pn#comments)
+
+8 min read
+
+The Fault Injection Workshop: Teaching a Model Call to Fail on Purpose (https://dev.to/applab_8831/the-fault-injection-workshop-teaching-a-model-call-to-fail-on-purpose-5cjk)
+
+(/applab_8831)
+
+Charlie Zhu
+(/applab_8831)
+
+Charlie Zhu
+
+Charlie Zhu
+(/applab_8831)
+
+Follow
+
+Nov 5 (https://dev.to/applab_8831/the-fault-injection-workshop-teaching-a-model-call-to-fail-on-purpose-5cjk)
+
+The Fault Injection Workshop: Teaching a Model Call to Fail on Purpose
+(https://dev.to/applab_8831/the-fault-injection-workshop-teaching-a-model-call-to-fail-on-purpose-5cjk)
+
+#ai (/t/ai)
+#tutorial (/t/tutorial)
+#python (/t/python)
+#testing (/t/testing)
+
+Add Comment
+(https://dev.to/applab_8831/the-fault-injection-workshop-teaching-a-model-call-to-fail-on-purpose-5cjk#comments)
+
+6 min read
+
+How I Built an Autonomous, Zero-Hallucination Micro-AI on an Entry-Level 4GB GPU (https://dev.to/shenald/how-i-built-an-autonomous-zero-hallucination-micro-ai-on-an-entry-level-4gb-gpu-34dc)
+
+(/shenald)
+
+Shenal Diluksha
+(/shenald)
+
+Shenal Diluksha
+
+Shenal Diluksha
+(/shenald)
+
+Follow
+
+Nov 5 (https://dev.to/shenald/how-i-built-an-autonomous-zero-hallucination-micro-ai-on-an-entry-level-4gb-gpu-34dc)
+
+How I Built an Autonomous, Zero-Hallucination Micro-AI on an Entry-Level 4GB GPU
+(https://dev.to/shenald/how-i-built-an-autonomous-zero-hallucination-micro-ai-on-an-entry-level-4gb-gpu-34dc)
+
+#ai (/t/ai)
+#machinelearning (/t/machinelearning)
+#python (/t/python)
+#opensource (/t/opensource)
+
+Add Comment
+(https://dev.to/shenald/how-i-built-an-autonomous-zero-hallucination-micro-ai-on-an-entry-level-4gb-gpu-34dc#comments)
+
+5 min read
+
+Your Claude Code allowlist is wider than you think: building an auditor for the rules you forgot you wrote (https://dev.to/singhularityai/your-claude-code-allowlist-is-wider-than-you-think-building-an-auditor-for-the-rules-you-forgot-3258)
+
+(/singhularityai)
+
+Jasveer Singh
+(/singhularityai)
+
+Jasveer Singh
+
+Jasveer Singh
+(/singhularityai)
+
+Follow
+
+Nov 5 (https://dev.to/singhularityai/your-claude-code-allowlist-is-wider-than-you-think-building-an-auditor-for-the-rules-you-forgot-3258)
+
+Your Claude Code allowlist is wider than you think: building an auditor for the rules you forgot you wrote
+(https://dev.to/singhularityai/your-claude-code-allowlist-is-wider-than-you-think-building-an-auditor-for-the-rules-you-forgot-3258)
+
+#python (/t/python)
+#ai (/t/ai)
+#security (/t/security)
+#opensource (/t/opensource)
+
+Add Comment
+(https://dev.to/singhularityai/your-claude-code-allowlist-is-wider-than-you-think-building-an-auditor-for-the-rules-you-forgot-3258#comments)
+
+4 min read
+
+Fine-tuning is the wrong tool for knowledge: three training phases and the low-rank shortcut (https://dev.to/cchinchilladev/fine-tuning-is-the-wrong-tool-for-knowledge-three-training-phases-and-the-low-rank-shortcut-1eo1)
+
+(/cchinchilladev)
+
+Carlos Chinchilla Corbacho
+(/cchinchilladev)
+
+Carlos Chinchilla Corbacho
+
+Carlos Chinchilla Corbacho
+(/cchinchilladev)
+
+Follow
+
+Nov 5 (https://dev.to/cchinchilladev/fine-tuning-is-the-wrong-tool-for-knowledge-three-training-phases-and-the-low-rank-shortcut-1eo1)
+
+Fine-tuning is the wrong tool for knowledge: three training phases and the low-rank shortcut
+(https://dev.to/cchinchilladev/fine-tuning-is-the-wrong-tool-for-knowledge-three-training-phases-and-the-low-rank-shortcut-1eo1)
+
+#machinelearning (/t/machinelearning)
+#python (/t/python)
+#ai (/t/ai)
+#beginners (/t/beginners)
+
+Add Comment
+(https://dev.to/cchinchilladev/fine-tuning-is-the-wrong-tool-for-knowledge-three-training-phases-and-the-low-rank-shortcut-1eo1#comments)
+
+10 min read
+
+We joined 19 company registries into one open graph: 50 million companies, and how we find their websites (https://dev.to/locaihost_data/we-joined-19-company-registries-into-one-open-graph-50-million-companies-and-how-we-find-their-2mnh)
+
+(/locaihost_data)
+
+locaihost data
+(/locaihost_data)
+
+locaihost data
+
+locaihost data
+(/locaihost_data)
+
+Follow
+
+Nov 5 (https://dev.to/locaihost_data/we-joined-19-company-registries-into-one-open-graph-50-million-companies-and-how-we-find-their-2mnh)
+
+We joined 19 company registries into one open graph: 50 million companies, and how we find their websites
+(https://dev.to/locaihost_data/we-joined-19-company-registries-into-one-open-graph-50-million-companies-and-how-we-find-their-2mnh)
+
+#opendata (/t/opendata)
+#data (/t/data)
+#api (/t/api)
+#python (/t/python)
+
+1 reaction
+
+(https://dev.to/locaihost_data/we-joined-19-company-registries-into-one-open-graph-50-million-companies-and-how-we-find-their-2mnh)
+
+Add Comment
+(https://dev.to/locaihost_data/we-joined-19-company-registries-into-one-open-graph-50-million-companies-and-how-we-find-their-2mnh#comments)
+
+7 min read
+
+Trace Retention Triage: Keep the Agent Runs You Will Actually Debug (https://dev.to/codepro_3283/trace-retention-triage-keep-the-agent-runs-you-will-actually-debug-1bl7)
+
+(/codepro_3283)
+
+Sam Sun
+(/codepro_3283)
+
+Sam Sun
+
+Sam Sun
+(/codepro_3283)
+
+Follow
+
+Nov 5 (https://dev.to/codepro_3283/trace-retention-triage-keep-the-agent-runs-you-will-actually-debug-1bl7)
+
+Trace Retention Triage: Keep the Agent Runs You Will Actually Debug
+(https://dev.to/codepro_3283/trace-retention-triage-keep-the-agent-runs-you-will-actually-debug-1bl7)
+
+#ai (/t/ai)
+#observability (/t/observability)
+#python (/t/python)
+#devtools (/t/devtools)
+
+Add Comment
+(https://dev.to/codepro_3283/trace-retention-triage-keep-the-agent-runs-you-will-actually-debug-1bl7#comments)
+
+6 min read
+
+How to Add Web Search to a LangGraph Agent in Python (No API Key) (https://dev.to/agentsearchhq/how-to-add-web-search-to-a-langgraph-agent-in-python-no-api-key-2dff)
+
+(/agentsearchhq)
+
+AgentSearch
+(/agentsearchhq)
+
+AgentSearch
+
+AgentSearch
+(/agentsearchhq)
+
+Follow
+
+Nov 5 (https://dev.to/agentsearchhq/how-to-add-web-search-to-a-langgraph-agent-in-python-no-api-key-2dff)
+
+How to Add Web Search to a LangGraph Agent in Python (No API Key)
+(https://dev.to/agentsearchhq/how-to-add-web-search-to-a-langgraph-agent-in-python-no-api-key-2dff)
+
+#python (/t/python)
+#langchain (/t/langchain)
+#ai (/t/ai)
+#tutorial (/t/tutorial)
+
+1 comment
+(https://dev.to/agentsearchhq/how-to-add-web-search-to-a-langgraph-agent-in-python-no-api-key-2dff#comments)
+
+9 min read
+
+A 200 Response Is Not a Contract: Canary Tests for Third-Party Model Endpoints (https://dev.to/gitjs_8094/a-200-response-is-not-a-contract-canary-tests-for-third-party-model-endpoints-305c)
+
+(/gitjs_8094)
+
+Riley Wu
+(/gitjs_8094)
+
+Riley Wu
+
+Riley Wu
+(/gitjs_8094)
+
+Follow
+
+Nov 5 (https://dev.to/gitjs_8094/a-200-response-is-not-a-contract-canary-tests-for-third-party-model-endpoints-305c)
+
+A 200 Response Is Not a Contract: Canary Tests for Third-Party Model Endpoints
+(https://dev.to/gitjs_8094/a-200-response-is-not-a-contract-canary-tests-for-third-party-model-endpoints-305c)
+
+#testing (/t/testing)
+#python (/t/python)
+#ai (/t/ai)
+#devops (/t/devops)
+
+Add Comment
+(https://dev.to/gitjs_8094/a-200-response-is-not-a-contract-canary-tests-for-third-party-model-endpoints-305c#comments)
+
+6 min read
+
+Your .env Is Not a Secrets Manager, and Your AI Tools Can Read It Too (https://dev.to/lycore/your-env-file-is-not-a-secrets-manager-a-setup-small-teams-can-actually-maintain-17jp)
+
+(/lycore)
+
+Lycore Development
+(/lycore)
+
+Lycore Development
+
+Lycore Development
+(/lycore)
+
+Follow
+
+Nov 5 (https://dev.to/lycore/your-env-file-is-not-a-secrets-manager-a-setup-small-teams-can-actually-maintain-17jp)
+
+Your .env Is Not a Secrets Manager, and Your AI Tools Can Read It Too
+(https://dev.to/lycore/your-env-file-is-not-a-secrets-manager-a-setup-small-teams-can-actually-maintain-17jp)
+
+#ai (/t/ai)
+#security (/t/security)
+#devops (/t/devops)
+#python (/t/python)
+
+1 reaction
+
+(https://dev.to/lycore/your-env-file-is-not-a-secrets-manager-a-setup-small-teams-can-actually-maintain-17jp)
+
+Add Comment
+(https://dev.to/lycore/your-env-file-is-not-a-secrets-manager-a-setup-small-teams-can-actually-maintain-17jp#comments)
+
+9 min read
+
+My System Prompt Vanished at Message 40: A Debugging Walkthrough (https://dev.to/datacpp_3670/my-system-prompt-vanished-at-message-40-a-debugging-walkthrough-a4)
+
+(/datacpp_3670)
+
+Morgan Ma
+(/datacpp_3670)
+
+Morgan Ma
+
+Morgan Ma
+(/datacpp_3670)
+
+Follow
+
+Nov 5 (https://dev.to/datacpp_3670/my-system-prompt-vanished-at-message-40-a-debugging-walkthrough-a4)
+
+My System Prompt Vanished at Message 40: A Debugging Walkthrough
+(https://dev.to/datacpp_3670/my-system-prompt-vanished-at-message-40-a-debugging-walkthrough-a4)
+
+#debugging (/t/debugging)
+#python (/t/python)
+#testing (/t/testing)
+#ai (/t/ai)
+
+Add Comment
+(https://dev.to/datacpp_3670/my-system-prompt-vanished-at-message-40-a-debugging-walkthrough-a4#comments)
+
+5 min read
+
+Shrink the Trace, Not the Bug: A Prefix Minimizer for Failing Agent Runs (https://dev.to/apprs_6334/shrink-the-trace-not-the-bug-a-prefix-minimizer-for-failing-agent-runs-2lb1)
+
+(/apprs_6334)
+
+Riley Wang
+(/apprs_6334)
+
+Riley Wang
+
+Riley Wang
+(/apprs_6334)
+
+Follow
+
+Nov 5 (https://dev.to/apprs_6334/shrink-the-trace-not-the-bug-a-prefix-minimizer-for-failing-agent-runs-2lb1)
+
+Shrink the Trace, Not the Bug: A Prefix Minimizer for Failing Agent Runs
+(https://dev.to/apprs_6334/shrink-the-trace-not-the-bug-a-prefix-minimizer-for-failing-agent-runs-2lb1)
+
+#ai (/t/ai)
+#observability (/t/observability)
+#testing (/t/testing)
+#python (/t/python)
+
+Add Comment
+(https://dev.to/apprs_6334/shrink-the-trace-not-the-bug-a-prefix-minimizer-for-failing-agent-runs-2lb1#comments)
+
+5 min read
+
+👋 Sign in (https://dev.to/enter?signup_subforem=1) for the ability to sort posts by relevant, latest, or top.
+
+trending guides/resources
+
+Which Programming Language Is the Best Overall? Python vs JavaScript vs Java vs C++ vs Rust
+(/akhourianmolkumar/which-programming-language-is-the-best-overall-python-vs-javascript-vs-java-vs-c-vs-rust-1md1)
+
+HTTP2Shell Vulnerability in Python Servers Using Brotli Compression: Remote Code Execution Risk a...
+(/romdevin/http2shell-vulnerability-in-python-servers-using-brotli-compression-remote-code-execution-risk-and-25f3)
+
+Node2Shell Reaches Python: If Brotli Is Installed, requests Asks Servers for br
+(/gabrielanhaia/node2shell-reaches-python-if-brotli-is-installed-requests-asks-servers-for-br-2lla)
+
+700,000 people watched a VLC redesign. I built the player.
+(/nekku/700000-people-watched-a-vlc-redesign-i-built-the-player-1aio)
+
+HTTP2Shell (CVE-2026-111497): pip-audit Missed Brotli. How to Check Your Stack
+(/alanwest/http2shell-cve-2026-111497-pip-audit-missed-brotli-how-to-check-your-stack-31e3)
+
+Whistle: A 16.9 MB Speech-to-Text Model That Runs on Any CPU (Hands-On Test)
+(/jamilxt/whistle-a-169-mb-speech-to-text-model-that-runs-on-any-cpu-hands-on-test-3175)
+
+Reading Twitter Without X: A Practical Guide to Nitter Alternatives in 2024
+(/robust_true_try/reading-twitter-without-x-a-practical-guide-to-nitter-alternatives-in-2024-1gig)
+
+Certificate authority keys: eMudhra's browser and runtime trust gap
+(/axrisi/certificate-authority-keys-emudhras-browser-and-runtime-trust-gap-4edc)
+
+5 Best AI Gateways
+(/hadil/5-best-ai-gateways-1o72)
+
+Building a game bot with machine learning
+(/mrpercival/building-a-game-bot-with-machine-learning-1j92)
+
+I Turned My GitHub Profile Into a Cyberpunk Console With a City Built From My Contributions
+(/georgekobaidze/i-turned-my-github-profile-into-a-cyberpunk-console-with-a-city-built-from-my-contributions-h4c)
+
+Yahoo Finance Historical Data Download Is Now Paid: 7 Alternatives
+(/kevin_menesesgonzlez/yahoo-finance-historical-data-download-is-now-paid-7-alternatives-3958)
+
+Python 3.15 just dropped. Here's everything that changed from 3.14
+(/mursalfk/python-315-just-dropped-heres-everything-that-changed-from-314-36kj)
+
+Manim: Turning Mathematics into Animation with Python
+(/pjdeveloper896/manim-turning-mathematics-into-animation-with-python-5ae5)
+
+Mistral's Timestral Runs on a CPU. Its 'Modified MIT' License Stops at $20M a Month
+(/gabrielanhaia/mistrals-timestral-runs-on-a-cpu-its-modified-mit-license-stops-at-20m-a-month-141m)
+
+Design Uber: the ride-sharing system design interview walkthrough
+(/gowthampotureddi/design-uber-the-ride-sharing-system-design-interview-walkthrough-35gl)
+
+[AI in Practice] Upgrading from Gemini 3.5/3.6 to Gemini 4 Argon: Migration Notes and Pitfalls fo...
+(/gde/ai-in-practice-upgrading-from-gemini-3536-to-gemini-4-argon-migration-notes-and-pitfalls-for-hli)
+
+How to use the OpenAI Decisions API with Strands Agents
+(/aws/how-to-use-the-openai-decisions-api-with-strands-agents-4eok)
+
+Python 3.15 Improves Encoding Performance in Most Benchmarks but Lags in Base16 Compared to 3.14
+(/romdevin/python-315-improves-encoding-performance-in-most-benchmarks-but-lags-in-base16-compared-to-314-4a49)
+
+I scanned my machine for the Brotli RCE. Three stacks were exposed — and the patched one still re...
+(/frankchu/i-scanned-my-machine-for-the-brotli-rce-three-stacks-were-exposed-and-the-patched-one-still-47j5)
+
+Best Open-Source OCR and Document Parsing Models for Financial Tables (2026)
+(/nemwelboniface/best-open-source-ocr-and-document-parsing-models-for-financial-tables-2026-156g)
+
+FastMCP Is Now MCPServer: Migrating a Python MCP Server to the MCP SDK 2.x
+(/gde/fastmcp-is-now-mcpserver-migrating-a-python-mcp-server-to-the-mcp-sdk-2x-2nhj)
+
+Python's JIT Is Being Removed After a 7-8% Gain. Here's What Makes Python Faster
+(/alanwest/pythons-jit-is-being-removed-after-a-7-8-gain-heres-what-makes-python-faster-50o5)
+
+Deploying a FastAPI Application with Gunicorn and Nginx on Ubuntu 24.04
+(/vultr/deploying-a-fastapi-application-with-gunicorn-and-nginx-on-ubuntu-2404-55md)
+
+Building a Local LLM API Server with Ollama and FastAPI
+(/ayinedjimi-consultants/building-a-local-llm-api-server-with-ollama-and-fastapi-2bpk)
+
+DEV Community (/) — A space to discuss and keep up software development and manage your software career
+
+Home
+(/)
+
+DEV Challenges
+(/challenges)
+
+DEV++
+(/++)
+
+Videos
+(/videos)
+
+DEV Education Tracks
+(/deved)
+
+DEV Help
+(/help)
+
+Advertise on DEV
+(/advertise)
+
+Organization Accounts
+(/organizations)
+
+DEV Showcase
+(/showcase)
+
+About
+(/about)
+
+Contact
+(/contact)
+
+Free Postgres Database
+(/free-postgres-database-tier)
+
+DEV Shop
+(https://shop.forem.com/)
+
+MLH
+(https://mlh.io/)
+
+Code of Conduct
+(/code-of-conduct)
+
+Privacy Policy
+(/privacy)
+
+Terms of Use
+(/terms)
+
+Built on Forem (https://www.forem.com) — the open source (https://dev.to/t/opensource) software that powers DEV (https://dev.to) and other inclusive communities.
+
+Made with love and Ruby on Rails (https://dev.to/t/rails). DEV Community © 2016 - 2026.
+
+We're a place where coders share, stay up-to-date and grow their careers.
+
+Log in
+(https://dev.to/enter?signup_subforem=1)
+
+Create account
+(https://dev.to/enter?signup_subforem=1&state=new-user)
